@@ -1,0 +1,11 @@
+<!-- Generated template for the OrderListSelectComponent component -->
+<div>
+  {{text}}
+  <div *ngIf="testList.length > 0">
+    <ion-item *ngFor="let member of testList">
+      <ion-label>{{member?.testName || 'N/A'}}</ion-label>
+      <ion-checkbox color="dark" (click)="selectMember(member)" [(ngModel)]="member.checked"></ion-checkbox>
+    </ion-item>
+  </div>
+  <button ion-button (click)="checkAll()">Done</button>
+</div>
