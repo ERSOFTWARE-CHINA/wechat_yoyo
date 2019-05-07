@@ -17,6 +17,13 @@ defmodule ApiServerWeb.Router do
 
     resources "/users", UserController, except: [:new, :edit]
     resources "/posts", PostController, except: [:new, :edit]
+    resources "/post_comments", PostCommentController, except: [:new, :edit]
+    resources "/commodities", CommodityController, except: [:new, :edit]
+    resources "/services", ServiceController, except: [:new, :edit]
+    resources "/orders", OrderController, except: [:new, :edit]
+    resources "/service_orders", ServiceOrderController, except: [:new, :edit]
+    resources "/technicians", TechnicianController, except: [:new, :edit]
+    resources "/appointments", AppointmentController, except: [:new, :edit]
     
     get "/plug_auth_failure/:msg", AuthFailureController, :plug_auth_failure
   end

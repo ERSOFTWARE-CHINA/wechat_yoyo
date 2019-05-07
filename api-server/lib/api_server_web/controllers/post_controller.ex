@@ -1,43 +1,40 @@
 defmodule ApiServerWeb.PostController do
   use ApiServerWeb, :controller
 
-  alias ApiServer.PostContext
-  alias ApiServer.PostContext.Post
+  use ApiServer.PostContext
 
   action_fallback ApiServerWeb.FallbackController
 
-  def index(conn, _params) do
-    posts = PostContext.list_posts()
-    render(conn, "index.json", posts: posts)
+  def index(conn, params) do
+    page = page(params)
+    render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"post" => post_params}) do
-    with {:ok, %Post{} = post} <- PostContext.create_post(post_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.post_path(conn, :show, post))
-      |> render("show.json", post: post)
+  def create(conn, post_params) do
+    post_changeset = Post.changeset(%Post{}, post_params)
+    with {:ok, %Post{} = post} <- save_create(post_changeset) do
+      render(conn, "show.json", post_layout: post)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    post = PostContext.get_post!(id)
-    render(conn, "show.json", post: post)
-  end
-
-  def update(conn, %{"id" => id, "post" => post_params}) do
-    post = PostContext.get_post!(id)
-
-    with {:ok, %Post{} = post} <- PostContext.update_post(post, post_params) do
+    with {:ok, post} <- get_by_id(Post, id, [:post_comments, :user, :post_images]) do
       render(conn, "show.json", post: post)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    post = PostContext.get_post!(id)
+  def update(conn, %{"id" => id, "post" => post_params}) do
+    with {:ok, post} <- get_by_id(Post, id) do
+      post_changeset = Post.changeset(post, post_params)
+      with {:ok, %Post{} = post} <- save_update(post_changeset) do
+        render(conn, "show.json", post: post)
+      end
+    end
+  end
 
-    with {:ok, %Post{}} <- PostContext.delete_post(post) do
-      send_resp(conn, :no_content, "")
+  def delete(conn, %{"id" => id}) do
+    with {:ok, %Post{} = post} <- delete_by_id(Post, id) do
+      render(conn, "show.json", post: post)
     end
   end
 end

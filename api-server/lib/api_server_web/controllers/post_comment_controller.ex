@@ -1,43 +1,78 @@
 defmodule ApiServerWeb.PostCommentController do
   use ApiServerWeb, :controller
 
-  alias ApiServer.PostCommentContext
-  alias ApiServer.PostCommentContext.PostComment
+  use ApiServer.PostCommentContext
+  alias ApiServer.UserContext.User
+  alias ApiServer.PostContext.Post
 
   action_fallback ApiServerWeb.FallbackController
 
-  def index(conn, _params) do
-    post_comments = PostCommentContext.list_post_comments()
-    render(conn, "index.json", post_comments: post_comments)
+  def index(conn, params) do
+    page = page(params)
+    render(conn, "index.json", page: page)
   end
 
   def create(conn, %{"post_comment" => post_comment_params}) do
-    with {:ok, %PostComment{} = post_comment} <- PostCommentContext.create_post_comment(post_comment_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.post_comment_path(conn, :show, post_comment))
-      |> render("show.json", post_comment: post_comment)
+    user_changeset = get_user_changeset(post_comment_params)
+    post_changeset = get_post_changeset(post_comment_params)
+    comment_changeset = PostComment.changeset(%PostComment{}, post_comment_params)
+    |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    |> Ecto.Changeset.put_assoc(:post, post_changeset)
+    with {:ok, %PostComment{} = post_comment} <- save_create(comment_changeset) do
+      render(conn, "show.json", post_comment: post_comment)
+    end
+  end 
+
+  def show(conn, %{"id" => id}) do
+    with {:ok, post_comment} <- get_by_id(PostComment, id, [:post, :user]) do
+      render(conn, "show.json", post_comment: post_comment)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    post_comment = PostCommentContext.get_post_comment!(id)
-    render(conn, "show.json", post_comment: post_comment)
-  end
-
   def update(conn, %{"id" => id, "post_comment" => post_comment_params}) do
-    post_comment = PostCommentContext.get_post_comment!(id)
-
-    with {:ok, %PostComment{} = post_comment} <- PostCommentContext.update_post_comment(post_comment, post_comment_params) do
+    {:ok, post_comment} = get_by_id(PostComment, id, [:post, :user])
+    user_changeset = get_user_changeset(post_comment_params)
+    post_changeset = get_post_changeset(post_comment_params)
+    comment_changeset = PostComment.changeset(post_comment, post_comment_params)
+    |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    |> Ecto.Changeset.put_assoc(:post, post_changeset)
+    with {:ok, %PostComment{} = post_comment} <- save_update(comment_changeset) do
       render(conn, "show.json", post_comment: post_comment)
     end
   end
 
   def delete(conn, %{"id" => id}) do
-    post_comment = PostCommentContext.get_post_comment!(id)
-
-    with {:ok, %PostComment{}} <- PostCommentContext.delete_post_comment(post_comment) do
-      send_resp(conn, :no_content, "")
+    with {:ok, %PostComment{} = post_comment} <- delete_by_id(PostComment, id, [:post, :user]) do
+      render(conn, "show.json", post_comment: post_comment)
     end
   end
+
+  defp get_user_changeset(params) do
+    params
+    |> Map.get("user", %{})
+    |> Map.get("open_id")
+    |> case do
+      nil -> nil
+      open_id ->
+        case get_by_name(User, open_id: open_id) do
+          {:error, _} -> nil
+          {:ok, user} -> change(User, user)
+        end
+    end
+  end
+
+  defp get_post_changeset(params) do
+    params
+    |> Map.get("post", %{})
+    |> Map.get("id")
+    |> case do
+      nil -> nil
+      id ->
+        case get_by_id(Post, id) do
+          {:error, _} -> nil
+          {:ok, post} -> change(Post, post)
+        end
+    end
+  end
+
 end

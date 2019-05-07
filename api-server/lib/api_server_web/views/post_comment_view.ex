@@ -2,8 +2,14 @@ defmodule ApiServerWeb.PostCommentView do
   use ApiServerWeb, :view
   alias ApiServerWeb.PostCommentView
 
-  def render("index.json", %{post_comments: post_comments}) do
-    %{data: render_many(post_comments, PostCommentView, "post_comment.json")}
+  def render("index.json", %{page: page}) do
+    %{
+      data: render_many(page.entries, PostCommentView, "post_comment.json"),
+      page_number: page.page_number,
+      page_size: page.page_size,
+      total_entries: page.total_entries,
+      total_pages: page.total_pages
+    }
   end
 
   def render("show.json", %{post_comment: post_comment}) do

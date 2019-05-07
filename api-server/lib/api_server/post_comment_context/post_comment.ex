@@ -8,8 +8,8 @@ defmodule ApiServer.PostCommentContext.PostComment do
     field :content, :string
     field :date, :string
 
-    belongs_to :users, User, on_replace: :nilify
-    belongs_to :posts, Post, on_replace: :delete
+    belongs_to :user, User, on_replace: :nilify
+    belongs_to :post, Post, on_replace: :delete
     timestamps()
   end
 

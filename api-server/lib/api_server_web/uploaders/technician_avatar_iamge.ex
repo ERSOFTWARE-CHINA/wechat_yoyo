@@ -1,4 +1,4 @@
-defmodule ApiServer.PostImageImage do
+defmodule ApiServer.TechnicianAvatarImage do
   use Arc.Definition
 
   # Include ecto support (requires package arc_ecto installed):
@@ -41,7 +41,7 @@ defmodule ApiServer.PostImageImage do
     # IO.puts("##########################")
     # IO.puts inspect scope
     # uuid = Ecto.UUID.generate
-    "priv/static/files/post_image/#{scope.uuid}"
+    "priv/static/files/technician/#{scope.uuid}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
