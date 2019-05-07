@@ -1,0 +1,18 @@
+page-tabs {
+  .tab-button.icon-only {
+    position: relative;
+    overflow: visible;
+    text-align: center;
+    left: 0;
+    .tab-button-icon {
+      width: 70px;
+      height: 70px;
+      line-height: 60px;
+      margin-top: -12px;
+      background: skyblue;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      box-shadow: 0 -2px 3px rgba(100, 100, 100, 0.4);
+    }
+  }
+}
