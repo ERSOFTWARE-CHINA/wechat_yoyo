@@ -12,6 +12,10 @@ defmodule ApiServerWeb.Router do
     plug Guardian.Plug.LoadResource
   end
 
+  pipeline :wechat_auth do
+    plug ApiServerWeb.Plugs.WechatAuth
+  end
+
   scope "/api/v1", ApiServerWeb do
     pipe_through :api
 
@@ -26,5 +30,19 @@ defmodule ApiServerWeb.Router do
     resources "/appointments", AppointmentController, except: [:new, :edit]
     
     get "/plug_auth_failure/:msg", AuthFailureController, :plug_auth_failure
+  end
+
+  scope "/app-api/v1", ApiServerWeb do
+    pipe_through :wechat_auth
+
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/posts", PostController, except: [:new, :edit]
+    resources "/post_comments", PostCommentController, except: [:new, :edit]
+    resources "/commodities", CommodityController, except: [:new, :edit]
+    resources "/services", ServiceController, except: [:new, :edit]
+    resources "/orders", OrderController, except: [:new, :edit]
+    resources "/service_orders", ServiceOrderController, except: [:new, :edit]
+    resources "/technicians", TechnicianController, except: [:new, :edit]
+    resources "/appointments", AppointmentController, except: [:new, :edit]
   end
 end
