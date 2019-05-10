@@ -25,6 +25,19 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :api_server, ApiServerWeb.Guardian,
+  issuer: "api_server",
+  secret_key: "shlUujtCllEQx3DeFP+++7L0B3r5cUvs7zXEY++FN8arJdhaSlMxuyf8EE/rz80y",
+  ttl: {1, :day}
+
+# Store uploaded file in local storage
+config :arc,
+  storage: Arc.Storage.Local
+
+# 微信配置
+config :api_server, ApiServerWeb.WechatController,
+  app_id: "appidis123456"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

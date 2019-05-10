@@ -1,0 +1,40 @@
+{
+  "app": {
+    "name": "Alain",
+    "description": "Ng-zorro admin panel front-end framework"
+  },
+  "user": {
+    "name": "Admin",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "cipchk@qq.com"
+  },
+  "menu": [
+    {
+      "text": "微信公众号管理后台",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "仪表盘",
+          "icon": "anticon-dashboard",
+          "children": [
+            {
+              "text": "统计分析",
+              "link": "/dashboard/v1"
+            }
+          ]
+        },
+        {
+          "text": "系统配置",
+          "icon": "anticon-setting",
+          "children": [
+            {
+              "text": "用户管理",
+              "link": "/user"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

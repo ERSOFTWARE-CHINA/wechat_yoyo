@@ -2,7 +2,7 @@ defmodule ApiServerWeb.Plugs.WechatAuth do
   import Plug.Conn
 
   @auth_url "https://api.weixin.qq.com/sns/auth"
-  @wechat_auth_failure "Illegal access"
+  @wechat_auth_failure "Illegal access!"
 
   def init(default), do: default
 
@@ -12,7 +12,7 @@ defmodule ApiServerWeb.Plugs.WechatAuth do
     |> HTTPoison.get
     |> case do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        case Map.get(body, "errmsg") do
+        case Map.get(Poison.Parser.parse!(body), "errmsg") do
           "ok" -> conn
           _ -> conn |> send_resp(403, @wechat_auth_failure)
         end

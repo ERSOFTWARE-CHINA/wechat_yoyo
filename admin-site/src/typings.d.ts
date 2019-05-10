@@ -1,15 +1,8 @@
-/**
- * @license
- * Copyright Akveo. All Rights Reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- */
+// # 3rd Party Library
+// If the library doesn't have typings available at `@types/`,
+// you can still use it by manually adding typings for it
 
-/* SystemJS module definition */
-declare var module: NodeModule;
-interface NodeModule {
-  id: string;
-}
-
-declare var tinymce: any;
-
-declare var echarts: any;
+// G2
+declare var G2: any;
+declare var DataSet: any;
+declare var Slider: any;

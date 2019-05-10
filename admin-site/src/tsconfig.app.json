@@ -2,25 +2,19 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app",
-    "module": "es2015",
     "baseUrl": "./",
+    "module": "es2015",
+    "types": ["node"],
     "paths": {
-      "@angular/*": [
-        "../node_modules/@angular/*"
-      ],
-      "@nebular/*": [
-        "../node_modules/@nebular/*"
-      ]
+      "@shared": [ "app/shared/index" ],
+      "@shared/*": [ "app/shared/*" ],
+      "@core": [ "app/core/index" ],
+      "@core/*": [ "app/core/*" ],
+      "@env/*": [ "environments/*" ]
     }
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts",
-    "../node_modules/@nebular/**/*.spec.ts"
-  ],
-  "include": [
-    "../src/*.ts",
-    "../src/**/*.ts",
-    "../node_modules/@nebular/**/*.ts"
+    "**/*.spec.ts"
   ]
 }
