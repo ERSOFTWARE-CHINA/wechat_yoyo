@@ -16,7 +16,7 @@ export class UserService {
       headers: headers
     }
     console.log(headers)
-    return this.http.get(this.url, options)
+    return this.http.get(this.url, options);
   }
 
   getTokenOptions() {

@@ -4,7 +4,7 @@ defmodule ApiServer.Repo.Migrations.CreateServiceOrders do
   def change do
     create table(:service_orders) do
       add :date, :string
-      add ：times, :integer
+      add :times, :integer
       add :status, :string
 
       add :user_id, references(:users)
