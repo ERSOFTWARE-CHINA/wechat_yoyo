@@ -13,13 +13,15 @@ import { Items } from '../mocks/providers/items';
 import { Settings, User, Api, Toast } from '../providers';
 import { MyApp } from './app.component';
 //消息框引入
-import { ToastController } from 'ionic-angular';
+//import { ToastController } from 'ionic-angular';
 import { Wuzhapi } from '../providers/wuzhapi/wuzhapi';
 import { Logger } from '../providers/logger/logger';
 import { Products } from '../providers/products/products';
 
 //自定义组件的引入
-//import { ComponentsModule } from '../components/components.module';
+import { ComponentsModule } from '../components/components.module';
+
+//测试组件模式
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -44,12 +46,12 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp    
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
- //   ComponentsModule,
+    HttpClientModule, 
+    //ComponentsModule,   
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -64,14 +66,14 @@ export function provideSettings(storage: Storage) {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,  
   ],
   providers: [
     Api,
     Items,
     User,
     Camera,
-    ToastController,
+   // ToastController,  //因为在toast服务中进行封装了所以在此不需要再引用toastcontroller了
     SplashScreen,
    // ComponentsModule,
     StatusBar,

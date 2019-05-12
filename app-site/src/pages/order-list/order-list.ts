@@ -14,7 +14,6 @@ import { OrderListSelectComponent } from '../../components/order-list-select/ord
     name: 'OrderListPage',
     segment: 'order-list'
   }
-
 )
 @Component({
   selector: 'page-order-list',
@@ -22,18 +21,43 @@ import { OrderListSelectComponent } from '../../components/order-list-select/ord
 })
 export class OrderListPage {
 
+//先定义一个数组
+listitems = [
+  {
+    "name": "产后修复项目",
+    "name1": "assets/img/speakers/bear.jpg",
+    "name2": "职业",
+    "name3": "性格特点",
+    "name4": "预约数100",   
+  },
+  {
+    "name": "婴儿游泳SPA",
+    "name1": "assets/img/speakers/bear.jpg",
+    "name2": "职业",
+    "name3": "性格特点",
+    "name4": "预约数100",   
+  }
+];
+
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams,public modalController: ModalController) {  
   }
 
   async presentModal() {
-    const modal = await this.modalController.create({
+    /*const modal = await this.modalController.create({
       showBackdrop:true,
-      component: OrderListSelectComponent,
+      component: 'OrderListSelectComponent',
       componentProps: { value: 123 }
-    });
+    });*/
+    const modal = await this.modalController.create(OrderListSelectComponent);
+
     return await modal.present();
   }
   
+
+
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad OrderListPage');
   }

@@ -6,32 +6,21 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>预约列表</ion-title>
+    <ion-title>预约列表，第二部</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
   <ion-list>
- 
-    <ion-item>
-      <ion-avatar (click)="presentModal()" item-left>
-        <img  src="assets/img/speakers/cheetah.jpg">
-      </ion-avatar>
-      <h2>Cher</h2>
-      <p>Ugh. As if.</p>
-      <button clear item-right>View</button>
-
-    </ion-item>
-   
-
-    <ion-item>
-      <ion-avatar item-left>
-        <img src="assets/img/speakers/bear.jpg">
-      </ion-avatar>
-      <h2>Cher</h2>
-      <p>Ugh. As if.</p>
-      <button clear item-right>View</button>
-    </ion-item>
-
+    <ion-item-sliding *ngFor="let item of listitems">
+      <button ion-item >       
+        <h2>{{item.name}}</h2>
+      </button>
+      <button clear item-right>点击按钮</button>      
+    </ion-item-sliding>
+    <order-list-select></order-list-select>
   </ion-list>
+
+  <button ion-button color="primary">这是弹出框 show</button>
+  
 </ion-content>

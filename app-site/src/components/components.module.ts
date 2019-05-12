@@ -4,8 +4,10 @@ import { OrderListSelectComponent } from './order-list-select/order-list-select'
 @NgModule({
 	declarations: [OrderListSelectComponent],
 	imports: [
-		IonicModule
-	],
-	exports: [OrderListSelectComponent]
+		IonicModule,
+			],
+	exports: [OrderListSelectComponent], 
+	//entryComponents: [		OrderListSelectComponent,  	  ],
+
 })
 export class ComponentsModule {}
