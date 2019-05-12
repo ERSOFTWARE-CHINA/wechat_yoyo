@@ -34,6 +34,13 @@ config :api_server, ApiServerWeb.Guardian,
 config :arc,
   storage: Arc.Storage.Local
 
+# cors
+config :cors_plug,
+  origin: ["http://localhost:4200"],
+  headers: ["*"],
+  max_age: 86400,
+  methods: ["GET", "POST"]
+
 # 微信配置
 config :api_server, ApiServerWeb.WechatController,
   app_id: "appidis123456"

@@ -1,0 +1,84 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">用户名称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.name" name="name" placeholder="请输入" id="name" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">微信昵称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.wechat_nickname" name="wechat_nickname" placeholder="请输入" id="wechat_nickname" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+            <nz-form-item>
+              <nz-form-label nzFor="no">手机号码</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.mobile" name="mobile" placeholder="请输入" id="mobile" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+            <nz-form-item>
+              <nz-form-label nzFor="active">用户状态</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="q.active" name="active" id="active" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
+                  <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="i.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+            <nz-form-item>
+              <nz-form-label nzFor="is_admin">用户类型</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="q.is_admin" name="is_admin" id="is_admin" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
+                  <nz-option *ngFor="let i of admin_status; let idx = index" [nzLabel]="i.text" [nzValue]="i.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            <a (click)="expandForm = !expandForm">
+              {{ expandForm ? '收起' : '展开' }}
+              <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+            </a>
+          </div>
+        </div>
+      </form>
+      <div class="mb-md">
+        <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div>
+
+      <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
+        <ng-template st-row="status" let-i>
+          <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
+        </ng-template>
+      </st>
+    </nz-card>
+  </div>
+</div>
+
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="no">描述</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no" />
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

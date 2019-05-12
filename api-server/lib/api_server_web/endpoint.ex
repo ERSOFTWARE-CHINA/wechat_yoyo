@@ -24,7 +24,7 @@ defmodule ApiServerWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Logger
 
-  plug ApiServerWeb.CORS
+  plug CORSPlug
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],

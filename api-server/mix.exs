@@ -47,7 +47,7 @@ defmodule ApiServer.MixProject do
       {:comeonin, "~> 5.1.2"},
       {:pbkdf2_elixir, "~> 1.0.2"},
       {:scrivener_ecto, "~> 2.0"},
-      {:corsica, "~> 1.1.2"},
+      {:cors_plug, "~> 2.0"},
       {:guardian, "~> 1.2.1"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.1"},
