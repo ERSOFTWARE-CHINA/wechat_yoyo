@@ -124,9 +124,9 @@ export class UserListComponent implements OnInit {
       .pipe(
         map((resp: any) =>
           resp['data'].map(i => {
-            const statusItem = this.status[i.status];
-            i.statusText = statusItem.text;
-            i.statusType = statusItem.type;
+            // const statusItem = this.status[i.status];
+            // i.statusText = statusItem.text;
+            // i.statusType = statusItem.type;
             return i;
           }),
         ),
