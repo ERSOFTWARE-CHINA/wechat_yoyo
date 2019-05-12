@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar>
-    <ion-title>预约列表，第二部</ion-title>
+    <ion-title>预约列表，第二步</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -15,12 +15,16 @@
     <ion-item-sliding *ngFor="let item of listitems">
       <button ion-item >       
         <h2>{{item.name}}</h2>
-      </button>
-      <button clear item-right>点击按钮</button>      
+        <p>
+          {{checktext}}
+        </p>
+      </button>        
     </ion-item-sliding>
-    <order-list-select></order-list-select>
+    <!--这个是通过组件来显示的-->
+  <order-list-select></order-list-select>
   </ion-list>
 
-  <button ion-button color="primary">这是弹出框 show</button>
-  
+  <button ion-button color="primary"  (click)='showCheckbox()'>这是项目选择复选框效果</button>
+ 
+ 
 </ion-content>

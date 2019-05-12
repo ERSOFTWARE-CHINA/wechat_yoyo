@@ -23,6 +23,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class OrderPresonPage {
 
+//初始定值
+  pet: string = "puppies";
 //先定义一个组件类
 OrderListPage
 //先定义一个数组

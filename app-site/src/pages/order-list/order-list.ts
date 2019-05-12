@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { IonicPage, NavController, NavParams,ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ModalController,AlertController } from 'ionic-angular';
 //引入自定义组件
 import { OrderListSelectComponent } from '../../components/order-list-select/order-list-select'
 /**
@@ -38,10 +38,10 @@ listitems = [
     "name4": "预约数100",   
   }
 ];
+//
+checktext: any;
 
-
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,public modalController: ModalController) {  
+  constructor(public alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,public modalController: ModalController) {  
   }
 
   async presentModal() {
@@ -55,7 +55,35 @@ listitems = [
     return await modal.present();
   }
   
+//选择框
+  showCheckbox() {
+    let alert = this.alertCtrl.create();
+    alert.setTitle('请选择技师');
 
+    alert.addInput({
+      type: 'checkbox',
+      label: '选择了1',
+      value: '选择了1',
+      //checked: true //默认选择
+    });
+
+    alert.addInput({
+      type: 'checkbox',
+      label: '选择了2',
+      value: '选择了2'
+    });
+
+  //  alert.addButton('Cancel');
+    alert.addButton({
+      text: '确定',
+      handler: data => {
+        console.log('Checkbox data:', data);
+        //this.testCheckboxOpen = false;
+       this.checktext=data;
+      }
+    });
+    alert.present();
+  }
 
 
   ionViewDidLoad() {
