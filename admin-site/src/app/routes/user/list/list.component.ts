@@ -103,41 +103,42 @@ export class UserListComponent implements OnInit {
   }
 
   getData() {
-    // this.loading = true;
-    // this.srv.listOnePage(null)
-    //   .pipe(tap(() => (this.loading = false)))
-    //   .subscribe(resp => {
-    //     console.log("now set loading to false, and data is :")
-    //     this.data = resp['data'];
-    //     console.log(this.data);
-    //     this.loading = false;
-    //   },
-    //     error => { this.msg.error(error); this.loading = false; }
-    //   )
-
     this.loading = true;
-    this.q.statusList = this.status.filter(w => w.checked).map(item => item.index);
-    if (this.q.status !== null && this.q.status > -1) this.q.statusList.push(this.q.status);
-    // this.http
-    //   .get('/rule', this.q)
     this.srv.listOnePage(null)
-      .pipe(
-        map((resp: any) =>
-          resp['data'].map(i => {
-            // const statusItem = this.status[i.status];
-            // i.statusText = statusItem.text;
-            // i.statusType = statusItem.type;
-            return i;
-          }),
-        ),
-        tap(() => (this.loading = false)),
-      )
-      .subscribe(res => {
-        console.log("data is :");
-        console.log(res);
-        this.data = res;
+      .pipe(tap(() => (this.loading = false)))
+      .subscribe(resp => {
+        console.log("now set loading to false, and data is :")
+        this.data = resp['data'];
         this.cdr.detectChanges();
-      });
+        console.log(this.data);
+        this.loading = false;
+      },
+        error => { this.loading = false; }
+      )
+
+    // this.loading = true;
+    // // this.q.statusList = this.status.filter(w => w.checked).map(item => item.index);
+    // // if (this.q.status !== null && this.q.status > -1) this.q.statusList.push(this.q.status);
+    // // this.http
+    // //   .get('/rule', this.q)
+    // this.srv.listOnePage(null)
+    //   .pipe(
+    //     map((resp: any) =>
+    //       resp['data'].map(i => {
+    //         // const statusItem = this.status[i.status];
+    //         // i.statusText = statusItem.text;
+    //         // i.statusType = statusItem.type;
+    //         return i;
+    //       }),
+    //     ),
+    //     tap(() => (this.loading = false)),
+    //   )
+    //   .subscribe(res => {
+    //     console.log("data is :");
+    //     console.log(res);
+    //     this.data = res;
+    //     this.cdr.detectChanges();
+    //   });
   }
 
   // stChange(e: STChange) {
