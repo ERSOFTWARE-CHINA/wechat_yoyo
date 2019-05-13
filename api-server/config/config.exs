@@ -39,7 +39,7 @@ config :cors_plug,
   origin: ["http://localhost:4200"],
   headers: ["*"],
   max_age: 86400,
-  methods: ["GET", "POST"]
+  methods: ["GET", "POST", "DELETE"]
 
 # 微信配置
 config :api_server, ApiServerWeb.WechatController,

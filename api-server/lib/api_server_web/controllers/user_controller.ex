@@ -41,7 +41,7 @@ defmodule ApiServerWeb.UserController do
   end
 
   def delete(conn, %{"id" => id}) do
-    with {:ok, _} <- can_delete(conn, id), {:ok, %User{} = user} <- delete_by_id(User, id, conn) do
+    with {:ok, _} <- can_delete(conn, id), {:ok, %User{} = user} <- delete_by_id(User, id) do
       render(conn, "show.json", user: user)
     end
   end

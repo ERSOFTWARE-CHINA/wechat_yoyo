@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { _HttpClient } from '@delon/theme';
 import { tap, map } from 'rxjs/operators';
@@ -80,7 +81,7 @@ export class UserListComponent implements OnInit {
         },
         {
           text: '删除',
-          click: (item: any) => this.msg.success(`订阅警报${item.no}`),
+          click: (item: any) => this.delete(item),
         },
       ],
     },
@@ -96,6 +97,7 @@ export class UserListComponent implements OnInit {
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     private srv: UserService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -107,10 +109,8 @@ export class UserListComponent implements OnInit {
     this.srv.listOnePage(null)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
-        console.log("now set loading to false, and data is :")
         this.data = resp['data'];
         this.cdr.detectChanges();
-        console.log(this.data);
         this.loading = false;
       },
         error => { this.loading = false; }
@@ -166,13 +166,23 @@ export class UserListComponent implements OnInit {
   }
 
   add(tpl: TemplateRef<{}>) {
-    this.modalSrv.create({
-      nzTitle: '新建规则',
-      nzContent: tpl,
-      nzOnOk: () => {
-        this.loading = true;
-        this.http.post('/rule', { description: this.description }).subscribe(() => this.getData());
-      },
+    this.srv.formOperation = 'create';
+    this.srv.isUpdate = false;
+    this.router.navigateByUrl('/user/form');
+    // this.modalSrv.create({
+    //   nzTitle: '新建规则',
+    //   nzContent: tpl,
+    //   nzOnOk: () => {
+    //     this.loading = true;
+    //     this.http.post('/rule', { description: this.description }).subscribe(() => this.getData());
+    //   },
+    // });
+  }
+
+  delete(item) {
+    this.srv.delete(item.id).subscribe(resp => {
+      if (resp["data"]) this.msg.success(`删除成功！`);
+      this.getData();
     });
   }
 
