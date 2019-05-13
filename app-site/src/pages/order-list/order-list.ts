@@ -90,4 +90,10 @@ checktext: any;
     console.log('ionViewDidLoad OrderListPage');
   }
 
+
+  //push后页面为什么是字符串而不是一个组件但是页面组件却可以是组件，懒加载模式下
+  goDay(){
+    this.navCtrl.push('OrderDayPage');
+  }
+
 }
