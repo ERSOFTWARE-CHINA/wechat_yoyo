@@ -19,7 +19,7 @@ import { Logger } from '../providers/logger/logger';
 import { Products } from '../providers/products/products';
 
 //自定义组件的引入
-import { ComponentsModule } from '../components/components.module';
+//import { ComponentsModule } from '../components/components.module';
 
 //测试组件模式
 
