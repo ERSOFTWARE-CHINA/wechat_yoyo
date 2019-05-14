@@ -1,31 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { baseUrl } from '../../../config';
+
 
 
 @Injectable()
 export class UserService {
 
   constructor(private http: HttpClient) { }
-  url = "http://localhost:4000/api/v1/users"
+  url = baseUrl + "/api/v1/users"
+
+  formOperation = "create";
+  isUpdate = false;
+
   listOnePage(q) {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    let options = {
-      headers: headers
-    }
-    console.log(headers)
-    return this.http.get(this.url, options);
+    return this.http.get(this.url);
   }
 
-  getTokenOptions() {
-    let headers = new HttpHeaders();
-    let jwt = 'Bearer ' + localStorage.getItem('currentToken');
-    headers.append('Authorization', jwt);
-    headers.append('Content-Type', 'application/json');
-    let options = { headers: headers };
-    return options;
+  add(obj) {
+    let param = { user: obj }
+    return this.http.post(this.url, param);
   }
 
+  delete(id) {
+    return this.http.delete(this.url + `/${id}`);
+  }
 }

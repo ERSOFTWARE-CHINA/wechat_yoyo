@@ -21,8 +21,8 @@ defmodule ApiServer.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :type, :mobile, :status, :perms])
-    |> validate_required([:type, :status])
+    |> cast(attrs, [:name, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :is_admin, :mobile, :active])
+    |> validate_required([:is_admin, :active])
     |> put_password_hash
   end
 
