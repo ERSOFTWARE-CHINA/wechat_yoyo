@@ -1,8 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, delay, debounceTime } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
-
+import { UserValidators } from '../validators/name.validator';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -13,14 +15,22 @@ import { UserService } from '../service/user.service';
 export class UserFormComponent implements OnInit {
   form: FormGroup;
   submitting = false;
-  title = "用户表单"
+  title = "用户表单";
+  user: any = null;
 
-  constructor(private fb: FormBuilder, private msg: NzMessageService, private cdr: ChangeDetectorRef, private router: Router, private srv: UserService) { }
+  constructor(
+    private fb: FormBuilder,
+    private msg: NzMessageService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private srv: UserService,
+    private userNameValidator: UserValidators) { }
 
   ngOnInit(): void {
     this.setTitle();
     this.form = this.fb.group({
-      name: [null, [Validators.required]],
+      name: [null, Validators.compose(
+        [Validators.required, Validators.minLength(3)]), this.userNameValidator.userValidator()],
       mobile: [null, []],
     });
   }
@@ -43,4 +53,6 @@ export class UserFormComponent implements OnInit {
       this.title = "修改用户";
     }
   }
+
+
 }

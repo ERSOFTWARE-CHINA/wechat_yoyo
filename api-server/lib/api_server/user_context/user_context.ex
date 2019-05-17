@@ -19,12 +19,30 @@ defmodule ApiServer.UserContext do
 
   def page(params) do 
     User
+    |> query_like(params, "name")
     |> query_like(params, "wechat_nickname")
     |> query_like(params, "mobile")
-    |> query_equal(params, "type")
-    |> query_equal(params, "status")
-    |> query_order_desc_by(params, "inserted_at")
+    |> query_equal(params, "active")
+    |> query_equal(params, "is_admin")
+    |> query_order_by(params, "inserted_at")
     |> get_pagination(params)
+  end
+
+  def validate_user_name(params) do
+    params
+    |> Map.get("id", nil)
+    |> case do
+      nil ->
+        name = params
+        |> Map.get("name")
+        case get_by_name(name: name) do
+          nil -> {:ok, "ok"}
+          entity -> {:eorror, "error"}
+        end
+      id ->
+        User
+        |> get_by_id(id)
+    end
   end
 
 end

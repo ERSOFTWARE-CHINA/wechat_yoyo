@@ -6,6 +6,7 @@ import { tap, map } from 'rxjs/operators';
 import { STComponent, STColumn, STData, STChange } from '@delon/abc';
 
 import { UserService } from '../service/user.service';
+import { formmat } from '../../../utils/formmat';
 
 @Component({
   selector: 'user-list',
@@ -15,80 +16,27 @@ import { UserService } from '../service/user.service';
 export class UserListComponent implements OnInit {
 
   title = "用户管理"
+  total = 0;
   q: any = {
     pi: 1,
     ps: 10,
-    sorter: '',
-    status: null,
-    statusList: [],
+    sort_field: "name",
+    sort_direction: "asc",
+    name: null,
+    wechat_nickname: null,
+    mobile: null
   };
   data: any[] = [];
   loading = false;
-  status = [
-    { index: 0, text: '已激活', value: true, type: 'success', checked: false },
-    { index: 1, text: '已禁用', value: false, type: 'error', checked: false },
+  listofstatus = [
+    { text: '已激活', value: true },
+    { text: '已禁用', value: false },
   ];
-  admin_status = [
-    { index: 0, text: '普通用户', value: false, type: 'success', checked: false },
-    { index: 1, text: '管理员', value: true, type: 'error', checked: false },
+  listoftypes = [
+    { text: '普通用户', value: false },
+    { text: '管理员', value: true },
   ];
-  @ViewChild('st')
-  st: STComponent;
-  columns: STColumn[] = [
-    // { title: '', index: 'key', type: 'checkbox' },
-    { title: '用户名称', index: 'name' },
-    { title: '微信昵称', index: 'wechat_nickname' },
-    { title: '手机号码', index: 'mobile' },
-    // {
-    //   title: '服务调用次数',
-    //   index: 'callNo',
-    //   type: 'number',
-    //   format: (item: any) => `${item.callNo} 万`,
-    //   sorter: (a: any, b: any) => a.callNo - b.callNo,
-    // },
-    {
-      title: '状态',
-      index: 'status',
-      render: 'status',
-      // filter: {
-      //   menus: this.status,
-      //   fn: (filter: any, record: any) => record.status === filter.index,
-      // },
-    },
-    {
-      title: '管理员',
-      index: 'admin_status',
-      render: 'admin_status',
-      // filter: {
-      //   menus: this.status,
-      //   fn: (filter: any, record: any) => record.status === filter.index,
-      // },
-    },
-    // {
-    //   title: '更新时间',
-    //   index: 'updatedAt',
-    //   type: 'date',
-    //   sort: {
-    //     compare: (a: any, b: any) => a.updatedAt - b.updatedAt,
-    //   },
-    // },
-    {
-      title: '操作',
-      buttons: [
-        {
-          text: '修改',
-          click: (item: any) => this.msg.success(`配置${item.no}`),
-        },
-        {
-          text: '删除',
-          click: (item: any) => this.delete(item),
-        },
-      ],
-    },
-  ];
-  selectedRows: STData[] = [];
-  description = '';
-  totalCallNo = 0;
+
   expandForm = false;
 
   constructor(
@@ -106,88 +54,61 @@ export class UserListComponent implements OnInit {
 
   getData() {
     this.loading = true;
-    this.srv.listOnePage(null)
+    this.srv.listOnePage(this.q)
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
         this.data = resp['data'];
         this.cdr.detectChanges();
         this.loading = false;
       },
-        error => { this.loading = false; }
+      error => { this.loading = false; }
       )
-
-    // this.loading = true;
-    // // this.q.statusList = this.status.filter(w => w.checked).map(item => item.index);
-    // // if (this.q.status !== null && this.q.status > -1) this.q.statusList.push(this.q.status);
-    // // this.http
-    // //   .get('/rule', this.q)
-    // this.srv.listOnePage(null)
-    //   .pipe(
-    //     map((resp: any) =>
-    //       resp['data'].map(i => {
-    //         // const statusItem = this.status[i.status];
-    //         // i.statusText = statusItem.text;
-    //         // i.statusType = statusItem.type;
-    //         return i;
-    //       }),
-    //     ),
-    //     tap(() => (this.loading = false)),
-    //   )
-    //   .subscribe(res => {
-    //     console.log("data is :");
-    //     console.log(res);
-    //     this.data = res;
-    //     this.cdr.detectChanges();
-    //   });
-  }
-
-  // stChange(e: STChange) {
-  //   switch (e.type) {
-  //     case 'checkbox':
-  //       this.selectedRows = e.checkbox!;
-  //       this.totalCallNo = this.selectedRows.reduce((total, cv) => total + cv.callNo, 0);
-  //       this.cdr.detectChanges();
-  //       break;
-  //     case 'filter':
-  //       this.getData();
-  //       break;
-  //   }
-  // }
-
-  remove() {
-    this.http.delete('/rule', { nos: this.selectedRows.map(i => i.no).join(',') }).subscribe(() => {
-      this.getData();
-      this.st.clearCheck();
-    });
-  }
-
-  approval() {
-    this.msg.success(`审批了 ${this.selectedRows.length} 笔`);
   }
 
   add(tpl: TemplateRef<{}>) {
     this.srv.formOperation = 'create';
     this.srv.isUpdate = false;
     this.router.navigateByUrl('/user/form');
-    // this.modalSrv.create({
-    //   nzTitle: '新建规则',
-    //   nzContent: tpl,
-    //   nzOnOk: () => {
-    //     this.loading = true;
-    //     this.http.post('/rule', { description: this.description }).subscribe(() => this.getData());
-    //   },
-    // });
   }
 
-  delete(item) {
-    this.srv.delete(item.id).subscribe(resp => {
-      if (resp["data"]) this.msg.success(`删除成功！`);
-      this.getData();
+  remove(item) {
+    this.modalSrv.create({
+      nzTitle: '确认删除',
+      nzContent: "确认要删除该条记录吗？",
+      nzOnOk: () => {
+        this.loading = true;
+        this.srv.delete(item.id).subscribe(resp => {
+          if (resp["data"]) this.msg.success(`删除成功！`);
+          this.getData();
+        },
+          error => { this.loading = false });
+      },
     });
   }
 
   reset() {
-    // wait form reset updated finished
     setTimeout(() => this.getData());
   }
+
+  pageChange(pi: number) {
+    this.q.pi = pi;
+    this.getData();
+  }
+
+  sort(sort: { key: string; value: string }): void {
+    this.q.sort_field = sort.key;
+    this.q.sort_direction = sort.value;
+    this.getData();
+  }
+
+  filter_status(searchStatus: boolean): void {
+    this.q.active = searchStatus;
+    this.getData();
+  }
+
+  filter_type(searchType: boolean): void {
+    this.q.is_admin = searchType;
+    this.getData();
+  }
+
 }
