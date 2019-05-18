@@ -27,26 +27,6 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
-            <nz-form-item>
-              <nz-form-label nzFor="active">用户状态</nz-form-label>
-              <nz-form-control>
-                <nz-select [(ngModel)]="q.active" name="active" id="active" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
-                  <nz-option *ngFor="let i of status; let idx = index" [nzLabel]="i.text" [nzValue]="i.value"></nz-option>
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
-            <nz-form-item>
-              <nz-form-label nzFor="is_admin">用户类型</nz-form-label>
-              <nz-form-control>
-                <nz-select [(ngModel)]="q.is_admin" name="is_admin" id="is_admin" [nzPlaceHolder]="'请选择'" [nzShowSearch]="true">
-                  <nz-option *ngFor="let i of admin_status; let idx = index" [nzLabel]="i.text" [nzValue]="i.value"></nz-option>
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          </div>
 
           <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
             <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
@@ -65,14 +45,55 @@
         </button>
       </div>
 
-      <st #st [columns]="columns" [data]="data" [loading]="loading" (change)="stChange($event)">
-        <ng-template st-row="status" let-i>
-          <nz-badge [nzStatus]="i.statusType" [nzText]="i.statusText"></nz-badge>
-        </ng-template>
-      </st>
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading" (nzPageIndexChange)="pageChange($event)"
+        nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+            <th nz-th nzShowSort nzSortKey="name">
+              <span>用户名称</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="mobile">
+              <span>手机号码</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="wechat_nickname">
+              <span>微信昵称</span>
+            </th>
+            <th nz-th nzShowFilter [nzFilters]="listofstatus" [nzFilterMultiple]="false" (nzFilterChange)="filter_status($event, searchStatus)">
+              <span>状态</span>
+            </th>
+            <th nz-th nzShowFilter [nzFilters]="listoftypes" [nzFilterMultiple]="false" (nzFilterChange)="filter_type($event, searchType)">
+              <span>类型</span>
+            </th>
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>{{i.name}}</td>
+            <td nz-td>{{i.mobile}}</td>
+            <td nz-td>{{i.wechat_nickname}}</td>
+            <td nz-td>{{i.active? "已激活": "已禁用"}}</td>
+            <td nz-td>{{i.is_admin? "管理员": "普通用户"}}</td>
+            <td nz-td>
+              <a (click)="update(i.id)">修改</a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(i)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
     </nz-card>
   </div>
 </div>
+
+<nz-modal [nzVisible]="modalVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <p>{{confirmContent}}</p>
+  </ng-template>
+</nz-modal>
 
 <ng-template #modalContent>
   <nz-form-item>

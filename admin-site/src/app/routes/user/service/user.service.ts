@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { baseUrl } from '../../../config';
+import { getOptionWithParams } from '../../../utils/formmat';
 
 
 
@@ -14,8 +15,8 @@ export class UserService {
   formOperation = "create";
   isUpdate = false;
 
-  listOnePage(q) {
-    return this.http.get(this.url);
+  listOnePage(q: any) {
+    return this.http.get(this.url, getOptionWithParams(q));
   }
 
   add(obj) {

@@ -46,6 +46,16 @@ defmodule ApiServerWeb.UserController do
     end
   end
 
+  # 验证用户注册时的用户名重复
+  def checkUsername(conn, params) do
+    case UserService.getByName(name) do
+      nil ->
+        json conn, %{error: "can not find user"}
+      user ->
+        json conn, user |> Map.drop([:password, :password_hash])
+    end
+  end
+
   # 修改密码
   def change_password(conn, %{"old" => old, "new" => new}) do
     {:ok, resource} = ApiServerWeb.Guardian.resource_from_conn(conn)
