@@ -47,12 +47,12 @@ defmodule ApiServerWeb.UserController do
   end
 
   # 验证用户注册时的用户名重复
-  def checkUsername(conn, params) do
-    case UserService.getByName(name) do
-      nil ->
-        json conn, %{error: "can not find user"}
-      user ->
-        json conn, user |> Map.drop([:password, :password_hash])
+  def check_username(conn, params) do
+    case validate_username(params) do
+      true ->
+        render(conn, "check_username_ok.json", msg: "ok")
+      false ->
+        render(conn, "check_username_error.json", msg: "error")
     end
   end
 

@@ -16,7 +16,7 @@ export class UserFormComponent implements OnInit {
   form: FormGroup;
   submitting = false;
   title = "用户表单";
-  user: any = null;
+  user: any = {};
 
   constructor(
     private fb: FormBuilder,
@@ -27,10 +27,11 @@ export class UserFormComponent implements OnInit {
     private userNameValidator: UserValidators) { }
 
   ngOnInit(): void {
+
     this.setTitle();
     this.form = this.fb.group({
       name: [null, Validators.compose(
-        [Validators.required, Validators.minLength(3)]), this.userNameValidator.userValidator()],
+        [Validators.required, Validators.minLength(3)]), this.userNameValidator.userValidator(this.user.id)],
       mobile: [null, []],
     });
   }

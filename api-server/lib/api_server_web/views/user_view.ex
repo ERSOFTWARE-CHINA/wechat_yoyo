@@ -30,4 +30,13 @@ defmodule ApiServerWeb.UserView do
     }
     |> drop_ecto_not_loaded_from_map
   end
+
+  def render("check_username_ok.json", %{msg: msg}) do
+    %{ok: msg}
+  end
+
+  def render("check_username_error.json", %{msg: msg}) do
+    %{error: msg}
+  end
+
 end

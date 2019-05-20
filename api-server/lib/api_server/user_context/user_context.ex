@@ -28,20 +28,40 @@ defmodule ApiServer.UserContext do
     |> get_pagination(params)
   end
 
-  def validate_user_name(params) do
+  # 验证通过返回true，否则返回false
+  def validate_username(params) do
     params
     |> Map.get("id", nil)
     |> case do
       nil ->
         name = params
         |> Map.get("name")
-        case get_by_name(name: name) do
-          nil -> {:ok, "ok"}
-          entity -> {:eorror, "error"}
+        case get_by_name(User, name: name) do
+          {:ok, _} -> 
+            false
+          {:error, _} -> 
+            true
         end
       id ->
         User
-        |> get_by_id(id)
+        |> Repo.get(id)
+        |> case do
+          nil -> false
+          entity ->
+            name = params
+            |> Map.get("name")
+            User
+            |> query_equal(params, "name")
+            |> query_not_equal(params, "id")
+            |> Repo.exists?
+            |> case do
+              true -> 
+                false
+              false -> 
+                true
+            end 
+            
+        end
     end
   end
 
