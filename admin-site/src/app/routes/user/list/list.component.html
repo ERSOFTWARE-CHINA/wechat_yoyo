@@ -77,7 +77,7 @@
             <td nz-td>{{i.active? "已激活": "已禁用"}}</td>
             <td nz-td>{{i.is_admin? "管理员": "普通用户"}}</td>
             <td nz-td>
-              <a (click)="update(i.id)">修改</a>
+              <a (click)="modify(i.id)">修改</a>
               <span nz-table-divider></span>
               <nz-divider nzType="vertical"></nz-divider>
               <a (click)="remove(i)">删除</a>

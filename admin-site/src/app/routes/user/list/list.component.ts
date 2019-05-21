@@ -66,9 +66,19 @@ export class UserListComponent implements OnInit {
   }
 
   add(tpl: TemplateRef<{}>) {
-    this.srv.formOperation = 'create';
+    // this.srv.formOperation = 'create';
     this.srv.isUpdate = false;
     this.router.navigateByUrl('/user/form');
+  }
+
+  modify(id) {
+    // this.srv.formOperation = 'create';
+    this.srv.isUpdate = true;
+    this.srv.getById(id).subscribe(resp => {
+      console.log(resp);
+      this.srv.user = resp['data'];
+      this.router.navigateByUrl('/user/form');
+    })
   }
 
   remove(item) {

@@ -12,16 +12,26 @@ export class UserService {
   constructor(private http: HttpClient) { }
   url = baseUrl + "/api/v1/users"
 
-  formOperation = "create";
+  user: any = null;
+  // formOperation = "create";
   isUpdate = false;
 
   listOnePage(q: any) {
     return this.http.get(this.url, getOptionWithParams(q));
   }
 
+  getById(id) {
+    return this.http.get(this.url + `/${id}`);
+  }
+
   add(obj) {
     let param = { user: obj }
     return this.http.post(this.url, param);
+  }
+
+  update(id, obj) {
+    let param = { user: obj }
+    return this.http.put(this.url + `/${id}`, param);
   }
 
   delete(id) {
