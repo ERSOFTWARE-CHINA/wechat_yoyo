@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { baseUrl } from '../../../config';
-import { getOptionWithParams } from '../../../utils/formmat';
+import { getOptionWithParams, getFormData } from '../../../utils/formmat';
 
 
 
@@ -25,13 +25,12 @@ export class UserService {
   }
 
   add(obj) {
-    let param = { user: obj }
-    return this.http.post(this.url, param);
+    return this.http.post(this.url, getFormData(obj));
   }
 
   update(id, obj) {
-    let param = { user: obj }
-    return this.http.put(this.url + `/${id}`, param);
+    // let param = { user: obj }
+    return this.http.put(this.url + `/${id}`, getFormData(obj));
   }
 
   delete(id) {

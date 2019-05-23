@@ -16,3 +16,12 @@ export function formmat(obj) {
 export function getOptionWithParams(obj) {
   return { params: formmat(obj) }
 }
+
+// post和put请求需要带文件的情况，使用FormData
+export function getFormData(obj) {
+  const formData: FormData = new FormData();
+  for (var key in obj) {
+    formData.append(key, obj[key]);
+  }
+  return formData;
+}

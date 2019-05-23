@@ -9,33 +9,19 @@
           <input nz-input formControlName="mobile" placeholder="输入手机号码" />
         </se>
 
-        <se label="头像">
-          <div class="clearfix">
-            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzListType="picture-card" [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 1"
-              [nzShowUploadList]="showUploadList" [nzPreview]="handlePreview">
-              <i nz-icon nzType="plus"></i>
-              <div class="ant-upload-text">Upload</div>
-            </nz-upload>
-            <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
-              <ng-template #modalContent>
-                <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-              </ng-template>
-            </nz-modal>
+        <se label="用户头像">
+
+          <div *ngIf="avatarURL">
+            <img [src]="avatarURL" alt="Smiley face" height="200" width="200">
           </div>
-        </se>
-
-        <se label="头像">
-          <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar" nzListType="picture-card"
-            [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)">
-            <ng-container *ngIf="!avatarUrl">
-              <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
-              <div class="ant-upload-text">Upload</div>
-            </ng-container>
-            <img *ngIf="avatarUrl" [src]="avatarUrl" class="avatar" />
+          <nz-upload [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
           </nz-upload>
+
         </se>
-
-
 
         <se>
           <button nz-button nzType="primary" [disabled]="form.invalid" type="submit" [nzLoading]="submitting">提交</button>

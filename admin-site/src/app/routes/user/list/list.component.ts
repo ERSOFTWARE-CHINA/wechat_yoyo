@@ -58,6 +58,7 @@ export class UserListComponent implements OnInit {
       .pipe(tap(() => (this.loading = false)))
       .subscribe(resp => {
         this.data = resp['data'];
+        console.log(this.data);
         this.cdr.detectChanges();
         this.loading = false;
       },

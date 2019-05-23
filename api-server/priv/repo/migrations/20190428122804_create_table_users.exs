@@ -11,6 +11,8 @@ defmodule ApiServer.Repo.Migrations.CreateTableUsers do
       add :is_admin, :Boolean, null: false
       add :mobile, :string
       add :active, :Boolean, null: false
+      add :uuid, :string
+      add :avatar, :string
       timestamps()
     end
   end

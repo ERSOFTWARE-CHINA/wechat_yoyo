@@ -15,7 +15,8 @@ defmodule ApiServerWeb.UserController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"user" => user_params}) do
+  def create(conn, user_params) do
+    IO.puts inspect user_params
     user_changeset = User.changeset(%User{}, user_params)
     with {:ok, %User{} = user} <- save_create(user_changeset) do
       conn
@@ -31,7 +32,7 @@ defmodule ApiServerWeb.UserController do
     end
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
+  def update(conn, %{"id" => id} = user_params) do
     with {:ok, user} <- get_by_id(User, id, []) do
       user_changeset = User.changeset(user, user_params)
       with {:ok, %User{} = user} <- save_update(user_changeset) do

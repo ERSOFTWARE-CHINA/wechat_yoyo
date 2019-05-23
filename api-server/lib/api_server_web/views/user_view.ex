@@ -26,6 +26,7 @@ defmodule ApiServerWeb.UserView do
       wechat_nickname: user.wechat_nickname,
       wechat_avatar_url: user.wechat_avatar_url,
       is_admin: user.is_admin,
+      avatar: getPicUrl(user),
       active: user.active
     }
     |> drop_ecto_not_loaded_from_map
@@ -37,6 +38,17 @@ defmodule ApiServerWeb.UserView do
 
   def render("check_username_error.json", %{msg: msg}) do
     %{error: msg}
+  end
+
+  # 获avatar图片url
+  defp getPicUrl(user) do
+    case user.avatar do
+      nil -> ""
+      avatar -> 
+        url = ApiServerWeb.StringHandler.take_prefix(ApiServer.UserAvatarImage.url({user.avatar, user}, :original),"/priv/static")  
+        base = Application.get_env(:api_server, ApiServerWeb.Endpoint)[:baseurl]
+        base<>url
+    end
   end
 
 end

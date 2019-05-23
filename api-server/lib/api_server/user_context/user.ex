@@ -1,5 +1,6 @@
 defmodule ApiServer.UserContext.User do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
 
   schema "users" do
@@ -15,13 +16,18 @@ defmodule ApiServer.UserContext.User do
     field :mobile, :string
     # 状态为T的用户才可以正常访问
     field :active, :boolean, default: true
+
+    field :uuid, :string              # avatar附件父目录名称
+    field :avatar, ApiServer.UserAvatarImage.Type
     timestamps()
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :is_admin, :mobile, :active])
+    |> cast(attrs, [:name, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :is_admin, :mobile, :active, :uuid])
+    |> check_uuid
+    |> cast_attachments(attrs, [:avatar])
     |> validate_required([:is_admin, :active])
     |> put_password_hash
   end
@@ -33,6 +39,14 @@ defmodule ApiServer.UserContext.User do
         put_change(changeset, :password_hash, Comeonin.Pbkdf2.hashpwsalt(password))
       _ ->
         changeset
+    end
+  end
+
+  defp check_uuid(changeset) do
+    if get_field(changeset, :uuid) == nil do
+      force_change(changeset, :uuid, Ecto.UUID.generate)
+    else
+      changeset
     end
   end
 end
