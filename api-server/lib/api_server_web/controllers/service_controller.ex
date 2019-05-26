@@ -10,7 +10,7 @@ defmodule ApiServerWeb.ServiceController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"service" => service_params}) do
+  def create(conn, service_params) do
     service_changeset = Service.changeset(%Service{}, service_params)
     with {:ok, %Service{} = service} <- save_create(service_changeset) do
       render(conn, "show.json", service: service)
@@ -23,7 +23,7 @@ defmodule ApiServerWeb.ServiceController do
     end
   end
 
-  def update(conn, %{"id" => id, "service" => service_params}) do
+  def update(conn, %{"id" => id} = service_params) do
     {:ok, service} = get_by_id(Service, id)
     service_changeset = Service.changeset(service, service_params)
     with {:ok, %Service{} = service} <- save_update(service_changeset) do

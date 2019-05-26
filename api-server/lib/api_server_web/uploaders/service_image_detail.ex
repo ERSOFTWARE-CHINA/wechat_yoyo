@@ -1,4 +1,4 @@
-defmodule ApiServer.CommodityImage do
+defmodule ApiServer.ServiceImageDetail do
   use Arc.Definition
 
   # Include ecto support (requires package arc_ecto installed):
@@ -41,7 +41,7 @@ defmodule ApiServer.CommodityImage do
     # IO.puts("##########################")
     # IO.puts inspect scope
     # uuid = Ecto.UUID.generate
-    "priv/static/files/commodity/#{scope.uuid}"
+    "priv/static/files/service/detail/#{scope.uuid_detail}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

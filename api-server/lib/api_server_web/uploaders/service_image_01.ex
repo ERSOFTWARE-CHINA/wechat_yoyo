@@ -41,7 +41,7 @@ defmodule ApiServer.ServiceImage do
     # IO.puts("##########################")
     # IO.puts inspect scope
     # uuid = Ecto.UUID.generate
-    "priv/static/files/service/#{scope.uuid}"
+    "priv/static/files/service/image/#{scope.uuid_01}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

@@ -1,0 +1,102 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">服务名称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.sname" name="sname" placeholder="请输入" id="sname" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">描述内容</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.desc" name="desc" placeholder="请输入" id="desc" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            <a (click)="expandForm = !expandForm">
+              {{ expandForm ? '收起' : '展开' }}
+              <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+            </a>
+          </div>
+        </div>
+      </form>
+      <div class="mb-md">
+        <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div>
+
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+        (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+            <th nz-th>
+              <span>图片</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="sname">
+              <span>服务名称</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="original_price">
+              <span>原价</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="current_price">
+              <span>现价</span>
+            </th>
+            <th nz-th nzShowSort>
+              <span>描述</span>
+            </th>
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>
+              <nz-avatar [nzSrc]="i.image_01" [nzSize]="'large'"></nz-avatar>
+            </td>
+            <td nz-td>{{i.sname}}</td>
+            <td nz-td>{{i.original_price}}</td>
+            <td nz-td>{{i.current_price}}</td>
+            <td nz-td>{{i.desc}}</td>
+
+            <td nz-td>
+              <a (click)="modify(i.id)">修改</a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(i)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</div>
+
+<nz-modal [nzVisible]="modalVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)"
+  (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <p>{{confirmContent}}</p>
+  </ng-template>
+</nz-modal>
+
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="no">描述</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no" />
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

@@ -8,33 +8,39 @@
     "avatar": "./assets/tmp/img/avatar.jpg",
     "email": "cipchk@qq.com"
   },
-  "menu": [
-    {
-      "text": "微信公众号管理后台",
-      "group": true,
-      "hideInBreadcrumb": true,
-      "children": [
-        {
-          "text": "仪表盘",
-          "icon": "anticon-dashboard",
-          "children": [
-            {
-              "text": "统计分析",
-              "link": "/dashboard/v1"
-            }
-          ]
-        },
-        {
-          "text": "系统配置",
-          "icon": "anticon-setting",
-          "children": [
-            {
-              "text": "用户管理",
-              "link": "/user"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  "menu": [{
+    "text": "微信公众号管理后台",
+    "group": true,
+    "hideInBreadcrumb": true,
+    "children": [{
+        "text": "仪表盘",
+        "icon": "anticon-dashboard",
+        "children": [{
+          "text": "统计分析",
+          "link": "/dashboard/v1"
+        }]
+      },
+      {
+        "text": "后台管理",
+        "icon": "anticon-setting",
+        "children": [{
+            "text": "用户管理",
+            "link": "/user"
+          },
+          {
+            "text": "技师管理",
+            "link": "/technician"
+          },
+          {
+            "text": "商品管理",
+            "link": "/commodity"
+          },
+          {
+            "text": "服务产品管理",
+            "link": "/service"
+          }
+        ]
+      }
+    ]
+  }]
 }

@@ -1,0 +1,33 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+        <se label="用户名称" error="请输入用户名，大于三个字符，不可重复" required>
+          <input nz-input formControlName="name" placeholder="给目标起个名字" />
+        </se>
+        <se label="手机号码" error="请输入手机号码">
+          <input nz-input formControlName="mobile" placeholder="输入手机号码" />
+        </se>
+
+        <se label="用户头像">
+
+          <div *ngIf="avatarURL">
+            <img [src]="avatarURL" alt="Smiley face" height="200" width="200">
+          </div>
+          <nz-upload [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
+          </nz-upload>
+
+        </se>
+
+        <se>
+          <button nz-button nzType="primary" [disabled]="form.invalid" type="submit" [nzLoading]="submitting">提交</button>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+        </se>
+      </form>
+    </nz-card>
+  </div>
+</div>

@@ -1,0 +1,111 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">用户名称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.name" name="name" placeholder="请输入" id="name" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">微信昵称</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.wechat_nickname" name="wechat_nickname" placeholder="请输入" id="wechat_nickname" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+            <nz-form-item>
+              <nz-form-label nzFor="no">手机号码</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.mobile" name="mobile" placeholder="请输入" id="mobile" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            <a (click)="expandForm = !expandForm">
+              {{ expandForm ? '收起' : '展开' }}
+              <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+            </a>
+          </div>
+        </div>
+      </form>
+      <div class="mb-md">
+        <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div>
+
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading" (nzPageIndexChange)="pageChange($event)"
+        nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+            <th nz-th>
+              <span>头像</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="name">
+              <span>用户名称</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="mobile">
+              <span>手机号码</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="wechat_nickname">
+              <span>微信昵称</span>
+            </th>
+            <th nz-th nzShowFilter [nzFilters]="listofstatus" [nzFilterMultiple]="false" (nzFilterChange)="filter_status($event, searchStatus)">
+              <span>状态</span>
+            </th>
+            <th nz-th nzShowFilter [nzFilters]="listoftypes" [nzFilterMultiple]="false" (nzFilterChange)="filter_type($event, searchType)">
+              <span>类型</span>
+            </th>
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>
+              <nz-avatar [nzSrc]="i.avatar" [nzSize]="'large'"></nz-avatar>
+            </td>
+            <td nz-td>{{i.name}}</td>
+            <td nz-td>{{i.mobile}}</td>
+            <td nz-td>{{i.wechat_nickname}}</td>
+            <td nz-td>{{i.active? "已激活": "已禁用"}}</td>
+            <td nz-td>{{i.is_admin? "管理员": "普通用户"}}</td>
+            <td nz-td>
+              <a (click)="modify(i.id)">修改</a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="remove(i)">删除</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</div>
+
+<nz-modal [nzVisible]="modalVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+  <ng-template #modalContent>
+    <p>{{confirmContent}}</p>
+  </ng-template>
+</nz-modal>
+
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="no">描述</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no" />
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

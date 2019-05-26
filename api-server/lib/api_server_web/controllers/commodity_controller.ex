@@ -10,10 +10,13 @@ defmodule ApiServerWeb.CommodityController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"commodity" => commodity_params}) do
+  def create(conn, commodity_params) do
     commodity_changeset = Commodity.changeset(%Commodity{}, commodity_params)
     with {:ok, %Commodity{} = commodity} <- save_create(commodity_changeset) do
-      render(conn, "show.json", commodity: commodity)
+      conn
+      |> put_status(:created)
+      # |> put_resp_header("location", user_path(conn, :show, user))
+      |> render("show.json", commodity: commodity)
     end
   end
 
@@ -23,11 +26,12 @@ defmodule ApiServerWeb.CommodityController do
     end
   end
 
-  def update(conn, %{"id" => id, "commodity" => commodity_params}) do
-    {:ok, commodity} = get_by_id(Commodity, id)
-    commodity_changeset = Commodity.changeset(commodity, commodity_params)
-    with {:ok, %Commodity{} = commodity} <- save_update(commodity_changeset) do
-      render(conn, "show.json", commodity: commodity)
+  def update(conn, %{"id" => id} = commodity_params) do
+    with {:ok, commodity} <- get_by_id(Commodity, id, []) do
+      commodity_changeset = Commodity.changeset(commodity, commodity_params)
+      with {:ok, %Commodity{} = user} <- save_update(commodity_changeset) do
+        render(conn, "show.json", commodity: commodity)
+      end
     end
   end
 

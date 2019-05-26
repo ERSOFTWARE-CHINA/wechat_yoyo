@@ -9,6 +9,7 @@ defmodule ApiServer.Repo.Migrations.CreateTechnicians do
       add :order_times, :integer
       add :works, :integer
       add :rank, :float
+      add :uuid, :string
       add :avatar, :string
       
       timestamps()

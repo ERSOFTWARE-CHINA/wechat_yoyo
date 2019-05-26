@@ -17,7 +17,27 @@ defmodule ApiServerWeb.TechnicianView do
   end
 
   def render("technician.json", %{technician: technician}) do
-    %{id: technician.id,
-      name: technician.name}
+    %{
+      id: technician.id,
+      name: technician.name,
+      occupation: technician.occupation,
+      characteristic: technician.characteristic,
+      order_times: technician.order_times,
+      works: technician.works,
+      rank: technician.rank,
+      avatar: getPicUrl(technician)
+
+    }
+  end
+
+  # 获avatar图片url
+  defp getPicUrl(technician) do
+    case technician.avatar do
+      nil -> ""
+      avatar -> 
+        url = ApiServerWeb.StringHandler.take_prefix(ApiServer.TechnicianAvatarImage.url({technician.avatar, technician}, :original),"/priv/static")  
+        base = Application.get_env(:api_server, ApiServerWeb.Endpoint)[:baseurl]
+        base<>url
+    end
   end
 end

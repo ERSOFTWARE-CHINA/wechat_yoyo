@@ -45,6 +45,9 @@ const routes: Routes = [
       // Exception
       { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
       { path: 'user', loadChildren: './user/user.module#UserModule' },
+      { path: 'service', loadChildren: './service/service.module#ServiceModule' },
+      { path: 'commodity', loadChildren: './commodity/commodity.module#CommodityModule' },
+      { path: 'technician', loadChildren: './technician/technician.module#TechnicianModule' },
     ],
   },
   // 全屏布局
@@ -96,4 +99,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class RouteRoutingModule { }
+export class RouteRoutingModule {}
