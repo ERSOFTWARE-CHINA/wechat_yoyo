@@ -18,9 +18,9 @@ import { getFormData } from '../../../utils/formmat';
 export class UserFormComponent implements OnInit {
   form: FormGroup;
   submitting = false;
-  title = "用户表单";
+  title = '用户表单';
   user: any = {};
-  avatarURL: any = "";
+  avatarURL: any = '';
 
   constructor(
     private fb: FormBuilder,
@@ -28,15 +28,19 @@ export class UserFormComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private srv: UserService,
-    private userNameValidator: UserValidators) { }
+    private userNameValidator: UserValidators,
+  ) {}
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
     this.form = this.fb.group({
-      name: [this.user.name ? this.user.name : null, Validators.compose(
-        [Validators.required, Validators.minLength(3)]), this.userNameValidator.userValidator(this.user.id)],
-      mobile: [this.user.name ? this.user.name : null, []],
+      name: [
+        this.user.name ? this.user.name : null,
+        Validators.compose([Validators.required, Validators.minLength(2)]),
+        this.userNameValidator.userValidator(this.user.id),
+      ],
+      mobile: [this.user.mobile ? this.user.mobile : null, []],
     });
   }
 
@@ -47,7 +51,7 @@ export class UserFormComponent implements OnInit {
       if (this.file) obj.avatar = this.fileList[0];
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
-        if (resp["data"]) this.msg.success(`保存成功！`);
+        if (resp['data']) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/user/page');
         this.cdr.detectChanges();
       });
@@ -57,7 +61,7 @@ export class UserFormComponent implements OnInit {
       if (this.file) obj.avatar = this.fileList[0];
       this.srv.update(this.user.id, obj).subscribe(resp => {
         this.submitting = false;
-        if (resp["data"]) this.msg.success(`保存成功！`);
+        if (resp['data']) this.msg.success(`保存成功！`);
         this.router.navigateByUrl('/user/page');
         this.cdr.detectChanges();
       });
@@ -66,8 +70,8 @@ export class UserFormComponent implements OnInit {
 
   setTitle() {
     if (this.srv.isUpdate) {
-      this.title = "修改用户";
-    } else this.title = "创建用户";
+      this.title = '修改用户';
+    } else this.title = '创建用户';
   }
 
   initUpdate() {
@@ -77,12 +81,10 @@ export class UserFormComponent implements OnInit {
   }
 
   fileList: UploadFile[] = [];
-  file: any = null
+  file: any = null;
   beforeUpload = (file: UploadFile): boolean => {
     this.fileList = [file];
     this.file = file;
     return false;
   };
-
-
 }

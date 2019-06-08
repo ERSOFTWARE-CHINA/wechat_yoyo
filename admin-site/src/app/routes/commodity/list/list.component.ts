@@ -21,9 +21,7 @@ export class CommodityListComponent implements OnInit {
     ps: 10,
     sort_field: 'cname',
     sort_direction: 'asc',
-    name: null,
-    wechat_nickname: null,
-    mobile: null,
+    cname: null,
   };
   data: any[] = [];
   loading = false;
@@ -107,16 +105,6 @@ export class CommodityListComponent implements OnInit {
   sort(sort: { key: string; value: string }): void {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
-    this.getData();
-  }
-
-  filter_status(searchStatus: boolean): void {
-    this.q.active = searchStatus;
-    this.getData();
-  }
-
-  filter_type(searchType: boolean): void {
-    this.q.is_admin = searchType;
     this.getData();
   }
 }

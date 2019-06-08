@@ -4,7 +4,7 @@ defmodule ApiServerWeb.ServiceView do
 
   def render("index.json", %{page: page}) do
     %{
-      data: render_many(page.entries, CommodityView, "service.json"),
+      data: render_many(page.entries, ServiceView, "service.json"),
       page_number: page.page_number,
       page_size: page.page_size,
       total_entries: page.total_entries,

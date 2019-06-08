@@ -14,28 +14,21 @@ import { formmat } from '../../../utils/formmat';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent implements OnInit {
-
-  title = "用户管理"
+  title = '用户管理';
   total = 0;
   q: any = {
     pi: 1,
     ps: 10,
-    sort_field: "name",
-    sort_direction: "asc",
+    sort_field: 'name',
+    sort_direction: 'asc',
     name: null,
     wechat_nickname: null,
-    mobile: null
+    mobile: null,
   };
   data: any[] = [];
   loading = false;
-  listofstatus = [
-    { text: '已激活', value: true },
-    { text: '已禁用', value: false },
-  ];
-  listoftypes = [
-    { text: '普通用户', value: false },
-    { text: '管理员', value: true },
-  ];
+  listofstatus = [{ text: '已激活', value: true }, { text: '已禁用', value: false }];
+  listoftypes = [{ text: '普通用户', value: false }, { text: '管理员', value: true }];
 
   expandForm = false;
 
@@ -45,8 +38,8 @@ export class UserListComponent implements OnInit {
     private modalSrv: NzModalService,
     private cdr: ChangeDetectorRef,
     private srv: UserService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.getData();
@@ -54,16 +47,20 @@ export class UserListComponent implements OnInit {
 
   getData() {
     this.loading = true;
-    this.srv.listOnePage(this.q)
+    this.srv
+      .listOnePage(this.q)
       .pipe(tap(() => (this.loading = false)))
-      .subscribe(resp => {
-        this.data = resp['data'];
-        console.log(this.data);
-        this.cdr.detectChanges();
-        this.loading = false;
-      },
-      error => { this.loading = false; }
-      )
+      .subscribe(
+        resp => {
+          this.data = resp['data'];
+          console.log(this.data);
+          this.cdr.detectChanges();
+          this.loading = false;
+        },
+        error => {
+          this.loading = false;
+        },
+      );
   }
 
   add(tpl: TemplateRef<{}>) {
@@ -79,20 +76,24 @@ export class UserListComponent implements OnInit {
       console.log(resp);
       this.srv.user = resp['data'];
       this.router.navigateByUrl('/user/form');
-    })
+    });
   }
 
   remove(item) {
     this.modalSrv.create({
       nzTitle: '确认删除',
-      nzContent: "确认要删除该条记录吗？",
+      nzContent: '确认要删除该条记录吗？',
       nzOnOk: () => {
         this.loading = true;
-        this.srv.delete(item.id).subscribe(resp => {
-          if (resp["data"]) this.msg.success(`删除成功！`);
-          this.getData();
-        },
-          error => { this.loading = false });
+        this.srv.delete(item.id).subscribe(
+          resp => {
+            if (resp['data']) this.msg.success(`删除成功！`);
+            this.getData();
+          },
+          error => {
+            this.loading = false;
+          },
+        );
       },
     });
   }
@@ -121,5 +122,4 @@ export class UserListComponent implements OnInit {
     this.q.is_admin = searchType;
     this.getData();
   }
-
 }

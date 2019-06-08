@@ -62,7 +62,7 @@ export class ServiceListComponent implements OnInit {
 
   add(tpl: TemplateRef<{}>) {
     this.srv.isUpdate = false;
-    this.router.navigateByUrl('/commodity/form');
+    this.router.navigateByUrl('/service/form');
   }
 
   modify(id) {
@@ -71,7 +71,7 @@ export class ServiceListComponent implements OnInit {
     this.srv.getById(id).subscribe(resp => {
       console.log(resp);
       this.srv.service = resp['data'];
-      this.router.navigateByUrl('/commodity/form');
+      this.router.navigateByUrl('/service/form');
     });
   }
 
@@ -106,16 +106,6 @@ export class ServiceListComponent implements OnInit {
   sort(sort: { key: string; value: string }): void {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
-    this.getData();
-  }
-
-  filter_status(searchStatus: boolean): void {
-    this.q.active = searchStatus;
-    this.getData();
-  }
-
-  filter_type(searchType: boolean): void {
-    this.q.is_admin = searchType;
     this.getData();
   }
 }

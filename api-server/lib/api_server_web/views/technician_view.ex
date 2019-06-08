@@ -4,7 +4,7 @@ defmodule ApiServerWeb.TechnicianView do
 
   def render("index.json", %{page: page}) do
     %{
-      data: render_many(page.entries, TechnicianView, "commodity.json"),
+      data: render_many(page.entries, TechnicianView, "technician.json"),
       page_number: page.page_number,
       page_size: page.page_size,
       total_entries: page.total_entries,
@@ -24,7 +24,8 @@ defmodule ApiServerWeb.TechnicianView do
       characteristic: technician.characteristic,
       order_times: technician.order_times,
       works: technician.works,
-      rank: technician.rank,
+      good_times: technician.good_times,
+      rank: div(technician.good_times || 0, technician.order_times || 1),
       avatar: getPicUrl(technician)
 
     }

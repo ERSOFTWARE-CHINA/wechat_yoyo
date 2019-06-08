@@ -8,7 +8,7 @@ defmodule ApiServer.Repo.Migrations.CreateTechnicians do
       add :characteristic, :string
       add :order_times, :integer
       add :works, :integer
-      add :rank, :float
+      add :good_times, :integer
       add :uuid, :string
       add :avatar, :string
       

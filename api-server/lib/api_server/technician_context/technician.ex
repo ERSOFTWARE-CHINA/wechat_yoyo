@@ -9,7 +9,7 @@ defmodule ApiServer.TechnicianContext.Technician do
     field :characteristic, :string #性格，例：开朗、活泼
     field :order_times, :integer #预约次数
     field :works, :integer #作品数目
-    field :rank, :float #好评率
+    field :good_times, :float #好评次数
     field :uuid, :string
     field :avatar, ApiServer.TechnicianAvatarImage.Type #头像
 
@@ -19,7 +19,7 @@ defmodule ApiServer.TechnicianContext.Technician do
   @doc false
   def changeset(technician, attrs) do
     technician
-    |> cast(attrs, [:name, :occupation, :characteristic, :order_times, :works, :rank])
+    |> cast(attrs, [:name, :occupation, :characteristic, :order_times, :works, :good_times])
     |> validate_required([:name])
     |> check_uuid
     |> cast_attachments(attrs, [:avatar])

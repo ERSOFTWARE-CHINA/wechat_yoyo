@@ -12,15 +12,6 @@
             </nz-form-item>
           </div>
 
-          <div nz-col nzMd="8" nzSm="24">
-            <nz-form-item>
-              <nz-form-label nzFor="no">描述内容</nz-form-label>
-              <nz-form-control>
-                <input nz-input [(ngModel)]="q.desc" name="desc" placeholder="请输入" id="desc" />
-              </nz-form-control>
-            </nz-form-item>
-          </div>
-
           <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
             <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
             <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
@@ -32,7 +23,7 @@
         </div>
       </form>
       <div class="mb-md">
-        <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+        <button nz-button (click)="add()" [nzType]="'primary'">
           <i nz-icon nzType="plus"></i>
           <span>新建</span>
         </button>
@@ -43,7 +34,7 @@
         <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
           <tr>
             <th nz-th>
-              <span>图片</span>
+              <span>图片预览</span>
             </th>
             <th nz-th nzShowSort nzSortKey="sname">
               <span>服务名称</span>
@@ -84,19 +75,3 @@
     </nz-card>
   </div>
 </div>
-
-<nz-modal [nzVisible]="modalVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)"
-  (nzOnOk)="handleOk($event)">
-  <ng-template #modalContent>
-    <p>{{confirmContent}}</p>
-  </ng-template>
-</nz-modal>
-
-<ng-template #modalContent>
-  <nz-form-item>
-    <nz-form-label nzFor="no">描述</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no" />
-    </nz-form-control>
-  </nz-form-item>
-</ng-template>

@@ -10,7 +10,7 @@ defmodule ApiServerWeb.TechnicianController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"technician" => technician_params}) do
+  def create(conn, technician_params) do
     technician_changeset = Technician.changeset(%Technician{}, technician_params)
     with {:ok, %Technician{} = technician} <- save_create(technician_changeset) do
       render(conn, "show.json", technician: technician)
@@ -23,7 +23,7 @@ defmodule ApiServerWeb.TechnicianController do
     end
   end
 
-  def update(conn, %{"id" => id, "technician" => technician_params}) do
+  def update(conn, %{"id" => id} = technician_params) do
     {:ok, technician} = get_by_id(Technician, id)
     technician_changeset = Technician.changeset(technician, technician_params)
     with {:ok, %Technician{} = technician} <- save_update(technician_changeset) do

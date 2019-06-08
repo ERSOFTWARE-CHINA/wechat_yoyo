@@ -15,7 +15,8 @@
             <nz-form-item>
               <nz-form-label nzFor="no">微信昵称</nz-form-label>
               <nz-form-control>
-                <input nz-input [(ngModel)]="q.wechat_nickname" name="wechat_nickname" placeholder="请输入" id="wechat_nickname" />
+                <input nz-input [(ngModel)]="q.wechat_nickname" name="wechat_nickname" placeholder="请输入"
+                  id="wechat_nickname" />
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -39,14 +40,14 @@
         </div>
       </form>
       <div class="mb-md">
-        <button nz-button (click)="add(modalContent)" [nzType]="'primary'">
+        <button nz-button (click)="add()" [nzType]="'primary'">
           <i nz-icon nzType="plus"></i>
           <span>新建</span>
         </button>
       </div>
 
-      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading" (nzPageIndexChange)="pageChange($event)"
-        nzShowSizeChanger>
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+        (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
         <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
           <tr>
             <th nz-th>
@@ -61,10 +62,12 @@
             <th nz-th nzShowSort nzSortKey="wechat_nickname">
               <span>微信昵称</span>
             </th>
-            <th nz-th nzShowFilter [nzFilters]="listofstatus" [nzFilterMultiple]="false" (nzFilterChange)="filter_status($event, searchStatus)">
+            <th nz-th nzShowFilter [nzFilters]="listofstatus" [nzFilterMultiple]="false"
+              (nzFilterChange)="filter_status($event)">
               <span>状态</span>
             </th>
-            <th nz-th nzShowFilter [nzFilters]="listoftypes" [nzFilterMultiple]="false" (nzFilterChange)="filter_type($event, searchType)">
+            <th nz-th nzShowFilter [nzFilters]="listoftypes" [nzFilterMultiple]="false"
+              (nzFilterChange)="filter_type($event)">
               <span>类型</span>
             </th>
             <th nz-th>
@@ -94,18 +97,3 @@
     </nz-card>
   </div>
 </div>
-
-<nz-modal [nzVisible]="modalVisible" [nzTitle]="'删除确认'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
-  <ng-template #modalContent>
-    <p>{{confirmContent}}</p>
-  </ng-template>
-</nz-modal>
-
-<ng-template #modalContent>
-  <nz-form-item>
-    <nz-form-label nzFor="no">描述</nz-form-label>
-    <nz-form-control>
-      <input nz-input [(ngModel)]="description" name="description" placeholder="请输入" id="no" />
-    </nz-form-control>
-  </nz-form-item>
-</ng-template>

@@ -28,8 +28,10 @@ defmodule ApiServerWeb.Router do
     resources "/service_orders", ServiceOrderController, except: [:new, :edit]
     resources "/technicians", TechnicianController, except: [:new, :edit]
     resources "/appointments", AppointmentController, except: [:new, :edit]
+    resources "/vip_cards", VipCardController, except: [:new, :edit]
 
-
+    get "/user_vip", UserVipController, :get_my
+    post "/user_vip/buy", UserVipController, :buy
     get "/username/check", UserController, :check_username
     get "/wechat", WechatController, :get_userinfo
     get "/plug_auth_failure/:msg", AuthFailureController, :plug_auth_failure

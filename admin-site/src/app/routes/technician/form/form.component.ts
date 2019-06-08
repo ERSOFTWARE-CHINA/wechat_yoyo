@@ -36,9 +36,10 @@ export class TechnicianFormComponent implements OnInit {
     this.form = this.fb.group({
       name: [
         this.technician.name ? this.technician.name : null,
-        Validators.compose([Validators.required, Validators.minLength(3)]),
+        Validators.compose([Validators.required, Validators.minLength(2)]),
       ],
-      mobile: [this.technician.name ? this.technician.name : null, []],
+      occupation: [this.technician.occupation ? this.technician.occupation : null, []],
+      characteristic: [this.technician.characteristic ? this.technician.characteristic : null, []],
     });
   }
 

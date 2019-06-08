@@ -18,9 +18,12 @@ import { getFormData } from '../../../utils/formmat';
 export class CommodityFormComponent implements OnInit {
   form: FormGroup;
   submitting = false;
-  title = '产品表单';
+  title = '商品表单';
   commodity: any = {};
-  avatarURL: any = '';
+  avatarURL01: any = '';
+  avatarURL02: any = '';
+  avatarURL03: any = '';
+  avatarURLDetail: any = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,11 +37,14 @@ export class CommodityFormComponent implements OnInit {
     if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
     this.form = this.fb.group({
-      name: [
-        this.commodity.name ? this.commodity.name : null,
-        Validators.compose([Validators.required, Validators.minLength(3)]),
+      cname: [
+        this.commodity.cname ? this.commodity.cname : null,
+        Validators.compose([Validators.required, Validators.minLength(2)]),
       ],
-      mobile: [this.commodity.name ? this.commodity.name : null, []],
+      original_price: [this.commodity.original_price ? this.commodity.original_price : null, []],
+      current_price: [this.commodity.current_price ? this.commodity.current_price : null, []],
+      stock: [this.commodity.stock ? this.commodity.stock : null, []],
+      desc: [this.commodity.desc ? this.commodity.desc : null, []],
     });
   }
 
@@ -46,7 +52,10 @@ export class CommodityFormComponent implements OnInit {
     if (!this.srv.isUpdate) {
       this.submitting = true;
       let obj = this.form.value;
-      if (this.file) obj.avatar = this.fileList[0];
+      if (this.file01) obj.image_01 = this.fileList01[0];
+      if (this.file02) obj.image_02 = this.fileList02[0];
+      if (this.file03) obj.image_03 = this.fileList03[0];
+      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -56,7 +65,10 @@ export class CommodityFormComponent implements OnInit {
     } else {
       this.submitting = true;
       let obj = this.form.value;
-      if (this.file) obj.avatar = this.fileList[0];
+      if (this.file01) obj.image_01 = this.fileList01[0];
+      if (this.file02) obj.image_02 = this.fileList02[0];
+      if (this.file03) obj.image_03 = this.fileList03[0];
+      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
       this.srv.update(this.commodity.id, obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -68,21 +80,48 @@ export class CommodityFormComponent implements OnInit {
 
   setTitle() {
     if (this.srv.isUpdate) {
-      this.title = '修改产品';
-    } else this.title = '创建产品';
+      this.title = '修改商品';
+    } else this.title = '创建商品';
   }
 
   initUpdate() {
     this.setTitle();
     this.commodity = this.srv.commodity;
-    this.avatarURL = this.commodity.avatar;
+    this.avatarURL01 = this.commodity.image_01;
+    this.avatarURL02 = this.commodity.image_02;
+    this.avatarURL03 = this.commodity.image_03;
+    this.avatarURLDetail = this.commodity.image_detail;
   }
 
-  fileList: UploadFile[] = [];
-  file: any = null;
-  beforeUpload = (file: UploadFile): boolean => {
-    this.fileList = [file];
-    this.file = file;
+  fileList01: UploadFile[] = [];
+  file01: any = null;
+  beforeUpload01 = (file: UploadFile): boolean => {
+    this.fileList01 = [file];
+    this.file01 = file;
+    return false;
+  };
+
+  fileList02: UploadFile[] = [];
+  file02: any = null;
+  beforeUpload02 = (file: UploadFile): boolean => {
+    this.fileList02 = [file];
+    this.file02 = file;
+    return false;
+  };
+
+  fileList03: UploadFile[] = [];
+  file03: any = null;
+  beforeUpload03 = (file: UploadFile): boolean => {
+    this.fileList03 = [file];
+    this.file03 = file;
+    return false;
+  };
+
+  fileListDetail: UploadFile[] = [];
+  fileDetail: any = null;
+  beforeUploadDetail = (file: UploadFile): boolean => {
+    this.fileListDetail = [file];
+    this.fileDetail = file;
     return false;
   };
 }

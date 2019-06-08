@@ -22,8 +22,7 @@ export class TechnicianListComponent implements OnInit {
     sort_field: 'name',
     sort_direction: 'asc',
     name: null,
-    wechat_nickname: null,
-    mobile: null,
+    occupation: null,
   };
   data: any[] = [];
   loading = false;
@@ -107,16 +106,6 @@ export class TechnicianListComponent implements OnInit {
   sort(sort: { key: string; value: string }): void {
     this.q.sort_field = sort.key;
     this.q.sort_direction = sort.value;
-    this.getData();
-  }
-
-  filter_status(searchStatus: boolean): void {
-    this.q.active = searchStatus;
-    this.getData();
-  }
-
-  filter_type(searchType: boolean): void {
-    this.q.is_admin = searchType;
     this.getData();
   }
 }

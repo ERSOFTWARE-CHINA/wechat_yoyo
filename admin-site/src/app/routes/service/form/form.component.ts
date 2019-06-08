@@ -20,7 +20,8 @@ export class ServiceFormComponent implements OnInit {
   submitting = false;
   title = '服务类产品表单';
   service: any = {};
-  avatarURL: any = '';
+  avatarURL01: any = '';
+  avatarURLDetail: any = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,11 +35,13 @@ export class ServiceFormComponent implements OnInit {
     if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
     this.form = this.fb.group({
-      name: [
-        this.service.name ? this.service.name : null,
+      sname: [
+        this.service.sname ? this.service.sname : null,
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
-      mobile: [this.service.name ? this.service.name : null, []],
+      original_price: [this.service.original_price ? this.service.original_price : null, []],
+      current_price: [this.service.current_price ? this.service.current_price : null, []],
+      desc: [this.service.desc ? this.service.desc : null, []],
     });
   }
 
@@ -46,21 +49,23 @@ export class ServiceFormComponent implements OnInit {
     if (!this.srv.isUpdate) {
       this.submitting = true;
       let obj = this.form.value;
-      if (this.file) obj.avatar = this.fileList[0];
+      if (this.file01) obj.image_01 = this.fileList01[0];
+      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/commodity/page');
+        this.router.navigateByUrl('/service/page');
         this.cdr.detectChanges();
       });
     } else {
       this.submitting = true;
       let obj = this.form.value;
-      if (this.file) obj.avatar = this.fileList[0];
+      if (this.file01) obj.image_01 = this.fileList01[0];
+      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
       this.srv.update(this.service.id, obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/commodity/page');
+        this.router.navigateByUrl('/service/page');
         this.cdr.detectChanges();
       });
     }
@@ -75,14 +80,23 @@ export class ServiceFormComponent implements OnInit {
   initUpdate() {
     this.setTitle();
     this.service = this.srv.service;
-    this.avatarURL = this.service.avatar;
+    this.avatarURL01 = this.service.image_01;
+    this.avatarURLDetail = this.service.image_detail;
   }
 
-  fileList: UploadFile[] = [];
-  file: any = null;
-  beforeUpload = (file: UploadFile): boolean => {
-    this.fileList = [file];
-    this.file = file;
+  fileList01: UploadFile[] = [];
+  file01: any = null;
+  beforeUpload01 = (file: UploadFile): boolean => {
+    this.fileList01 = [file];
+    this.file01 = file;
+    return false;
+  };
+
+  fileListDetail: UploadFile[] = [];
+  fileDetail: any = null;
+  beforeUploadDetail = (file: UploadFile): boolean => {
+    this.fileListDetail = [file];
+    this.fileDetail = file;
     return false;
   };
 }
