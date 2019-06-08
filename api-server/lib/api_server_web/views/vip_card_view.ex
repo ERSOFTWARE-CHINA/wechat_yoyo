@@ -22,6 +22,7 @@ defmodule ApiServerWeb.VipCardView do
       name: vip_card.name,
       price: vip_card.price,
       level: vip_card.level,
+      value: vip_card.value,
       swim_price: vip_card.swim_price
     }
   end

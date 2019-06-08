@@ -1,7 +1,7 @@
 defmodule ApiServerWeb.VipCardController do
   use ApiServerWeb, :controller
 
-  alias ApiServer.VipCardContext
+  use ApiServer.VipCardContext
   alias ApiServer.VipCardContext.VipCard
 
   action_fallback ApiServerWeb.FallbackController
@@ -13,7 +13,7 @@ defmodule ApiServerWeb.VipCardController do
 
   def create(conn, %{"vip_card" => vip_card_params}) do
     changeset = VipCard.changeset(%VipCard{}, vip_card_params)
-    with {:ok, %VipCard{} = vip_card} <- VipCardContext.save_create(changeset) do
+    with {:ok, %VipCard{} = vip_card} <- save_create(changeset) do
       render(conn, "show.json", vip_card: vip_card)
     end
   end

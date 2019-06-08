@@ -33,8 +33,9 @@ defmodule ApiServer.BaseContext do
       end
     end
   
-    def get_by_name(query, field_value) do
+    def get_by_name(query, field_value, preload_list \\ []) do
       query
+      |> query_preload(preload_list)
       |> Repo.get_by(field_value)
       |> case do
         nil -> {:error, :not_found}

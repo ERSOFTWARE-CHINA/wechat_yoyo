@@ -5,6 +5,7 @@ defmodule ApiServer.Repo.Migrations.CreateVipCards do
     create table(:vip_cards) do
       add :name, :string
       add :price, :float
+      add :value, :float
       add :level, :integer
       add :swim_price, :float
 

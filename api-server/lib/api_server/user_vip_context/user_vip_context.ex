@@ -32,11 +32,11 @@ defmodule ApiServer.UserVipContext do
     |> get_pagination(params)
   end
 
-  def get_by_user(open_id) do
+  def get_by_user(open_id, preload_list \\ []) do
     {:ok, user} = User
-    |> get_by_name(open_id: open_id)
+    |> get_by_name(wechat_openid: open_id)
     UserVip
-    |> get_by_name(user_id: user.id)
+    |> get_by_name(%{user_id: user.id}, preload_list)
     |> case do
       {:ok, user_vip} -> user_vip
       {_, _} -> nil
