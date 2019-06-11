@@ -18,6 +18,8 @@ import { Wuzhapi } from '../providers/wuzhapi/wuzhapi';
 import { Logger } from '../providers/logger/logger';
 import { Products } from '../providers/products/products';
 
+import { TabsPage } from '../pages/tabs/tabs';
+
 //自定义组件的引入
 //import { ComponentsModule } from '../components/components.module';
 
@@ -46,7 +48,7 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp    
+    MyApp 
   ],
   imports: [
     BrowserModule,
