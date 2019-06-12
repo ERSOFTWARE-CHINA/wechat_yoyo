@@ -28,7 +28,7 @@ import { Settings } from '../providers';
   <ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = Tab1Root;
+  rootPage = MainPage;
 
   @ViewChild(Nav) nav: Nav;
 

@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController,NavParams,Tabs } from 'ionic-angular';
 
 //在此将Tab1Root, Tab2Root, Tab3Root作为类引用
-import { Tab1Root, Tab2Root, Tab3Root, Tab4Root } from '../';
+import { Tab1Root, Tab2Root, Tab3Root, Tab4Root, TabShopping } from '../';
 
 
 @IonicPage({
@@ -21,6 +21,7 @@ export class TabsPage {
   tab2Root: any = Tab2Root;
   tab3Root: any = Tab3Root;
   tab4Root: any = Tab4Root;
+  tabShopping: any = TabShopping;
 
   tab1Title = " ";
   tab2Title = " ";
