@@ -20,7 +20,7 @@ defmodule ApiServer.MixProject do
   def application do
     [
       mod: {ApiServer.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :elixir_xml_to_map]
     ]
   end
 
@@ -53,7 +53,8 @@ defmodule ApiServer.MixProject do
       {:arc_ecto, "~> 0.11.1"},
       {:quantum, "~> 2.3"},
       {:timex, "~> 3.0"},
-      {:elixlsx, "~> 0.4.1"}
+      {:elixlsx, "~> 0.4.1"},
+      {:elixir_xml_to_map, "~> 0.1"}
     ]
   end
 
