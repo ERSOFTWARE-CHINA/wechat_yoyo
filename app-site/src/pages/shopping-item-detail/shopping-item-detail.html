@@ -5,6 +5,74 @@
   
 <ion-content>
     <ion-card>
-      <h1>{{ data.cname }}</h1>
+      <ion-slides pager style="background-color: rgb(237, 242, 248)" auto-play="true">
+        <ion-slide >
+          <img [src]="data.image_01"/>
+        </ion-slide>
+        <ion-slide >
+          <img [src]="data.image_02"/>
+        </ion-slide>
+
+        <ion-slide >
+          <img [src]="data.image_03"/>
+        </ion-slide>
+        
+      </ion-slides>
+
+    <ion-card-content>
+      <ion-card-title>
+        {{data.cname}}
+      </ion-card-title>
+      <p>
+        原价:{{data.original_price}} 现价:{{data.current_price}} 库存:{{data.stock}}
+      </p>
+      <p>
+        {{data.desc}}
+      </p>
+      <img [src]="data.image_detail"/>
+    </ion-card-content>
+
     </ion-card>
 </ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-row *ngIf="beforeBuy">
+      <ion-col>
+        <button ion-button color="danger"  small full icon-start>
+          <ion-icon name='text'></ion-icon>
+          我的订单
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button color="primary"  small full icon-start (click)="buy()">
+          <ion-icon name='cart'></ion-icon>
+          立即购买
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!beforeBuy">
+      <ion-col>
+          <p>已选择</p> 
+      </ion-col>
+      <ion-col>
+          <button ion-button color="dark" clear icon-only [disabled]="number <= 1" (click)="minus()">
+              <ion-icon name='remove'></ion-icon>
+          </button>
+      </ion-col>
+      <ion-col>
+          <p>{{number}} 件</p> 
+       </ion-col>
+      <ion-col>
+          <button ion-button color="dark" clear icon-only [disabled]="number >= data.stock" (click)="add()">
+              <ion-icon name='add'></ion-icon>
+          </button>
+      </ion-col>
+      
+      <ion-col>
+          <button ion-button color="dark"  (click)="submit()">
+              确认
+          </button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

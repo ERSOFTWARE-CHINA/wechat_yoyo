@@ -9,6 +9,7 @@ export const baseUrl = "http://localhost:4000/api/v1/"
 // export const baseUrlRaw = "http://112.132.249.108:4000/"
 
 export const userId = "weixin000001";
+export const openId = "19820325";
 
 export function getTokenOptions(paramsobj): RequestOptions{
   let headers = new Headers();

@@ -18,6 +18,7 @@ defmodule ApiServerWeb.OrderController do
     order_changeset = Order.changeset(%Order{}, order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:commodity, commodity_changeset)
+    IO.puts inspect order_changeset
     with {:ok, %Order{} = order} <- save_create(order_changeset) do
       render(conn, "show.json", order: order)
     end

@@ -17,7 +17,8 @@ defmodule ApiServerWeb.OrderView do
   end
 
   def render("order.json", %{order: order}) do
-    %{id: order.id,
-      name: order.status}
+    %{
+      id: order.id
+    }
   end
 end

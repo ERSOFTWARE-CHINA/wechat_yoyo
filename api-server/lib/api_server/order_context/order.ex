@@ -3,6 +3,7 @@ defmodule ApiServer.OrderContext.Order do
   import Ecto.Changeset
 
   alias ApiServer.UserContext.User
+  alias ApiServer.CommodityContext.Commodity
 
   schema "orders" do
     field :amount, :float #数量
