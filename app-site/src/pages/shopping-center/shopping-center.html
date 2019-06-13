@@ -1,0 +1,45 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+          优悠母婴生活馆
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="about-header">
+      <img src="assets/img/yoyo_swim02.png" alt="ionic logo">
+    </div>
+    <ion-item>
+      <button ion-fab clear item-start outline color="danger" (click)="goService()">
+        <ion-icon name='heart'></ion-icon>
+      </button>
+
+      <button ion-fab clear item-end outline color="danger" (click)="goItem()">
+        <ion-icon name='cart'></ion-icon>
+      </button>
+    </ion-item>
+    <!-- <ion-grid>
+      <ion-row>
+        <ion-col align-self-center click="left()">
+            <button ion-button fill="outline" slot="start" (click)="goService()">服务类</button>
+        </ion-col>
+        <ion-col size="8" class="ion-text-center">
+            <button ion-button fill="outline" slot="end" (click)="goItem()">商品类</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+  </ion-card>
+  
+  
+  <!-- <ion-button>
+    <ion-icon slot="start" name="star"></ion-icon>
+    Left Icon
+  </ion-button>
+  
+  <ion-button>
+    Right Icon
+    <ion-icon slot="end" name="star"></ion-icon>
+  </ion-button> -->
+</ion-content>

@@ -1,5 +1,6 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { HttpModule }    from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -18,7 +19,7 @@ import { Wuzhapi } from '../providers/wuzhapi/wuzhapi';
 import { Logger } from '../providers/logger/logger';
 import { Products } from '../providers/products/products';
 
-import { TabsPage } from '../pages/tabs/tabs';
+import { BusService } from '../share/bus.service';
 
 //自定义组件的引入
 //import { ComponentsModule } from '../components/components.module';
@@ -52,6 +53,7 @@ export function provideSettings(storage: Storage) {
   ],
   imports: [
     BrowserModule,
+    HttpModule,
     HttpClientModule, 
     //ComponentsModule,   
     TranslateModule.forRoot({
@@ -85,7 +87,8 @@ export function provideSettings(storage: Storage) {
     Toast,
     Wuzhapi,
     Logger,
-    Products
+    Products,
+    BusService
   ]
 })
 export class AppModule { }

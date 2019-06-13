@@ -10,3 +10,4 @@ export const Tab1Root = 'OrderPresonPage';
 export const Tab2Root = 'SearchPage';
 export const Tab3Root = 'SettingsPage';
 export const Tab4Root = 'HomePage';
+export const TabShopping = 'ShoppingCenterPage'
