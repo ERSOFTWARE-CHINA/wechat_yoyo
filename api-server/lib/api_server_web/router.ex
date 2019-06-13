@@ -34,6 +34,7 @@ defmodule ApiServerWeb.Router do
     post "/user_vip/buy", UserVipController, :buy
     get "/username/check", UserController, :check_username
     get "/wechat", WechatController, :get_userinfo
+    get "/verification_code", VerificationCodeController, :get_code
     get "/plug_auth_failure/:msg", AuthFailureController, :plug_auth_failure
   end
 
