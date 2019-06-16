@@ -1,41 +1,38 @@
-defmodule ApiServer.OrderContext do
+defmodule ApiServer.ConsumptionRecordContext do
   @moduledoc """
-  The OrderContext context.
+  The ConsumptionRecordContext context.
   """
 
   import Ecto.Query, warn: false
   alias ApiServer.Repo
 
-  alias ApiServer.OrderContext.Order
   alias ApiServer.UserContext.User
+  alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
     quote do
-      import ApiServer.OrderContext
+      import ApiServer.ConsumptionRecordContext
       use ApiServer.BaseContext
-      alias ApiServer.OrderContext.Order
+      alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
     end
   end
 
   def page(%{"openid" => open_id} = params) do
     {:ok, user} = User
     |> get_by_name(open_id: open_id)
-    Order
+    ConsumptionRecord
     |> query_equal(%{"user_id" => user.id}, "user_id")
-    |> query_equal(params, "status")
+    |> query_equal(params, "type")
+    |> query_order_desc_by(params, "datetime")
     |> get_pagination(params)
   end
 
   def page(params) do 
-    Order
-    |> query_equal(params, "status")
-    |> query_order_desc_by(params, "date")
+    ConsumptionRecord
+    |> query_equal(params, "type")
+    |> query_order_desc_by(params, "datetime")
     |> get_pagination(params)
-  end
-
-  def create() do
-    
   end
 
 end

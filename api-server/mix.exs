@@ -20,7 +20,7 @@ defmodule ApiServer.MixProject do
   def application do
     [
       mod: {ApiServer.Application, []},
-      extra_applications: [:logger, :runtime_tools, :elixir_xml_to_map]
+      extra_applications: [:logger, :runtime_tools, :timex, :elixir_xml_to_map]
     ]
   end
 

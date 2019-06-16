@@ -29,6 +29,7 @@ defmodule ApiServerWeb.Router do
     resources "/technicians", TechnicianController, except: [:new, :edit]
     resources "/appointments", AppointmentController, except: [:new, :edit]
     resources "/vip_cards", VipCardController, except: [:new, :edit]
+    resources "/consumption_records", ConsumptionRecordController, except: [:new, :edit]
 
     get "/user_vip", UserVipController, :get_my
     post "/user_vip/buy", UserVipController, :buy

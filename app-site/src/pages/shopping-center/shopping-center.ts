@@ -30,4 +30,8 @@ export class ShoppingCenterPage {
     this.navCtrl.push('ShoppingServicePage');
   }
 
+  goVip(){
+    this.navCtrl.push('ShoppingVipPage')
+  }
+
 }

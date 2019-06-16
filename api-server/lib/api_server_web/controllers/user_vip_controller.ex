@@ -4,6 +4,9 @@ defmodule ApiServerWeb.UserVipController do
   use ApiServer.UserVipContext
   alias ApiServer.UserContext.User
   alias ApiServer.VipCardContext.VipCard
+  alias ApiServer.Repo
+  alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
+  import ApiServer.Utils.DatetimeHandler, only: [get_now_str: 0]
 
   action_fallback ApiServerWeb.FallbackController
 
@@ -16,6 +19,7 @@ defmodule ApiServerWeb.UserVipController do
   def buy(conn, %{"card_id" => card_id, "openid" => openid}) do
     user_changeset = get_user_changeset(openid)
     {vip_card, card_changeset} = get_card_changeset(card_id)
+    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, %{name: vip_card.name, type: "Vip充值", pay_type: "微信", amount: vip_card.price, datetime: get_now_str})
     openid
     |> get_by_user([:user, :vip_card])
     |> case do
@@ -23,7 +27,8 @@ defmodule ApiServerWeb.UserVipController do
         user_vip_changeset = UserVip.changeset(%UserVip{}, %{remainder: vip_card.value})
         |> Ecto.Changeset.put_assoc(:user, user_changeset)
         |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
-        with {:ok, %UserVip{} = user_vip} <- save_create(user_vip_changeset) do
+        with {:ok, %UserVip{} = user_vip} <- save_create(user_vip_changeset), 
+          {_, _} <- save_create(consumption_record_changeset) do
           render(conn, "show.json", user_vip: user_vip)
         end
       user_vip ->
@@ -32,7 +37,8 @@ defmodule ApiServerWeb.UserVipController do
           true ->
             user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
             |> Ecto.Changeset.put_assoc(:user, user_changeset)
-            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset) do
+            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
+              {_, _} <- save_create(consumption_record_changeset) do
               render(conn, "show.json", user_vip: user_vip)
             end
         
@@ -40,7 +46,8 @@ defmodule ApiServerWeb.UserVipController do
             user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
             |> Ecto.Changeset.put_assoc(:user, user_changeset)
             |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
-            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset) do
+            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
+              {_, _} <- save_create(consumption_record_changeset) do
               render(conn, "show.json", user_vip: user_vip)
             end
         end

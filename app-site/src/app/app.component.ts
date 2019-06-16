@@ -56,6 +56,7 @@ export class MyApp {
       this.splashScreen.hide();
     });
     this.initTranslate();
+    this.initUser();
   }
 
   initTranslate() {
@@ -82,6 +83,10 @@ export class MyApp {
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
       this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
     });
+  }
+
+  initUser(){
+    localStorage.setItem("openid", "19820325")
   }
 
   openPage(page) {
