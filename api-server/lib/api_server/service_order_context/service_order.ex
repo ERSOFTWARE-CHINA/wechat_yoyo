@@ -7,7 +7,7 @@ defmodule ApiServer.ServiceOrderContext.ServiceOrder do
   schema "service_orders" do
     field :date, :string
     field :times, :integer #次数
-    field :status, :string
+    field :status, :string, default: "normal"
 
     belongs_to :user, User, on_replace: :nilify
     belongs_to :service, Service, on_replace: :nilify

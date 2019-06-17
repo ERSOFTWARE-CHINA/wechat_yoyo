@@ -1,1 +1,20 @@
-<h1>服务类</h1>
+<ion-header>
+  <ion-navbar>
+      <ion-title>
+        服务类
+      </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let i of data">
+      <ion-item>
+          <ion-thumbnail item-start>
+            <img [src]="i.image_01">
+          </ion-thumbnail>
+          <h2>{{i.sname}}</h2>
+          <p>原价:{{i.original_price}} 现价:{{i.current_price}}</p>
+          <button ion-button clear item-end (click)="goDetail(i)">查看</button>
+      </ion-item>
+  </ion-list> 
+</ion-content>

@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ShoppingServicePage } from './shopping-service';
+import { ShoppingServiceDetailPage } from './shopping-service-detail';
 //import { OrderListPage } from '../order-list/order-list'
-import { ShoppingSrvService} from './service';
+import { ServiceDetailService} from './service';
 
 @NgModule({
   declarations: [
-    ShoppingServicePage,
+    ShoppingServiceDetailPage,
    // OrderListPage
   ],
   imports: [
-    IonicPageModule.forChild(ShoppingServicePage),
+    IonicPageModule.forChild(ShoppingServiceDetailPage),
    // OrderListPage,
   ],
   providers: [
-    ShoppingSrvService
+    ServiceDetailService
   ]
   //entryComponents: [OrderListPage,]
 })
-export class ShoppingServicePageModule {}
+export class ShoppingServiceDetailPageModule {}

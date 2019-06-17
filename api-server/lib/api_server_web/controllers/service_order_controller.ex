@@ -12,15 +12,17 @@ defmodule ApiServerWeb.ServiceOrderController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"service_order" => service_order_params}) do
-    user_changeset = get_user_changeset(service_order_params)
-    service_changeset = get_service_changeset(service_order_params)
+  def create(conn, %{"service_order" => service_order_params, "amount" => amount, "pay_type" => pay_type} ) do
+    { user, user_changeset } = get_user_changeset(service_order_params)
+    { service, service_changeset } = get_service_changeset(service_order_params)
     order_changeset = ServiceOrder.changeset(%ServiceOrder{}, service_order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
-    with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
-      render(conn, "show.json", service_order: service_order)
-    end
+    # with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
+      {result, _} = buy_service(%{user: user, service: service, amount: amount, pay_type: pay_type, changeset: order_changeset})
+      # render(conn, "show.json", service_order: service_order)
+      json conn, %{result: result}
+    # end
   end
 
   def show(conn, %{"id" => id}) do
@@ -50,13 +52,13 @@ defmodule ApiServerWeb.ServiceOrderController do
   defp get_user_changeset(params) do
     params
     |> Map.get("user", %{})
-    |> Map.get("open_id")
+    |> Map.get("wechat_openid")
     |> case do
       nil -> nil
       open_id ->
-        case get_by_name(User, open_id: open_id) do
+        case get_by_name(User, wechat_openid: open_id) do
           {:error, _} -> nil
-          {:ok, user} -> change(User, user)
+          {:ok, user} -> {user, change(User, user)}
         end
     end
   end
@@ -70,7 +72,7 @@ defmodule ApiServerWeb.ServiceOrderController do
       id ->
         case get_by_id(Service, id) do
           {:error, _} -> nil
-          {:ok, service} -> change(Service, service)
+          {:ok, service} -> {service, change(Service, service)}
         end
     end
   end

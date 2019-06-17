@@ -4,6 +4,7 @@ defmodule ApiServer.Repo.Migrations.CreateServices do
   def change do
     create table(:services) do
       add :sname, :string
+      add :times, :integer
       add :original_price, :float
       add :current_price, :float
       add :uuid_01, :string
