@@ -13,7 +13,7 @@ defmodule ApiServerWeb.UserVipView do
   def render("user_vip.json", %{user_vip: user_vip}) do
     %{
       id: user_vip.id,
-      card_id: user_vip.vip_card.name,
+      card_name: user_vip.vip_card.name,
       remainder: user_vip.remainder,
     }
   end

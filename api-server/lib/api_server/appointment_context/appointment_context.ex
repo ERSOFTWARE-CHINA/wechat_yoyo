@@ -20,7 +20,7 @@ defmodule ApiServer.AppointmentContext do
 
   def page(%{"openid" => open_id} = params) do
     {:ok, user} = User
-    |> get_by_name(open_id: open_id)
+    |> get_by_name(wechat_openid: open_id)
     Appointment
     |> query_equal(%{"user_id" => user.id}, "user_id")
     |> query_equal(params, "status")

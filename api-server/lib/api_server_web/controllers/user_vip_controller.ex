@@ -19,7 +19,15 @@ defmodule ApiServerWeb.UserVipController do
   def buy(conn, %{"card_id" => card_id, "openid" => openid}) do
     user_changeset = get_user_changeset(openid)
     {vip_card, card_changeset} = get_card_changeset(card_id)
-    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, %{name: vip_card.name, type: "Vip充值", pay_type: "微信", amount: vip_card.price, datetime: get_now_str})
+    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
+      %{
+        name: vip_card.name, 
+        type: "Vip充值", 
+        pay_type: "微信", 
+        amount: vip_card.price, 
+        datetime: get_now_str
+      })
+    |> Ecto.Changeset.put_assoc(:user, user_changeset)
     openid
     |> get_by_user([:user, :vip_card])
     |> case do

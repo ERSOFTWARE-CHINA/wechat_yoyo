@@ -4,6 +4,8 @@ defmodule ApiServerWeb.ServiceOrderController do
   use ApiServer.ServiceOrderContext
   alias ApiServer.UserContext.User
   alias ApiServer.ServiceContext.Service
+  alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
+  import ApiServer.Utils.DatetimeHandler, only: [get_now_str: 0]
 
   action_fallback ApiServerWeb.FallbackController
 
@@ -15,13 +17,33 @@ defmodule ApiServerWeb.ServiceOrderController do
   def create(conn, %{"service_order" => service_order_params, "amount" => amount, "pay_type" => pay_type} ) do
     { user, user_changeset } = get_user_changeset(service_order_params)
     { service, service_changeset } = get_service_changeset(service_order_params)
+    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
+      %{
+        name: service.sname, 
+        type: "服务", 
+        pay_type: pay_type, 
+        amount: service.current_price * amount, 
+        datetime: get_now_str
+      })
+    |> Ecto.Changeset.put_assoc(:user, user_changeset)
     order_changeset = ServiceOrder.changeset(%ServiceOrder{}, service_order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
     # with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
-      {result, _} = buy_service(%{user: user, service: service, amount: amount, pay_type: pay_type, changeset: order_changeset})
-      # render(conn, "show.json", service_order: service_order)
-      json conn, %{result: result}
+    consunmption_record_changeset = 
+    with {:ok, _} <- buy_service(
+      %{
+        user: user, 
+        service: service, 
+        amount: amount, 
+        pay_type: pay_type, 
+        changeset: order_changeset
+      }),
+      {:ok, _} <- save_create(consumption_record_changeset) 
+    do
+    # render(conn, "show.json", service_order: service_order)
+      json conn, %{result: "ok"}
+    end
     # end
   end
 
