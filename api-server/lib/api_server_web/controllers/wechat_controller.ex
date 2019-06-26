@@ -1,6 +1,10 @@
 defmodule ApiServerWeb.WechatController do
   use ApiServerWeb, :controller
 
+  alias ApiServer.OrderContext
+  alias ApiServer.VipOrderContext
+  alias ApiServer.ServiceOrderContext
+
   @doc """
   微信端第一次访问接口需从这里获取access_token和openid以及其他用户信息
   """
@@ -21,9 +25,33 @@ defmodule ApiServerWeb.WechatController do
   end
 
   @doc """
-  微信支付
+  微信支付成功回调函数,处理由微信端发起的支付结果通知请求
   """
-  def pay(conn, params) do
+  def paid_callback(conn, %{"openid" => openid, "attach" => product, "out_trade_no" => no} = params) do
+    case product do
+      "vip_card" ->
+        {:ok, _}= VipOrderContext.pay_success(params)
+        json conn, %{msg: "success"}
+      "service" ->
+        json conn, nil
+      "commodity" ->
+        json conn, nil
+      _ ->
+        json conn, nil
+    end
+  end
+
+  @doc """
+  微信支付成功回调函数
+  """
+  def paid_callback(conn, _) do
+    json conn, nil
+  end
+
+  @doc """
+  通知微信
+  """
+  defp notify_wechat() do
     
   end
 

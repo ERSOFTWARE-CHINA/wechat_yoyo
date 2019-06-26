@@ -3,9 +3,10 @@ defmodule ApiServer.Repo.Migrations.CreateConsumptionRecords do
 
   def change do
     create table(:consumption_records) do
-      add :type, :string
-      add :pay_type, :string
+      add :type, :integer
+      add :pay_type, :integer
       add :name, :string
+      add :quantity, :integer
       add :amount, :float
       add :datetime, :string
       add :user_id, references(:users)

@@ -6,6 +6,11 @@ defmodule ApiServer.Utils.DatetimeHandler do
     Timex.now("Asia/Shanghai")
   end
 
+  def get_date_str() do
+    Timex.now
+    |> Timex.format!("%Y%m%d", :strftime)
+  end
+
   # https://hexdocs.pm/timex/formatting.html#content
   def get_now_str() do
     get_now

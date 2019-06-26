@@ -11,9 +11,11 @@ defmodule ApiServer.Application do
       # Start the Ecto repository
       ApiServer.Repo,
       # Start the endpoint when the application starts
-      ApiServerWeb.Endpoint
+      ApiServerWeb.Endpoint,
       # Starts a worker by calling: ApiServer.Worker.start_link(arg)
       # {ApiServer.Worker, arg},
+
+      {ApiServer.MicroService.OrderNoGenerator, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

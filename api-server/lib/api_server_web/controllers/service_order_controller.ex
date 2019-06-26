@@ -20,7 +20,7 @@ defmodule ApiServerWeb.ServiceOrderController do
     consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
       %{
         name: service.sname, 
-        type: "服务", 
+        type: 2, 
         pay_type: pay_type, 
         amount: service.current_price * amount, 
         datetime: get_now_str
@@ -29,8 +29,7 @@ defmodule ApiServerWeb.ServiceOrderController do
     order_changeset = ServiceOrder.changeset(%ServiceOrder{}, service_order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
-    # with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
-    consunmption_record_changeset = 
+
     with {:ok, _} <- buy_service(
       %{
         user: user, 

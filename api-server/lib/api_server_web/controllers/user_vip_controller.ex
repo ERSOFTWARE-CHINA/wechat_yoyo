@@ -19,47 +19,47 @@ defmodule ApiServerWeb.UserVipController do
   def buy(conn, %{"card_id" => card_id, "openid" => openid}) do
     user_changeset = get_user_changeset(openid)
     {vip_card, card_changeset} = get_card_changeset(card_id)
-    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
-      %{
-        name: vip_card.name, 
-        type: "Vip充值", 
-        pay_type: "微信", 
-        amount: vip_card.price, 
-        datetime: get_now_str
-      })
-    |> Ecto.Changeset.put_assoc(:user, user_changeset)
-    openid
-    |> get_by_user([:user, :vip_card])
-    |> case do
-      nil ->
-        user_vip_changeset = UserVip.changeset(%UserVip{}, %{remainder: vip_card.value})
-        |> Ecto.Changeset.put_assoc(:user, user_changeset)
-        |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
-        with {:ok, %UserVip{} = user_vip} <- save_create(user_vip_changeset), 
-          {_, _} <- save_create(consumption_record_changeset) do
-          render(conn, "show.json", user_vip: user_vip)
-        end
-      user_vip ->
-        old_vip_card = get_card_by_id(user_vip.vip_card_id)
-        case old_vip_card.level > vip_card.level do
-          true ->
-            user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
-            |> Ecto.Changeset.put_assoc(:user, user_changeset)
-            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
-              {_, _} <- save_create(consumption_record_changeset) do
-              render(conn, "show.json", user_vip: user_vip)
-            end
+    # consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
+    #   %{
+    #     name: vip_card.name, 
+    #     type: 0, 
+    #     pay_type: 0, 
+    #     amount: vip_card.price, 
+    #     datetime: get_now_str
+    #   })
+    # |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    # openid
+    # |> get_by_user([:user, :vip_card])
+    # |> case do
+    #   nil ->
+    #     user_vip_changeset = UserVip.changeset(%UserVip{}, %{remainder: vip_card.value})
+    #     |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    #     |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
+    #     with {:ok, %UserVip{} = user_vip} <- save_create(user_vip_changeset), 
+    #       {_, _} <- save_create(consumption_record_changeset) do
+    #       render(conn, "show.json", user_vip: user_vip)
+    #     end
+    #   user_vip ->
+    #     old_vip_card = get_card_by_id(user_vip.vip_card_id)
+    #     case old_vip_card.level > vip_card.level do
+    #       true ->
+    #         user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
+    #         |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    #         with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
+    #           {_, _} <- save_create(consumption_record_changeset) do
+    #           render(conn, "show.json", user_vip: user_vip)
+    #         end
         
-          false ->
-            user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
-            |> Ecto.Changeset.put_assoc(:user, user_changeset)
-            |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
-            with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
-              {_, _} <- save_create(consumption_record_changeset) do
-              render(conn, "show.json", user_vip: user_vip)
-            end
-        end
-    end
+    #       false ->
+    #         user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
+    #         |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    #         |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
+    #         with {:ok, %UserVip{} = user_vip} <- save_update(user_vip_changeset),
+    #           {_, _} <- save_create(consumption_record_changeset) do
+    #           render(conn, "show.json", user_vip: user_vip)
+    #         end
+    #     end
+    # end
   end
 
   defp get_user_changeset(openid) do

@@ -7,6 +7,7 @@ defmodule ApiServer.UserVipContext do
   alias ApiServer.Repo
 
   alias ApiServer.UserVipContext.UserVip
+  alias ApiServer.VipCardContext.VipCard
   alias ApiServer.UserContext.User
   use ApiServer.BaseContext
 
@@ -40,6 +41,34 @@ defmodule ApiServer.UserVipContext do
     |> case do
       {:ok, user_vip} -> user_vip
       {_, _} -> nil
+    end
+  end
+
+  def buy_success(user, vip_card) do
+    user_changeset = User.changeset(user, %{})
+    card_changeset = VipCard.changeset(vip_card, %{})
+    user.wechat_openid
+    |> get_by_user([:user, :vip_card])
+    |> case do
+      nil ->
+        user_vip_changeset = UserVip.changeset(%UserVip{}, %{remainder: vip_card.value})
+        |> Ecto.Changeset.put_assoc(:user, user_changeset)
+        |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
+        |> save_create
+      user_vip ->
+        old_vip_card = user_vip.vip_card
+        case old_vip_card.level > vip_card.level do
+          true ->
+            user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
+            |> Ecto.Changeset.put_assoc(:user, user_changeset)
+            |> save_update
+        
+          false ->
+            user_vip_changeset = UserVip.changeset(user_vip, %{remainder: user_vip.remainder + vip_card.value})
+            |> Ecto.Changeset.put_assoc(:user, user_changeset)
+            |> Ecto.Changeset.put_assoc(:vip_card, card_changeset)
+            |> save_update
+        end
     end
   end
 

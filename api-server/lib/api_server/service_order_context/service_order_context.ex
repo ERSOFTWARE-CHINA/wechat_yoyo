@@ -63,4 +63,11 @@ defmodule ApiServer.ServiceOrderContext do
     end
   end
 
+  def get_current_order_no() do
+    ServiceOrder
+    |> get_max(:sno)
+    
+  end
+
+
 end

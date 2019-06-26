@@ -30,9 +30,11 @@ defmodule ApiServerWeb.Router do
     resources "/appointments", AppointmentController, except: [:new, :edit]
     resources "/vip_cards", VipCardController, except: [:new, :edit]
     resources "/consumption_records", ConsumptionRecordController, except: [:new, :edit]
+    resources "/vip_orders", VipOrderController, except: [:new, :edit]
 
+    post "/wechat/pay_success", WechatController, :paid_callback
     get "/user_vip", UserVipController, :get_my
-    post "/user_vip/buy", UserVipController, :buy
+    # post "/user_vip/buy", UserVipController, :buy
     get "/username/check", UserController, :check_username
     get "/wechat", WechatController, :get_userinfo
     get "/verification_code", VerificationCodeController, :get_code

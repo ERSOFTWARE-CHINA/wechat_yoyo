@@ -34,7 +34,9 @@ defmodule ApiServer.OrderContext do
     |> get_pagination(params)
   end
 
-  def create() do
+  def get_current_order_no() do
+    Order
+    |> get_max(:ono)
     
   end
 
