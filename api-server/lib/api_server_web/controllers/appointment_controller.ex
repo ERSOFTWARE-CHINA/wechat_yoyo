@@ -37,7 +37,7 @@ defmodule ApiServerWeb.AppointmentController do
     user_changeset = get_user_changeset(appointment_params)
     service_changeset = get_service_changeset(appointment_params)
     technician_changeset = get_technician_changeset(appointment_params)
-    appointment_changeset = Appointment.changeset(%Appointment{}, appointment_params)
+    appointment_changeset = Appointment.changeset(appointment, appointment_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
     |> Ecto.Changeset.put_assoc(:technician, technician_changeset)

@@ -48,7 +48,5 @@ defmodule ApiServer.VipOrderContext do
   defp update_user_vip(user, vip_card) do
     ApiServer.UserVipContext.buy_success(user, vip_card)
   end
-
-
   
 end
