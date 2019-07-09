@@ -35,7 +35,8 @@ defmodule ApiServerWeb.WechatController do
       "service" ->
         json conn, nil
       "commodity" ->
-        json conn, nil
+        {:ok, _}= OrderContext.pay_success(params)
+        json conn, %{msg: "success"}
       _ ->
         json conn, nil
     end

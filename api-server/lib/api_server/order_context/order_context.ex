@@ -8,6 +8,7 @@ defmodule ApiServer.OrderContext do
 
   alias ApiServer.OrderContext.Order
   alias ApiServer.UserContext.User
+  alias ApiServer.CommodityContext.Commodity
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
@@ -30,6 +31,7 @@ defmodule ApiServer.OrderContext do
   def page(params) do 
     Order
     |> query_equal(params, "status")
+    |> query_equal(params, "pay_status")
     |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
@@ -37,7 +39,33 @@ defmodule ApiServer.OrderContext do
   def get_current_order_no() do
     Order
     |> get_max(:ono)
-    
+  end
+
+  # 支付成功回调函数
+  def pay_success(params) do 
+    vno = params
+    |> Map.get("out_trade_no")
+    {:ok, order} = Order
+    |> get_by_name(%{ono: ono}, [:user, :commodity]) 
+
+    ApiServer.Repo.transaction(fn ->
+      update_order(order)
+      update_commodity(order)
+    end)
+  end
+
+  # 支付成功后更新订单支付状态
+  defp update_order(order) do
+    Order.changeset(order, %{pay_status: true})
+    |> save_update
+  end
+
+  # 修改产品库存量
+  defp update_commodity(order) do
+    {:ok, commodity} = Commodity
+    |> get_by_id(order.commodity.id)
+    Commodity.changeset(commodity, %{stock: commodity.stock - order.amount})
+    |> save_update
   end
 
 end
