@@ -9,6 +9,7 @@ defmodule ApiServer.OrderContext do
   alias ApiServer.OrderContext.Order
   alias ApiServer.UserContext.User
   alias ApiServer.CommodityContext.Commodity
+  alias ApiServer.UserVipContext
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
@@ -41,7 +42,22 @@ defmodule ApiServer.OrderContext do
     |> get_max(:ono)
   end
 
-  # 支付成功回调函数
+  # 账户支付
+  def pay_by_vip(order) do
+    user_vip = UserVipContext.get_by_user(order.user.wechat_openid)
+    cond do
+      user_vip.remainder - order.amount >= 0 ->
+        ApiServer.Repo.transaction(fn ->
+          update_order(order)
+          update_commodity(order)
+          update_user_vip(order, user_vip)
+        end)
+      true ->
+        {:error, "Insufficient Balance"}
+    end
+  end
+
+  # 微信支付成功回调函数
   def pay_success(params) do 
     vno = params
     |> Map.get("out_trade_no")
@@ -52,6 +68,12 @@ defmodule ApiServer.OrderContext do
       update_order(order)
       update_commodity(order)
     end)
+  end
+
+  # 账户支付的情况：扣除账户金额
+  def update_user_vip(order, user_vip) do
+    UserVip.changset(user_vip, %{ remainder: user_vip.remainder - order.amount }
+    |> save_update
   end
 
   # 支付成功后更新订单支付状态
