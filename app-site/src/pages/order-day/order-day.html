@@ -9,6 +9,25 @@
     <ion-title>orderDay</ion-title>
   </ion-navbar>
 
+  <button  [ngClass]="messageClasses"  (click) = "onClick($event)">{{greeting}}</button>
+  <button (click) = "greeting = 'inline Greet!!'">Greet2</button>
+
+  <h2 class="text-success">
+    Convolution
+  </h2>
+  <h2 [class]="successClass">
+    Convolution
+  </h2>
+  <h2 [class.text-danger] = "hasError">
+    Convolution
+  </h2>
+
+  <h2 [ngClass]="messageClasses">
+    Convolution
+  </h2>
+
+
+
   <ion-toolbar no-border-top>
     <ion-segment >
       <ion-segment-button value="puppies">
