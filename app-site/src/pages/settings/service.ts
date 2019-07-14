@@ -32,6 +32,12 @@ export class SettingsService {
       return this.http.get(url, getTokenOptions(p)).toPromise().then(res => {return res.json()});      
     }
 
+    setInfo(data){
+      let url = baseUrl + "users/set/info";
+      let p = {openid: localStorage.getItem("openid"), user: data };
+      return this.http.put(url, p, getTokenOptions(null)).toPromise().then(res => {return res.json()});  
+    }
+
     
   
 }

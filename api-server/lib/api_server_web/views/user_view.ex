@@ -21,6 +21,8 @@ defmodule ApiServerWeb.UserView do
     %{
       id: user.id,
       name: user.name,
+      full_name: user.full_name,
+      address: user.address,
       mobile: user.mobile,
       wechat_openid: user.wechat_openid,
       wechat_nickname: user.wechat_nickname,

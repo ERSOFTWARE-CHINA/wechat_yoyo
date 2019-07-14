@@ -41,11 +41,24 @@ defmodule ApiServerWeb.UserController do
     end
   end
 
+  # 用户自助补充地址和手机号信息
+  def set_info(conn, %{ "openid" => openid, "user" => user_params } ) do
+    with {:ok, user} <- get_by_name(User, wechat_openid: openid) do
+      user_changeset = User.changeset(user, user_params)
+      with {:ok, %User{} = user} <- save_update(user_changeset) do
+        render(conn, "show.json", user: user)
+      end
+    end
+
+  end
+
   def delete(conn, %{"id" => id}) do
     with {:ok, _} <- can_delete(conn, id), {:ok, %User{} = user} <- delete_by_id(User, id) do
       render(conn, "show.json", user: user)
     end
   end
+
+  
 
   # 验证用户注册时的用户名重复
   def check_username(conn, params) do

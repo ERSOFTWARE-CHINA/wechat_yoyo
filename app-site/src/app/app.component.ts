@@ -86,7 +86,9 @@ export class MyApp {
   }
 
   initUser(){
-    localStorage.setItem("openid", "19820325")
+    localStorage.setItem("openid", "19820325");
+    // localStorage.setItem("mobile","15156709660");
+    // localStorage.setItem("address","马鞍山市康城花园");
   }
 
   openPage(page) {

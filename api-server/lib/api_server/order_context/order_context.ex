@@ -43,7 +43,7 @@ defmodule ApiServer.OrderContext do
 
   # 支付成功回调函数
   def pay_success(params) do 
-    vno = params
+    ono = params
     |> Map.get("out_trade_no")
     {:ok, order} = Order
     |> get_by_name(%{ono: ono}, [:user, :commodity]) 

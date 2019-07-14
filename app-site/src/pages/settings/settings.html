@@ -30,8 +30,14 @@
 <ion-content>
   <div [ngSwitch]="content">
     <ion-item *ngSwitchCase="'account'">
+      <p>手机号：{{mobile}}
+      <p>邮寄地址：{{address}}</p>
       <p>会员卡：{{accounts.card_name}}</p>
       <p>余额：{{accounts.remainder}}</p>
+      <button ion-button color="primary" icon-start (click)="modifyInfo()">
+        <ion-icon name='modify'></ion-icon>
+        修改信息
+      </button>
     </ion-item>
 
     <div *ngSwitchCase="'order'">

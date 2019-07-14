@@ -5,6 +5,8 @@ defmodule ApiServer.UserContext.User do
 
   schema "users" do
     field :name, :string
+    field :full_name, :string
+    field :address, :string
     field :password, :string, virtual: true
     # 默认密码"admin123"
     field :password_hash, :string, default: "$pbkdf2-sha512$160000$.0mu4IBJ8tD5cckQhz9tqQ$Iv05hJ49w8WqovfrVUfind8YFt.lrQpj2TNxVuSDXJ0FZHX2YMSl0l8M.FtqYoGdiZDvcTDUp/5xe4/RgkS7FQ"
@@ -25,7 +27,7 @@ defmodule ApiServer.UserContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :is_admin, :mobile, :active, :uuid])
+    |> cast(attrs, [:name, :full_name, :address, :password, :wechat_openid, :wechat_nickname, :wechat_avatar_url, :is_admin, :mobile, :active, :uuid])
     |> check_uuid
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:is_admin, :active])

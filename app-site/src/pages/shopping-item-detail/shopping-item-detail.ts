@@ -27,9 +27,31 @@ export class ShoppingItemDetailPage implements OnInit {
     public navParams: NavParams, 
     public alertCtrl: AlertController,
     private srv: CommodityDetailService,
-    private bus: BusService) {
-
-  }
+    private bus: BusService) {}
+  
+    doPrompt() {
+      let prompt = this.alertCtrl.create({
+        title: '提示',
+        message: "购买之前需要将信息填写完整",
+        
+        buttons: [
+          {
+            text: '暂时不要',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: '我去填写',
+            handler: data => {
+              this.navCtrl.push('SettingsPage');
+            }
+          }
+        ]
+      });
+      prompt.present();
+    }
+  
 
   ngOnInit() {
     this.getData();
@@ -46,7 +68,10 @@ export class ShoppingItemDetailPage implements OnInit {
   }
 
   buy(){
-    this.beforeBuy = false;
+    localStorage.removeItem("address");
+    localStorage.removeItem("mobile");
+    if (localStorage.getItem("address") && localStorage.getItem("mobile")) { this.beforeBuy = false }
+    else this.doPrompt()
   }
 
   add(){

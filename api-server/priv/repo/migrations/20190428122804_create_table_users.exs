@@ -4,6 +4,8 @@ defmodule ApiServer.Repo.Migrations.CreateTableUsers do
   def change do
     create table(:users) do
       add :name, :string
+      add :full_name, :string
+      add :address, :string
       add :password_hash, :string
       add :wechat_openid, :string
       add :wechat_nickname, :string
