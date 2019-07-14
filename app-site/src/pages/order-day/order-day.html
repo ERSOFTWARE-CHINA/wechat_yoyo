@@ -11,7 +11,7 @@
 
   <button  [ngClass]="messageClasses"  (click) = "onClick($event)">{{greeting}}</button>
   <button (click) = "greeting = 'inline Greet!!'">Greet2</button>
-
+<!--
   <h2 class="text-success">
     Convolution
   </h2>
@@ -25,7 +25,7 @@
   <h2 [ngClass]="messageClasses">
     Convolution
   </h2>
-
+-->
 
 
   <ion-toolbar no-border-top>
@@ -57,24 +57,12 @@
 </ion-header>
 
 <ion-content padding>
-
-    <div>1 <button ion-button color="secondary" round>导航效果无法和现有效果一致</button></div>
-
   <ion-grid>
 
-    <ion-row>
-      <ion-col>
-        <div>1 <button ion-button color="secondary" round>这个选中状态</button></div>
-      </ion-col>
-      <ion-col>
-        <div>2 <button ion-button color="light" round>可选状态</button></div>
-      </ion-col>
-      <ion-col>       
-        3<div  style='background:aqua' >这里只是显示效果其他不管</div>
-      </ion-col>
-      <ion-col>
-        4<button ion-button color="danger" round>不可选状态或者灰色显示</button>
-      </ion-col>
+    <ion-row >
+        <ion-col  *ngFor="let item of this.showtodaylist.am">
+        <div><button   [class.text-danger]="item.isorder" ion-button color="secondary" round>{{item.showtime| date:'yyyy-MM-dd   HH:mm'}}</button></div>
+      </ion-col>     
     </ion-row>
 </ion-grid>
 </ion-content>
