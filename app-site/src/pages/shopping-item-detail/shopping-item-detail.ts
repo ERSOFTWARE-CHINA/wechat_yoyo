@@ -42,7 +42,7 @@ export class ShoppingItemDetailPage implements OnInit {
             }
           },
           {
-            text: '我去填写',
+            text: '现在填写',
             handler: data => {
               this.navCtrl.push('SettingsPage');
             }
@@ -83,7 +83,7 @@ export class ShoppingItemDetailPage implements OnInit {
   }
 
   submit(){
-    let v = {order: {amount: this.number, user: {wechat_openid: "19820325"}, commodity: {id: this.data.id}}}
+    let v = {order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, commodity: {id: this.data.id}}}
     this.srv.buy(v).then(resp => {if (resp.data) {this.showOK()} else{this.showError()} })
   }
 

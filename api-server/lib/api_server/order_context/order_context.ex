@@ -46,11 +46,12 @@ defmodule ApiServer.OrderContext do
   def pay_by_vip(order) do
     user_vip = UserVipContext.get_by_user(order.user.wechat_openid)
     cond do
-      user_vip.remainder - order.amount >= 0 ->
+      user_vip.remainder - order.amount * order.commodity.current_price >= 0 ->
         ApiServer.Repo.transaction(fn ->
           update_order(order)
           update_commodity(order)
           update_user_vip(order, user_vip)
+          create_consumption_record(order, 1)
         end)
       true ->
         {:error, "Insufficient Balance"}
@@ -67,6 +68,7 @@ defmodule ApiServer.OrderContext do
     ApiServer.Repo.transaction(fn ->
       update_order(order)
       update_commodity(order)
+      create_consumption_record(order, 0)
     end)
   end
 
@@ -88,6 +90,23 @@ defmodule ApiServer.OrderContext do
     |> get_by_id(order.commodity.id)
     Commodity.changeset(commodity, %{stock: commodity.stock - order.amount})
     |> save_update
+  end
+
+  # 创建消费记录
+  defp create_consumption_record(order, pay_type) do
+    user = order.user
+    change = %{
+      name: order.commodity.cname,
+      type: 1, 
+      pay_type: pay_type,
+      quantity: order.amount,
+      amount: order.commodity.current_price * order.amount,
+      datetime: ApiServer.Utils.DatetimeHandler.get_now_str
+    }
+    user_changeset = change(User, user)
+    ConsumptionRecord.changeset(%ConsumptionRecord{}, change)
+    |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    |> save_create
   end
 
 end
