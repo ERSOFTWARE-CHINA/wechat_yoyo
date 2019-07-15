@@ -72,7 +72,7 @@ defmodule ApiServer.OrderContext do
 
   # 账户支付的情况：扣除账户金额
   def update_user_vip(order, user_vip) do
-    UserVip.changset(user_vip, %{ remainder: user_vip.remainder - order.amount }
+    UserVip.changset(user_vip, %{ remainder: user_vip.remainder - order.amount })
     |> save_update
   end
 
