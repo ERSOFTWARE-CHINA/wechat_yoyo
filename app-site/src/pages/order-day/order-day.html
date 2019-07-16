@@ -9,8 +9,6 @@
     <ion-title>orderDay</ion-title>
   </ion-navbar>
 
-  <button  [ngClass]="messageClasses"  (click) = "onClick($event)">{{greeting}}</button>
-  <button (click) = "greeting = 'inline Greet!!'">Greet2</button>
 <!--
   <h2 class="text-success">
     Convolution
@@ -64,5 +62,16 @@
         <div><button   [class.text-danger]="item.isorder" ion-button color="secondary" round>{{item.showtime| date:'yyyy-MM-dd   HH:mm'}}</button></div>
       </ion-col>     
     </ion-row>
+
+    <ion-row >
+      <ion-col>
+      <div>下午</div>
+    </ion-col>     
+  </ion-row>
+    <ion-row >
+      <ion-col  *ngFor="let item of this.showtodaylist.pm">
+      <div><button   [class.text-danger]="item.isorder" ion-button color="secondary" round>{{item.showtime| date:'yyyy-MM-dd   HH:mm'}}</button></div>
+    </ion-col>     
+  </ion-row>
 </ion-grid>
 </ion-content>

@@ -11,20 +11,30 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-item-sliding *ngFor="let item of listitems">
-      <button ion-item >       
-        <h2>{{item.name}}</h2>
-        <p>
-          {{checktext}}
-        </p>
-      </button>        
-    </ion-item-sliding>
-    <!--这个是通过组件来显示的-->
-  <order-list-select></order-list-select>
-  </ion-list>
+  <ion-item>
+    <ion-label>Notifications</ion-label>
+    <ion-select [(ngModel)]="notifications" interface="action-sheet">
+      <ion-option value="enable">Enable</ion-option>
+      <ion-option value="mute">Mute</ion-option>
+      <ion-option value="mute_week">Mute for a week</ion-option>
+      <ion-option value="mute_year" (ionSelect)="notificationSelect($event)">Mute for a year</ion-option>
+    </ion-select>
+</ion-item>
+
+<ion-item>
+  <ion-label>婴儿游泳SPA</ion-label>
+  <ion-select [(ngModel)]="music" (ngModelChange)="changetemp()"  [selectOptions]="musicAlertOpts"  cancelText="取消" >
+    <ion-option>普通池（小池）</ion-option>
+    <ion-option>VIP池</ion-option>
+    <ion-option>普通池大池</ion-option>
+    <ion-option>洗澡</ion-option>
+    
+  </ion-select>
+</ion-item>
+
+
+<button ion-button block  (click)="goDay()">选择确定后下一步</button>
 
   <button ion-button color="primary"  (click)='showCheckbox()'>这是项目选择复选框效果</button>
  
-  <button ion-button color="primary"  (click)='goDay()'>选择确定后下一步</button>
-</ion-content>
+  </ion-content>
