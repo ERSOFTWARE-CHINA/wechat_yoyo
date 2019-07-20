@@ -12,4 +12,25 @@
 
 <ion-content padding>
 
+  <ion-list>
+
+    <ion-item   *ngFor="let item of orderlistunuse">
+        <ion-thumbnail item-start >
+          <img  [src]="item.thumbimg">
+          </ion-thumbnail>
+          <h2>{{item.orderpersonname}}</h2>
+          <p>{{item.shopname}}</p>
+          <button ion-button clear item-end  (click)="item.show=!item.show">详情</button>
+           <ion-list *ngIf="item.show">
+              <ion-item >
+                  姓名：{{item.orderpersonname}} 店面：{{item.shopname}}
+              </ion-item>
+              <button ion-button clear item-end (click)="showAlert(item.ordertime)">取消</button>
+            </ion-list>
+     </ion-item>
+
+  </ion-list>
+
+
+
 </ion-content>
