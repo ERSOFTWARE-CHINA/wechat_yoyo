@@ -9,31 +9,24 @@
     <ion-title>预约，第一步，人员预约</ion-title>
   </ion-navbar>
   <ion-toolbar no-border-top>
-      <ion-segment [(ngModel)]="pet">
-        <ion-segment-button value="puppies">
-          门面店一
-        </ion-segment-button>
-        <ion-segment-button value="kittens">
-            门面店二
-        </ion-segment-button>
-        <ion-segment-button value="ducklings">
-            门面店三
+      <ion-segment [(ngModel)]="pet"   >      
+        <ion-segment-button *ngFor="let item of show_shopandpersonlist"  [value]="item.shopid">
+          {{item.shopname}}
         </ion-segment-button>
       </ion-segment>
   </ion-toolbar>
 
 </ion-header>
 <ion-content padding>
-    <div [ngSwitch]="pet">    
-        <a  style="text-decoration:underline;color:blue"  href="tel:18905559177">打电话</a>
-        <ion-list *ngSwitchCase="'puppies'">
-            <ion-item-sliding *ngFor="let item of personitems">
+    <div [ngSwitch]="pet"   *ngFor="let item1 of show_shopandpersonlist"  >        
+        <ion-list *ngSwitchCase="item1.shopid">
+            <ion-item-sliding *ngFor="let item of item1.personlist">
               <button ion-item (click)="golist(item)">
                 <ion-avatar item-start>
                   <img [src]="item.avatar" />
                 </ion-avatar>
                 <h2>{{item.name}}</h2>
-                <p>{{item.occupation}}</p>
+                <p  class='wuzh'>{{item.occupation}}</p>
                 <p>{{item.characteristic}}</p>
                 <p>{{item.orders}}</p>
                 <p>{{item.works}}</p>
@@ -47,55 +40,6 @@
               </ion-item-options>
             </ion-item-sliding>
           </ion-list>
-
-    
-        <ion-list *ngSwitchCase="'kittens'">
-            <a  style="text-decoration:underline;color:blue"  href="tel:18905559177">打电话</a>
-
-            <ion-item-sliding *ngFor="let item of personitems">
-                <button ion-item (click)="golist(item)">
-                  <ion-avatar item-start>
-                    <img [src]="item.avatar" />
-                  </ion-avatar>
-                  <h2>{{item.name}}</h2>
-                  <p>{{item.occupation}}</p>
-                  <p>{{item.characteristic}}</p>
-                  <p>{{item.orders}}</p>
-                  <p>{{item.works}}</p>
-                  <p>{{item.rank}}</p>
-                </button>
-                <button clear item-right>点击按钮</button>
-                <ion-item-options>
-                  <button ion-button color="danger" (click)="golist(item)">
-                    1223
-                  </button>
-                </ion-item-options>
-              </ion-item-sliding>
-        </ion-list>
-    
-        <ion-list *ngSwitchCase="'ducklings'">
-
-            <a  style="text-decoration:underline;color:blue"  href="tel:18905559177">打电话</a>
-            <ion-item-sliding *ngFor="let item of personitems">
-                <button ion-item (click)="golist(item)">
-                  <ion-avatar item-start>
-                    <img [src]="item.avatar" />
-                  </ion-avatar>
-                  <h2>{{item.name}}</h2>
-                  <p>{{item.occupation}}</p>
-                  <p>{{item.characteristic}}</p>
-                  <p>{{item.orders}}</p>
-                  <p>{{item.works}}</p>
-                  <p>{{item.rank}}</p>
-                </button>
-                <button clear item-right>点击按钮</button>
-                <ion-item-options>
-                  <button ion-button color="danger" (click)="golist(item)">
-                    1223
-                  </button>
-                </ion-item-options>
-              </ion-item-sliding>
-        </ion-list>
     </div>
 
 
