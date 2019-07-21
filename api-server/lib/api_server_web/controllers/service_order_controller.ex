@@ -14,36 +14,15 @@ defmodule ApiServerWeb.ServiceOrderController do
     render(conn, "index.json", page: page)
   end
 
-  def create(conn, %{"service_order" => service_order_params, "amount" => amount, "pay_type" => pay_type} ) do
-    { user, user_changeset } = get_user_changeset(service_order_params)
-    { service, service_changeset } = get_service_changeset(service_order_params)
-    consumption_record_changeset = ConsumptionRecord.changeset(%ConsumptionRecord{}, 
-      %{
-        name: service.sname, 
-        type: 2, 
-        pay_type: pay_type, 
-        amount: service.current_price * amount, 
-        datetime: get_now_str
-      })
-    |> Ecto.Changeset.put_assoc(:user, user_changeset)
-    order_changeset = ServiceOrder.changeset(%ServiceOrder{}, service_order_params)
+  def create(conn, %{"service_order" => order_params}) do
+    user_changeset = get_user_changeset(order_params)
+    service_changeset = get_service_changeset(order_params)
+    order_changeset = ServiceOrder.changeset(%ServiceOrder{}, order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
-
-    with {:ok, _} <- buy_service(
-      %{
-        user: user, 
-        service: service, 
-        amount: amount, 
-        pay_type: pay_type, 
-        changeset: order_changeset
-      }),
-      {:ok, _} <- save_create(consumption_record_changeset) 
-    do
-    # render(conn, "show.json", service_order: service_order)
-      json conn, %{result: "ok"}
+    with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
+      render(conn, "show.json", service_order: service_order)
     end
-    # end
   end
 
   def show(conn, %{"id" => id}) do
@@ -67,6 +46,22 @@ defmodule ApiServerWeb.ServiceOrderController do
   def delete(conn, %{"id" => id}) do
     with {:ok, %ServiceOrder{} = service_order} <- delete_by_id(ServiceOrder, id, [:service, :user]) do
       render(conn, "show.json", service_order: service_order)
+    end
+  end
+
+  def pay(conn, %{"id" => id, "service_order" => order_params, "pay_type" => pay_type }) do
+    {:ok, service_order} = get_by_id(ServiceOrder, id, [:service, :user])
+    case pay_type do
+      0 -> # 微信支付
+        json conn, %{ok: ""}
+      1 -> # 账户
+        with {:ok, _} <- pay_by_vip(service_order) do
+          json conn, %{ok: "pay success"}
+        end
+      2 -> # 积分
+        json conn, %{error: "not support"}
+      _ ->
+        json conn, %{error: "pay type error"}
     end
   end
 

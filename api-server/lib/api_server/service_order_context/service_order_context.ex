@@ -9,7 +9,10 @@ defmodule ApiServer.ServiceOrderContext do
 
   alias ApiServer.ServiceOrderContext.ServiceOrder
   alias ApiServer.UserContext.User
+  alias ApiServer.ServiceContext.Service
   alias ApiServer.UserVipContext.UserVip
+  alias ApiServer.UserVipContext
+  alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
@@ -36,37 +39,67 @@ defmodule ApiServer.ServiceOrderContext do
     |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
-  
-  def buy_service(params) do 
-    params
-    |> get_buy_multi
-    |> Repo.transaction
-  end
-
-  def get_buy_multi(%{user: user, service: service, amount: amount, pay_type: pay_type, changeset: changeset}) do
-    multi = Multi.new
-
-    case pay_type do
-      "优悠账户" ->
-        # 更新user_vip, 账号支付的情况
-        {:ok, user_vip} = UserVip
-        |> get_by_name(user_id: user.id)
-        user_vip_changeset = user_vip
-        |> UserVip.changeset(%{remainder: user_vip.remainder - service.current_price * amount})
-        multi
-        |> Multi.update("update_user_vip", user_vip_changeset)
-        |> Multi.insert("update_service_order", changeset)
-      "微信" ->
-        multi
-        |> Multi.insert("update_service_order", changeset)
-      _ -> multi
-    end
-  end
 
   def get_current_order_no() do
     ServiceOrder
-    |> get_max(:sno)
-    
+    |> get_max(:sno) 
+  end
+
+  # 账户支付
+  def pay_by_vip(order) do
+    user_vip = UserVipContext.get_by_user(order.user.wechat_openid, [:user, :vip_card])
+    cond do
+      user_vip.remainder - order.amount * order.service.current_price >= 0 ->
+        ApiServer.Repo.transaction(fn ->
+          update_order(order)
+          # update_commodity(order)
+          update_user_vip(order, user_vip)
+          create_consumption_record(order, 1)
+        end)
+      true ->
+        {:error, "Insufficient Balance"}
+    end
+  end
+
+  # 微信支付成功回调函数
+  def pay_success(params) do 
+    sno = params
+    |> Map.get("out_trade_no")
+    {:ok, order} = ServiceOrder
+    |> get_by_name(%{sno: sno}, [:user, :service]) 
+
+    ApiServer.Repo.transaction(fn ->
+      update_order(order)
+      # update_commodity(order)
+      create_consumption_record(order, 0)
+    end)
+  end
+
+
+  # 账户支付的情况：扣除账户金额
+  def update_user_vip(order, user_vip) do
+    UserVip.changeset(user_vip, %{ remainder: user_vip.remainder - order.amount * order.service.current_price})
+    |> save_update
+  end
+
+  # 支付成功后更新订单支付状态
+  defp update_order(order) do
+    ServiceOrder.changeset(order, %{pay_status: true})
+    |> save_update
+  end
+
+  # 创建消费记录
+  defp create_consumption_record(order, pay_type) do
+    p = %{
+      name: order.service.sname,
+      type: 2,
+      pay_type: pay_type,
+      quantity: order.amount,
+      amount: order.amount * order.service.current_price, 
+      user_id: order.user.id
+    }
+    ConsumptionRecord.changeset(%ConsumptionRecord{}, p)
+    |> save_create
   end
 
 
