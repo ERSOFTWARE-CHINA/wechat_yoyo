@@ -21,6 +21,8 @@ import { OrderListSelectComponent } from '../../components/order-list-select/ord
 })
 export class OrderListPage {
 
+  music: string;
+  notifications:string;
 //先定义一个数组
 listitems = [
   {
@@ -41,8 +43,30 @@ listitems = [
 //
 checktext: any;
 
+musicAlertOpts: { title: string, subTitle: string, buttons:any };
+
   constructor(public alertCtrl: AlertController,public navCtrl: NavController, public navParams: NavParams,public modalController: ModalController) {  
+    this.musicAlertOpts = {
+      title: '1994 Music',
+      subTitle: 'Select your favorite',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Buy',
+          handler: () => {
+            console.log('Buy clicked');
+          }
+        }
+      ]
+};
   }
+
 
   async presentModal() {
     /*const modal = await this.modalController.create({
@@ -84,6 +108,12 @@ checktext: any;
     });
     alert.present();
   }
+
+
+  changetemp(){
+    this.navCtrl.push('OrderDayPage');
+  }
+
 
 
   ionViewDidLoad() {

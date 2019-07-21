@@ -94,8 +94,7 @@ export class Wuzhapi {
    */
   request(url: string, paramMap: {} = {}, method: RequestMethods = RequestMethods.GET, header: {} = {}): Observable<object> {
     return this.sendRequest(url, paramMap, method, header);
-  }
- 
+  } 
  
   protected sendRequest(url: string, paramMap: any = {}, method: RequestMethods = RequestMethods.GET, header: {} = {}): Observable<object> {
     this.logger.log("准备发起请求:");

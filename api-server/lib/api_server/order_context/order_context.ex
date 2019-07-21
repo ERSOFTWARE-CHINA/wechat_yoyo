@@ -73,6 +73,7 @@ defmodule ApiServer.OrderContext do
     ApiServer.Repo.transaction(fn ->
       update_order(order)
       update_commodity(order)
+      create_consumption_record(order, 0)
     end)
   end
 
@@ -106,11 +107,8 @@ defmodule ApiServer.OrderContext do
       amount: order.amount * order.commodity.current_price, 
       user_id: order.user.id
     }
-    IO.inspect "#############"
-    IO.inspect p
     ConsumptionRecord.changeset(%ConsumptionRecord{}, p)
     |> save_create
-    |> IO.inspect 
   end
 
 end

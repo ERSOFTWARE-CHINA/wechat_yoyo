@@ -42,7 +42,7 @@ export class ShoppingItemDetailPage implements OnInit {
             }
           },
           {
-            text: '我去填写',
+            text: '现在填写',
             handler: data => {
               this.navCtrl.push('SettingsPage');
             }
