@@ -19,7 +19,7 @@ export class OrderMePage {
       "thumbimg":"assets/img/thumbnail-totoro.png",
       "orderpersonname": "张三",
       "shopname": "店一",
-      "ordertime": "1563638800000",
+      "ordertime": "1563715306644",
       "tips": "备注要求",    
       "show": false, 
     },
@@ -27,7 +27,7 @@ export class OrderMePage {
       "thumbimg":"assets/img/thumbnail-totoro.png",
       "orderpersonname": "李四",
       "shopname": "店一",
-      "ordertime": "1563638800000",
+      "ordertime": "1563715906644",
       "tips": "备注要求",   
       "show": false, 
     }
@@ -44,11 +44,14 @@ export class OrderMePage {
   }
 
   showAlert(ordertime) {
-    console.log(ordertime);
-    console.log((new Date(ordertime)));
+    console.log(parseInt(ordertime));
+   
+   // console.log((new Date(ordertime/1000)));
+  // console.log((new Date(parseInt(ordertime))).toDateString());
+  // console.log((new Date(1563715306644)).toDateString());
     const alert = this.alertCtrl.create({
       title: '取消确认',
-      subTitle: ('您确认取消'.concat((new Date(ordertime)).toString())).concat('的预约？'),
+      subTitle: ('您确认取消'.concat(new Date(parseInt(ordertime)).toDateString())).concat('的预约？'),
       buttons: ['确定']
     });
     alert.present();

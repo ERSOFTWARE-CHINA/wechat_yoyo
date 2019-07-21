@@ -14,7 +14,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage(
   {
     name: 'OrderPresonPage',
-    segment: 'order-preson/:personID'
+    segment: 'order-preson'
   }
 )
 @Component({
@@ -89,10 +89,10 @@ OrderListPage
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     //this.OrderListPage = OrderListPage;//网页组件跳转
-    this.personID=navParams.get("personID");
+    /*this.personID=navParams.get("personID");
     if(this.personID != undefined || this.personID !=null){
           this.tempid=this.personID;
-    }
+    }*/
 
   }
 
