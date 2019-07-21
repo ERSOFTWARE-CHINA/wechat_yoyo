@@ -8,6 +8,8 @@ import { FirstRunPage, Tab1Root } from '../pages';
 import { MainPage } from '../pages';
 import { Settings } from '../providers';
 
+import { WechatService } from '../pages/login/auth.service';
+
 @Component({
   template: `<ion-menu [content]="content">
     <ion-header>
@@ -48,7 +50,14 @@ export class MyApp {
     { title: 'Search', component: 'SearchPage' }
   ]
 
-  constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
+  constructor(
+    private translate: TranslateService, 
+    platform: Platform, 
+    settings: Settings, 
+    private config: Config, 
+    private statusBar: StatusBar, 
+    private splashScreen: SplashScreen,
+    private srv: WechatService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -87,8 +96,8 @@ export class MyApp {
 
   initUser(){
     localStorage.setItem("openid", "19820325");
-    // localStorage.setItem("mobile","15156709660");
-    // localStorage.setItem("address","马鞍山市康城花园");
+    let openid = localStorage.getItem("openid");
+    this.srv.auto_login(openid)
   }
 
   openPage(page) {

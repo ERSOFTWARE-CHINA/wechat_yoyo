@@ -19,9 +19,30 @@ defmodule ApiServerWeb.OrderView do
   def render("order.json", %{order: order}) do
     %{
       id: order.id,
+      ono: order.ono,
       commodity: order.commodity.cname,
+      price: order.commodity.current_price,
       amount: order.amount,
-      status: order.status,
+      pay_status: order.pay_status |> parse_pay_status,
+      status: order.status |> parse_status,
+      date: order.date
     }
+  end
+
+  defp parse_pay_status(value) do
+    value
+    |> case do
+      true ->  "已支付"
+      false -> "未支付"
+    end
+  end
+
+  defp parse_status(value) do
+    value
+    |> case do
+      "a" -> "未发货"
+      "c" -> "已取消"
+      "d" -> "已发货"
+    end
   end
 end

@@ -25,7 +25,7 @@ defmodule ApiServer.MicroService.OrderNoGenerator do
         new_state = state
         |> Map.put_new(:order_no, next_no)
         {:reply, next_no, new_state}
-      {:ok, value} -> 
+      value -> 
         {:ok, next_no}  = value |> NoGenerator.get_next_no
         new_state = state
         |> Map.update!(:order_no, fn _ -> next_no end)
@@ -69,7 +69,7 @@ defmodule ApiServer.MicroService.OrderNoGenerator do
         new_state = state
         |> Map.put_new(:service_order_no, next_no)
         {:reply, next_no, new_state}
-      {:ok, value} -> 
+      value -> 
         {:ok, next_no}  = value |> NoGenerator.get_next_no
         new_state = state
         |> Map.update!(:service_order_no, fn _ -> next_no end)

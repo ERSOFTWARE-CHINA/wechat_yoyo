@@ -15,6 +15,9 @@ defmodule ApiServerWeb.UserVipView do
       id: user_vip.id,
       card_name: user_vip.vip_card.name,
       remainder: user_vip.remainder,
+      full_name: user_vip.user.full_name,
+      mobile: user_vip.user.mobile,
+      address: user_vip.user.address
     }
   end
 end

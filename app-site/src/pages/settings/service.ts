@@ -38,6 +38,10 @@ export class SettingsService {
       return this.http.put(url, p, getTokenOptions(null)).toPromise().then(res => {return res.json()});  
     }
 
+    pay(v) {
+      return this.http.post(baseUrl+"/orders/pay/order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
+    }
+
     
   
 }

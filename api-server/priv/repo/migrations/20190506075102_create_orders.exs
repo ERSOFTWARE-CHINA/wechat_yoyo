@@ -4,7 +4,7 @@ defmodule ApiServer.Repo.Migrations.CreateOrders do
   def change do
     create table(:orders) do
       add :ono, :string
-      add :amount, :float
+      add :amount, :integer
       add :date, :string
       add :pickup_type, :boolean
       add :name, :string

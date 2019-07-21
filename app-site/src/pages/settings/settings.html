@@ -30,12 +30,12 @@
 <ion-content>
   <div [ngSwitch]="content">
     <ion-item *ngSwitchCase="'account'">
-      <p>手机号：{{mobile}}
-      <p>邮寄地址：{{address}}</p>
-      <p>会员卡：{{accounts.card_name}}</p>
-      <p>余额：{{accounts.remainder}}</p>
+      <p>手机号：{{ mobile }}
+      <p>邮寄地址：{{ address }}</p>
+      <p>会员卡：{{ card_name }}</p>
+      <p>余额：{{ remainder }}</p>
       <button ion-button color="primary" icon-start (click)="modifyInfo()">
-        <ion-icon name='modify'></ion-icon>
+        <ion-icon name="create"></ion-icon>
         修改信息
       </button>
     </ion-item>
@@ -43,10 +43,17 @@
     <div *ngSwitchCase="'order'">
       <ion-list  *ngFor="let i of orders" >
         <ion-item>
+          <p>单号：{{i.ono}}</p>
           <p>产品：{{i.commodity}}</p>
           <p>数量：{{i.amount}}</p>
           <p>日期：{{i.date}}</p>
+          <p>支付：{{i.pay_status}}</p>
           <p>状态：{{i.status}}</p>
+          <button ion-button color="primary" icon-start (click)="pay(i)" *ngIf="i.pay_status == '未支付'">
+            <ion-icon name='logo-yen'></ion-icon>
+            支付
+          </button>
+          <p>-------------------------------------------------------------</p>
         </ion-item>
       
       </ion-list>
@@ -69,6 +76,7 @@
             <p>支付方式：{{i.pay_type}}</p>
             <p>金额：{{i.amount}}</p>
             <p>时间：{{i.datetime}}</p>
+            <p>-------------------------------------------------------------</p>
         </ion-item>
       </ion-list>
     </div>

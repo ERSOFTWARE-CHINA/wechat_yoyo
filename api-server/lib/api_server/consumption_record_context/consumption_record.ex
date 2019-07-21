@@ -2,6 +2,7 @@ defmodule ApiServer.ConsumptionRecordContext.ConsumptionRecord do
   use Ecto.Schema
   import Ecto.Changeset
   alias ApiServer.UserContext.User
+  alias ApiServer.Utils.DatetimeHandler
 
   schema "consumption_records" do
     field :name, :string #购买的vip卡、商品或服务的名称
@@ -18,7 +19,17 @@ defmodule ApiServer.ConsumptionRecordContext.ConsumptionRecord do
   @doc false
   def changeset(consumption_record, attrs) do
     consumption_record
-    |> cast(attrs, [:name, :type, :pay_type, :quantity, :amount, :datetime])
-    |> validate_required([:name, :type, :pay_type, :quantity, :amount, :datetime])
+    |> cast(attrs, [:name, :type, :pay_type, :quantity, :amount, :user_id])
+    |> validate_required([:name, :type, :pay_type, :quantity, :amount])
+    |> put_dt
   end
+
+  defp put_dt(changeset) do
+    if get_field(changeset, :datetime) == nil do
+      force_change(changeset, :datetime, DatetimeHandler.get_now_str)
+    else
+      changeset
+    end
+  end
+
 end

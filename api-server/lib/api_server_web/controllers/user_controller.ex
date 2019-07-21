@@ -58,8 +58,6 @@ defmodule ApiServerWeb.UserController do
     end
   end
 
-  
-
   # 验证用户注册时的用户名重复
   def check_username(conn, params) do
     case validate_username(params) do

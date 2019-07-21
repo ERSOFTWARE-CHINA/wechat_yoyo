@@ -20,6 +20,7 @@ import { Logger } from '../providers/logger/logger';
 import { Products } from '../providers/products/products';
 
 import { BusService } from '../share/bus.service';
+import { WechatService } from '../pages/login/auth.service';
 
 //自定义组件的引入
 //import { ComponentsModule } from '../components/components.module';
@@ -88,7 +89,8 @@ export function provideSettings(storage: Storage) {
     Wuzhapi,
     Logger,
     Products,
-    BusService
+    BusService,
+    WechatService
   ]
 })
 export class AppModule { }

@@ -9,7 +9,9 @@ defmodule ApiServer.OrderContext do
   alias ApiServer.OrderContext.Order
   alias ApiServer.UserContext.User
   alias ApiServer.CommodityContext.Commodity
+  alias ApiServer.UserVipContext.UserVip
   alias ApiServer.UserVipContext
+  alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
@@ -26,6 +28,8 @@ defmodule ApiServer.OrderContext do
     Order
     |> query_equal(%{"user_id" => user.id}, "user_id")
     |> query_equal(params, "status")
+    |> query_preload([:user, :commodity])
+    |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
 
@@ -34,6 +38,7 @@ defmodule ApiServer.OrderContext do
     |> query_equal(params, "status")
     |> query_equal(params, "pay_status")
     |> query_order_desc_by(params, "date")
+    |> query_preload([:user, :commodity])
     |> get_pagination(params)
   end
 
@@ -44,13 +49,14 @@ defmodule ApiServer.OrderContext do
 
   # 账户支付
   def pay_by_vip(order) do
-    user_vip = UserVipContext.get_by_user(order.user.wechat_openid)
+    user_vip = UserVipContext.get_by_user(order.user.wechat_openid, [:user, :vip_card])
     cond do
-      user_vip.remainder - order.amount >= 0 ->
+      user_vip.remainder - order.amount * order.commodity.current_price >= 0 ->
         ApiServer.Repo.transaction(fn ->
           update_order(order)
           update_commodity(order)
           update_user_vip(order, user_vip)
+          create_consumption_record(order, 1)
         end)
       true ->
         {:error, "Insufficient Balance"}
@@ -72,7 +78,7 @@ defmodule ApiServer.OrderContext do
 
   # 账户支付的情况：扣除账户金额
   def update_user_vip(order, user_vip) do
-    UserVip.changset(user_vip, %{ remainder: user_vip.remainder - order.amount }
+    UserVip.changeset(user_vip, %{ remainder: user_vip.remainder - order.amount * order.commodity.current_price})
     |> save_update
   end
 
@@ -88,6 +94,23 @@ defmodule ApiServer.OrderContext do
     |> get_by_id(order.commodity.id)
     Commodity.changeset(commodity, %{stock: commodity.stock - order.amount})
     |> save_update
+  end
+
+  # 创建消费记录
+  defp create_consumption_record(order, pay_type) do
+    p = %{
+      name: order.commodity.cname,
+      type: 1,
+      pay_type: pay_type,
+      quantity: order.amount,
+      amount: order.amount * order.commodity.current_price, 
+      user_id: order.user.id
+    }
+    IO.inspect "#############"
+    IO.inspect p
+    ConsumptionRecord.changeset(%ConsumptionRecord{}, p)
+    |> save_create
+    |> IO.inspect 
   end
 
 end

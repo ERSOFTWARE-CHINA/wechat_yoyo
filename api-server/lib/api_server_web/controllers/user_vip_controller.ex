@@ -11,7 +11,7 @@ defmodule ApiServerWeb.UserVipController do
   action_fallback ApiServerWeb.FallbackController
 
   def get_my(conn, %{"openid" => openid}) do
-    user_vip = get_by_user(openid, [:vip_card])
+    user_vip = get_by_user(openid, [:vip_card, :user])
     render(conn, "show.json", user_vip: user_vip)
   end
 

@@ -51,10 +51,10 @@ defmodule ApiServerWeb.OrderController do
     {:ok, order} = get_by_id(Order, id, [:commodity, :user])
     case pay_type do
       0 -> # 微信支付
-      json conn, %{:ok, ""}
+        json conn, %{ok: ""}
       1 -> # 账户
         with {:ok, _} <- pay_by_vip(order) do
-          json conn, %{:ok, "pay success"}
+          json conn, %{ok: "pay success"}
         end
       2 -> # 积分
         json conn, %{error: "not support"}
@@ -82,11 +82,11 @@ defmodule ApiServerWeb.OrderController do
   defp get_user_changeset(params) do
     params
     |> Map.get("user", %{})
-    |> Map.get("open_id")
+    |> Map.get("wechat_openid")
     |> case do
       nil -> nil
       open_id ->
-        case get_by_name(User, open_id: open_id) do
+        case get_by_name(User, wechat_openid: open_id) do
           {:error, _} -> nil
           {:ok, user} -> change(User, user)
         end

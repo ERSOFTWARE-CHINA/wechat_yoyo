@@ -15,6 +15,10 @@ export class CommodityDetailService {
       return this.http.post(this.url, v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
     }
 
+    pay(v) {
+      return this.http.post(this.url+"/pay/order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
+    }
+
     
   
 }

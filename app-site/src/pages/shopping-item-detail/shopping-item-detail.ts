@@ -51,6 +51,39 @@ export class ShoppingItemDetailPage implements OnInit {
       });
       prompt.present();
     }
+
+  doPayPrompt(data) {
+    // let v = {order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, commodity: {id: this.data.id}}}
+      
+      let amount = this.data.current_price * this.number;
+      //默认账户支付
+      let pay_type = 1;
+      //金额不够则使用微信支付
+      if (parseFloat(localStorage.getItem("remainder")) < amount) pay_type = 0;
+      let params = {id: data.id, order: data, pay_type: pay_type}
+      let prompt = this.alertCtrl.create({
+        title: '提示',
+        message: "您选择了："+ data.commodity + "* "+ data.amount + "共计：" + (this.data.current_price * this.number) + " 元,确定要支付吗？",
+        
+        buttons: [
+          {
+            text: '暂时不要',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: '现在支付',
+            handler: data => {
+              // this.navCtrl.push('SettingsPage');
+              if (pay_type == 1) this.srv.pay(params).then( resp=> this.navCtrl.push('ShoppingItemPage'));
+              if (pay_type ==0) console.log("微信支付！")
+            }
+          }
+        ]
+      });
+      prompt.present();
+    }
   
 
   ngOnInit() {
@@ -58,7 +91,6 @@ export class ShoppingItemDetailPage implements OnInit {
   }
 
   getData() {
-    
     this.data = this.bus.entity
   }
 
@@ -68,8 +100,8 @@ export class ShoppingItemDetailPage implements OnInit {
   }
 
   buy(){
-    localStorage.removeItem("address");
-    localStorage.removeItem("mobile");
+    // localStorage.removeItem("address");
+    // localStorage.removeItem("mobile");
     if (localStorage.getItem("address") && localStorage.getItem("mobile")) { this.beforeBuy = false }
     else this.doPrompt()
   }
@@ -83,8 +115,8 @@ export class ShoppingItemDetailPage implements OnInit {
   }
 
   submit(){
-    let v = {order: {amount: this.number, user: {wechat_openid: "19820325"}, commodity: {id: this.data.id}}}
-    this.srv.buy(v).then(resp => {if (resp.data) {this.showOK()} else{this.showError()} })
+    let v = {order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, commodity: {id: this.data.id}}}
+    this.srv.buy(v).then(resp => {if (resp.data) {console.log(resp.data); this.doPayPrompt(resp.data)} else{this.showError()} })
   }
 
   showError() {

@@ -4,15 +4,16 @@ defmodule ApiServer.OrderContext.Order do
 
   alias ApiServer.UserContext.User
   alias ApiServer.CommodityContext.Commodity
+  alias ApiServer.Utils.DatetimeHandler
 
   schema "orders" do
     field :ono, :string #订单号
-    field :amount, :float #数量
+    field :amount, :integer #数量
     field :date, :string #订单日期
     field :pickup_type, :boolean, default: true #取货方式 0-自取 1-物流
     field :name, :string #收件人姓名
     field :address, :string #收件人地址
-    field :status, :string, default: "a" #订单状态 "a"-已预定，“c”-已取消， “d”-已发货
+    field :status, :string, default: "a" #订单状态 "a"-已预定，"p"-已支付, “c”-已取消， “d”-已发货
     field :pay_status, :boolean, default: false #f: 未支付；t: 已支付
     belongs_to :user, User, on_replace: :nilify 
     belongs_to :commodity, Commodity, on_replace: :nilify
