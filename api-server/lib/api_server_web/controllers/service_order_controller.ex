@@ -20,6 +20,8 @@ defmodule ApiServerWeb.ServiceOrderController do
     order_changeset = ServiceOrder.changeset(%ServiceOrder{}, order_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
+    IO.inspect "################"
+    IO.inspect order_changeset
     with {:ok, %ServiceOrder{} = service_order} <- save_create(order_changeset) do
       render(conn, "show.json", service_order: service_order)
     end
@@ -74,7 +76,7 @@ defmodule ApiServerWeb.ServiceOrderController do
       open_id ->
         case get_by_name(User, wechat_openid: open_id) do
           {:error, _} -> nil
-          {:ok, user} -> {user, change(User, user)}
+          {:ok, user} -> change(User, user)
         end
     end
   end
@@ -88,7 +90,7 @@ defmodule ApiServerWeb.ServiceOrderController do
       id ->
         case get_by_id(Service, id) do
           {:error, _} -> nil
-          {:ok, service} -> {service, change(Service, service)}
+          {:ok, service} -> change(Service, service)
         end
     end
   end

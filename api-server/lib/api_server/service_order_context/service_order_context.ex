@@ -25,10 +25,12 @@ defmodule ApiServer.ServiceOrderContext do
 
   def page(%{"openid" => open_id} = params) do
     {:ok, user} = User
-    |> get_by_name(open_id: open_id)
+    |> get_by_name(wechat_openid: open_id)
     ServiceOrder
     |> query_equal(%{"user_id" => user.id}, "user_id")
     |> query_equal(params, "status")
+    |> query_preload([:service, :user])
+    |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
 

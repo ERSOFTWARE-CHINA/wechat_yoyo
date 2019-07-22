@@ -39,6 +39,7 @@ export class ServiceFormComponent implements OnInit {
         this.service.sname ? this.service.sname : null,
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
+      times: [this.service.times ? this.service.times : null, []],
       original_price: [this.service.original_price ? this.service.original_price : null, []],
       current_price: [this.service.current_price ? this.service.current_price : null, []],
       desc: [this.service.desc ? this.service.desc : null, []],

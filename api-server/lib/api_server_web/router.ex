@@ -35,6 +35,7 @@ defmodule ApiServerWeb.Router do
     put "/users/set/info", UserController, :set_info
     post "/wechat/pay_success", WechatController, :paid_callback
     post "/orders/pay/order", OrderController, :pay
+    post "/service_orders/pay/service_order", ServiceOrderController, :pay
     get "/user_vip", UserVipController, :get_my
     get "/username/check", UserController, :check_username
     get "/wechat", WechatController, :get_userinfo

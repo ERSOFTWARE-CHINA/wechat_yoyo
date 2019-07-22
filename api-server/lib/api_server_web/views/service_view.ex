@@ -20,6 +20,7 @@ defmodule ApiServerWeb.ServiceView do
     %{
       id: service.id,
       sname: service.sname,
+      times: service.times,
       original_price: service.original_price,
       current_price: service.current_price,
       desc: service.desc,

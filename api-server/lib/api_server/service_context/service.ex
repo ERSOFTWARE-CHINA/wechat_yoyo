@@ -20,7 +20,7 @@ defmodule ApiServer.ServiceContext.Service do
   @doc false
   def changeset(service, attrs) do
     service
-    |> cast(attrs, [:sname, :original_price, :current_price, :desc])
+    |> cast(attrs, [:sname, :times, :original_price, :current_price, :desc])
     |> validate_required([:sname])
     |> check_uuid(:uuid_01)
     |> check_uuid(:uuid_detail)

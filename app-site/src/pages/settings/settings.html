@@ -17,8 +17,11 @@
       <ion-segment-button value="order">
         商品订单
       </ion-segment-button>
+      <ion-segment-button value="service_order">
+        服务订单
+      </ion-segment-button>
       <ion-segment-button value="appointment">
-        服务预约
+        我的预约
       </ion-segment-button>
       <ion-segment-button value="record">
         消费记录
@@ -50,6 +53,25 @@
           <p>支付：{{i.pay_status}}</p>
           <p>状态：{{i.status}}</p>
           <button ion-button color="primary" icon-start (click)="pay(i)" *ngIf="i.pay_status == '未支付'">
+            <ion-icon name='logo-yen'></ion-icon>
+            支付
+          </button>
+          <p>-------------------------------------------------------------</p>
+        </ion-item>
+      
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'service_order'">
+      <ion-list  *ngFor="let i of service_orders" >
+        <ion-item>
+          <p>单号：{{i.sno}}</p>
+          <p>服务：{{i.service}}</p>
+          <p>数量：{{i.amount}}</p>
+          <p>日期：{{i.date}}</p>
+          <p>支付：{{i.pay_status}}</p>
+          <p>状态：{{i.status}}</p>
+          <button ion-button color="primary" icon-start (click)="pay_service_order(i)" *ngIf="i.pay_status == '未支付'">
             <ion-icon name='logo-yen'></ion-icon>
             支付
           </button>

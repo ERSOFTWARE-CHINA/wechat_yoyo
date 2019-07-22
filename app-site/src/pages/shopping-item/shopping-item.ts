@@ -28,6 +28,10 @@ export class ShoppingItemPage implements OnInit {
 
   }
 
+  ionViewDidEnter() {
+    this.getData();
+  }
+
   ngOnInit() {
     this.getData();
   }

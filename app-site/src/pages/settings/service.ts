@@ -20,6 +20,12 @@ export class SettingsService {
       return this.http.get(url, getTokenOptions(p)).toPromise().then(res => {return res.json()});      
     }
 
+    getServiceOrders(){
+      let url = baseUrl + "service_orders";
+      let p = {openid: localStorage.getItem("openid")};
+      return this.http.get(url, getTokenOptions(p)).toPromise().then(res => {return res.json()});      
+    }
+
     getAppointments(){
       let url = baseUrl + "appointments";
       let p = {openid: localStorage.getItem("openid")};
@@ -40,6 +46,10 @@ export class SettingsService {
 
     pay(v) {
       return this.http.post(baseUrl+"/orders/pay/order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
+    }
+
+    pay_service_order(v) {
+      return this.http.post(baseUrl+"/service_orders/pay/service_order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
     }
 
     

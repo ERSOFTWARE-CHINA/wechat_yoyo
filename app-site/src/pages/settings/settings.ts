@@ -29,6 +29,7 @@ export class SettingsPage implements OnInit {
   content: string = "account";
   // accounts: any = {card_name: "", remainder: null};
   orders: any[] = [];
+  service_orders: any[] = [];
   appointments: any[] = [];
   records: any[] =[];
 
@@ -105,6 +106,7 @@ export class SettingsPage implements OnInit {
     this.getAppointmentData();
     this.getOrderData();
     this.getRecordData();
+    this.getServiceOrderData();
   }
 
   get full_name(): any {
@@ -133,7 +135,10 @@ export class SettingsPage implements OnInit {
 
   getOrderData(){
     this.srv.getOrders().then(resp => this.orders = resp.data).then(_=>console.log(this.orders));
+  }
 
+  getServiceOrderData(){
+    this.srv.getServiceOrders().then(resp => this.service_orders = resp.data).then(_=>console.log(this.orders));
   }
 
   getAppointmentData(){
@@ -191,11 +196,51 @@ export class SettingsPage implements OnInit {
       prompt.present();
   }
 
+  doPayServiceOrderPrompt(i) {
+    // let v = {order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, commodity: {id: this.data.id}}}
+      
+      let value = i.price * i.amount;
+      //默认账户支付
+      let pay_type = 1;
+      //金额不够则使用微信支付
+      if (parseFloat(localStorage.getItem("remainder")) < value) pay_type = 0;
+      let params = {id: i.id, service_order: i, pay_type: pay_type}
+      let prompt = this.alertCtrl.create({
+        title: '提示',
+        message: "您选择了："+ i.service + "* "+ i.amount + " 件。 "+ "共计：" + value + " 元,确定要支付吗？",
+        
+        buttons: [
+          {
+            text: '暂时不要',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+          {
+            text: '现在支付',
+            handler: data => {
+              // this.navCtrl.push('SettingsPage');
+              if (pay_type == 1) this.srv.pay_service_order(params).then( resp=> this.getData());
+              if (pay_type ==0) console.log("微信支付！")
+            }
+          }
+        ]
+      });
+      prompt.present();
+  }
+
   pay(i) {
     // console.log(i)
     // let params = {id: i.id, order: i, pay_type: pay_type}
     // this.srv.pay(i)
     this.doPayPrompt(i)
+  }
+
+  pay_service_order(i) {
+    // console.log(i)
+    // let params = {id: i.id, order: i, pay_type: pay_type}
+    // this.srv.pay(i)
+    this.doPayServiceOrderPrompt(i)
   }
 
 }

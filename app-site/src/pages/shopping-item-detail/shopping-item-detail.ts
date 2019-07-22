@@ -29,28 +29,28 @@ export class ShoppingItemDetailPage implements OnInit {
     private srv: CommodityDetailService,
     private bus: BusService) {}
   
-    doPrompt() {
-      let prompt = this.alertCtrl.create({
-        title: '提示',
-        message: "购买之前需要将信息填写完整",
-        
-        buttons: [
-          {
-            text: '暂时不要',
-            handler: data => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            text: '现在填写',
-            handler: data => {
-              this.navCtrl.push('SettingsPage');
-            }
+  doPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: '提示',
+      message: "购买之前需要将信息填写完整",
+      
+      buttons: [
+        {
+          text: '暂时不要',
+          handler: data => {
+            console.log('Cancel clicked');
           }
-        ]
-      });
-      prompt.present();
-    }
+        },
+        {
+          text: '现在填写',
+          handler: data => {
+            this.navCtrl.push('SettingsPage');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
 
   doPayPrompt(data) {
     // let v = {order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, commodity: {id: this.data.id}}}
@@ -70,6 +70,7 @@ export class ShoppingItemDetailPage implements OnInit {
             text: '暂时不要',
             handler: data => {
               console.log('Cancel clicked');
+              this.navCtrl.push('ShoppingItemPage')
             }
           },
           {
@@ -139,7 +140,4 @@ export class ShoppingItemDetailPage implements OnInit {
     alert.present();
     this.navCtrl.push('ShoppingItemPage');
   }
-
-
-
 }

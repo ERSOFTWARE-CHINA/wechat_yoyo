@@ -21,8 +21,6 @@ export class ShoppingServiceDetailPage implements OnInit {
   data: any = {}
   beforeBuy = true;
   number = 1; //购买数量
-  total = 0;  //购买总价格
-  remainder = 0; //账户余额
 
   constructor(
     public navCtrl: NavController, 
@@ -33,13 +31,68 @@ export class ShoppingServiceDetailPage implements OnInit {
 
   }
 
+  doPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: '提示',
+      message: "购买之前需要将信息填写完整",
+      
+      buttons: [
+        {
+          text: '暂时不要',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '现在填写',
+          handler: data => {
+            this.navCtrl.push('SettingsPage');
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  doPayPrompt(data) {
+      let amount = this.data.current_price * this.number;
+      //默认账户支付
+      let pay_type = 1;
+      //金额不够则使用微信支付
+      if (parseFloat(localStorage.getItem("remainder")) < amount) pay_type = 0;
+      let params = {id: data.id, service_order: data, pay_type: pay_type}
+      let prompt = this.alertCtrl.create({
+        title: '提示',
+        message: "您选择了："+ data.service + "* "+ data.amount + "共计：" + (this.data.current_price * this.number) + " 元,确定要支付吗？",
+        
+        buttons: [
+          {
+            text: '暂时不要',
+            handler: data => {
+              console.log('Cancel clicked');
+              this.navCtrl.push('ShoppingServicePage')
+            }
+          },
+          {
+            text: '现在支付',
+            handler: data => {
+              // this.navCtrl.push('SettingsPage');
+              if (pay_type == 1) this.srv.pay(params).then( resp=> this.navCtrl.push('ShoppingServicePage'));
+              if (pay_type ==0) console.log("微信支付！")
+            }
+          }
+        ]
+      });
+      prompt.present();
+    }
+  
+
   ngOnInit() {
     this.getData();
   }
 
   getData() {
     this.data = this.bus.entity
-    console.log(this.data)
   }
 
 
@@ -48,7 +101,8 @@ export class ShoppingServiceDetailPage implements OnInit {
   }
 
   buy(){
-    this.beforeBuy = false;
+    if (localStorage.getItem("address") && localStorage.getItem("mobile")) { this.beforeBuy = false }
+    else this.doPrompt()
   }
 
   add(){
@@ -60,13 +114,8 @@ export class ShoppingServiceDetailPage implements OnInit {
   }
 
   submit(){
-    this.total = this.data.current_price * this.number;
-    this.checkAccount();
-    let v = {service_order: {amount: this.number, times: this.number * this.data.times, user: {wechat_openid: localStorage.getItem("openid")}, service: {id: this.data.id}},
-      pay_type: "优悠账户",
-      amount: this.number
-    }
-    this.srv.buy(v).then(resp => {if ((resp.result)=="ok") {this.showOK()} else{this.showError()} })
+    let v = {service_order: {amount: this.number, user: {wechat_openid: localStorage.getItem("openid")}, service: {id: this.data.id}}}
+    this.srv.buy(v).then(resp => {if (resp.data) {console.log(resp.data); this.doPayPrompt(resp.data)} else{this.showError()} })
   }
 
   showError() {
@@ -89,14 +138,5 @@ export class ShoppingServiceDetailPage implements OnInit {
     alert.present();
     this.navCtrl.push('ShoppingServicePage');
   }
-
-  //检查优悠账户余额是否足够
-  checkAccount(){
-    this.srv.getAccount().then(resp => {if (resp.data.remainder >= this.total) {
-      console.log("账户支付")
-    }else console.log("微信支付") });
-  }
-
-
 
 }

@@ -14,10 +14,8 @@ export class ServiceDetailService {
       return this.http.post(this.url, v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
     }
 
-    getAccount(){
-      let checkUrl = baseUrl + "user_vip"
-      let p = {openid: localStorage.getItem("openid")}
-      return this.http.get(checkUrl, getTokenOptions(p)).toPromise().then(res => {return res.json()})
+    pay(v) {
+      return this.http.post(this.url+"/pay/service_order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
     }
 
     
