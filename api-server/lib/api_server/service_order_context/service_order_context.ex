@@ -13,6 +13,7 @@ defmodule ApiServer.ServiceOrderContext do
   alias ApiServer.UserVipContext.UserVip
   alias ApiServer.UserVipContext
   alias ApiServer.ConsumptionRecordContext.ConsumptionRecord
+  alias ApiServer.UserServiceContext
   use ApiServer.BaseContext
 
   defmacro __using__(_opts) do
@@ -57,6 +58,7 @@ defmodule ApiServer.ServiceOrderContext do
           # update_commodity(order)
           update_user_vip(order, user_vip)
           create_consumption_record(order, 1)
+          create_or_update_user_service(order)
         end)
       true ->
         {:error, "Insufficient Balance"}
@@ -72,8 +74,8 @@ defmodule ApiServer.ServiceOrderContext do
 
     ApiServer.Repo.transaction(fn ->
       update_order(order)
-      # update_commodity(order)
       create_consumption_record(order, 0)
+      create_or_update_user_service(order)
     end)
   end
 
@@ -102,6 +104,20 @@ defmodule ApiServer.ServiceOrderContext do
     }
     ConsumptionRecord.changeset(%ConsumptionRecord{}, p)
     |> save_create
+  end
+
+  # 创建或修改用户对应服务次数记录
+  defp create_or_update_user_service(order) do
+    user_id = order.user.id
+    service_id = order.service.id
+    UserServiceContext.get_by_user_and_service(user_id, service_id)
+    |> case do
+      nil ->
+        UserServiceContext.create(user_id, service_id, order.amount * order.service.times)
+      rd ->
+        UserServiceContext.UserService.changeset(rd, %{times: rd.times + order.amount * order.service.times})
+        |> Repo.update
+    end
   end
 
 

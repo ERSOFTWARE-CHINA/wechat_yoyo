@@ -5,7 +5,7 @@ defmodule ApiServer.ServiceContext.Service do
 
   schema "services" do
     field :sname, :string
-    field :times, :integer
+    field :times, :integer, default: 1
     field :original_price, :float
     field :current_price, :float
     field :uuid_01, :string
