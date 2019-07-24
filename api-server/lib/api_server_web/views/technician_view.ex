@@ -21,11 +21,12 @@ defmodule ApiServerWeb.TechnicianView do
       id: technician.id,
       name: technician.name,
       occupation: technician.occupation,
-      characteristic: technician.characteristic,
+      characteristic: technician.characteristic |> parse_characteristic,
       order_times: technician.order_times,
       works: technician.works,
       good_times: technician.good_times,
       rank: div(technician.good_times || 0, technician.order_times || 1),
+      order_times: technician.order_times,
       avatar: getPicUrl(technician)
 
     }
@@ -40,5 +41,11 @@ defmodule ApiServerWeb.TechnicianView do
         base = Application.get_env(:api_server, ApiServerWeb.Endpoint)[:baseurl]
         base<>url
     end
+  end
+
+  # 
+  defp parse_characteristic(str) do
+    str
+    |> String.split( ",")
   end
 end
