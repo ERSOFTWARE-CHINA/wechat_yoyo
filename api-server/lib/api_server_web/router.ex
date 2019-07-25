@@ -41,6 +41,7 @@ defmodule ApiServerWeb.Router do
     get "/wechat", WechatController, :get_userinfo
     get "/verification_code", VerificationCodeController, :get_code
     get "/plug_auth_failure/:msg", AuthFailureController, :plug_auth_failure
+    get "/user_services/by_user", UserServiceController, :get_all_by_user
   end
 
   scope "/app-api/v1", ApiServerWeb do

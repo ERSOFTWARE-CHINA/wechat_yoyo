@@ -2,6 +2,8 @@ defmodule ApiServerWeb.ServiceController do
   use ApiServerWeb, :controller
 
   use ApiServer.ServiceContext
+  alias ApiServer.UserServiceContext
+  alias ApiServer.UserContext.User
 
   action_fallback ApiServerWeb.FallbackController
 
@@ -36,4 +38,5 @@ defmodule ApiServerWeb.ServiceController do
       render(conn, "show.json", service: service)
     end
   end
+  
 end

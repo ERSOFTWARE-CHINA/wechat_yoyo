@@ -11,10 +11,20 @@ defmodule ApiServer.UserServiceContext do
   alias ApiServer.ServiceContext.Service
   use ApiServer.BaseContext
 
+  defmacro __using__(_opts) do
+    quote do
+      import ApiServer.UserServiceContext
+      use ApiServer.BaseContext
+      alias ApiServer.UserServiceContext.UserService
+    end
+  end
+
   # 获取用户所有已购买的服务次数记录
   def get_all_buy_user(user_id) do
     UserService
     |> query_equal(%{"user_id" => user_id}, "user_id")
+    |> query_greater_than("times", 0)
+    |> query_preload([:user, :service])
     |> Repo.all
   end
 
