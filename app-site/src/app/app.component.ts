@@ -47,7 +47,8 @@ export class MyApp {
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'Home', component: 'HomePage' },
     { title: 'orderlist', component: 'OrderListPage' },
-    { title: 'Search', component: 'SearchPage' }
+    { title: 'Search', component: 'SearchPage' },
+    { title: 'PersonShow', component: 'PersonShowPage' }  
   ]
 
   constructor(
