@@ -8,7 +8,7 @@ defmodule ApiServer.AppointmentContext.Appointment do
   schema "appointments" do
     field :date, :string #预约日期
     field :time, :string #预约时间段
-    field :status, :string #状态
+    field :status, :string #状态 "0": 预约， "1"：完成， "-1": 取消
     belongs_to :user, User, on_replace: :nilify
     belongs_to :technician, Technician, on_replace: :nilify
     belongs_to :service, Service, on_replace: :nilify

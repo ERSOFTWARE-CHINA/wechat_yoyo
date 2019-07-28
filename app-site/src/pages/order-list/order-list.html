@@ -7,7 +7,7 @@
 <ion-content padding>
   <ion-item>
     <ion-label>已购服务</ion-label>
-    <ion-select interface="action-sheet" [(ngModel)]="selected" (ionChange)="optionsFn(i);">
+    <ion-select interface="action-sheet" [(ngModel)]="selected" (ionChange)="optionsFn();">
       <ion-option [value]="i.id" *ngFor="let i of data">{{ i.sname }}</ion-option>
     </ion-select>
   </ion-item>

@@ -24,14 +24,18 @@ defmodule ApiServer.AppointmentContext do
     Appointment
     |> query_equal(%{"user_id" => user.id}, "user_id")
     |> query_equal(params, "status")
+    |> query_equal(params, "date")
     |> get_pagination(params)
   end
 
   def page(params) do 
     Appointment
     |> query_equal(params, "status")
+    |> query_equal(params, "service_id")
+    |> query_equal(params, "technician_id")
     |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
+
 
 end

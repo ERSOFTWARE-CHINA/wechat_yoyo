@@ -56,6 +56,7 @@ export class OrderListPage implements OnInit  {
   goDay(){
     if (this.selected  != null) {
       this.bus.serviceToBeBook = this.selected;
+      console.log(this.bus.serviceToBeBook)
       this.navCtrl.push('OrderDayPage');
     } else this.doPrompt();
   }

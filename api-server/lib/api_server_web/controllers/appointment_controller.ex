@@ -55,11 +55,11 @@ defmodule ApiServerWeb.AppointmentController do
   defp get_user_changeset(params) do
     params
     |> Map.get("user", %{})
-    |> Map.get("open_id")
+    |> Map.get("openid")
     |> case do
       nil -> nil
       open_id ->
-        case get_by_name(User, open_id: open_id) do
+        case get_by_name(User, wechat_openid: open_id) do
           {:error, _} -> nil
           {:ok, user} -> change(User, user)
         end
@@ -80,19 +80,6 @@ defmodule ApiServerWeb.AppointmentController do
     end
   end
 
-  defp get_user_changeset(params) do
-    params
-    |> Map.get("user", %{})
-    |> Map.get("open_id")
-    |> case do
-      nil -> nil
-      open_id ->
-        case get_by_name(User, open_id: open_id) do
-          {:error, _} -> nil
-          {:ok, user} -> change(User, user)
-        end
-    end
-  end
 
   defp get_technician_changeset(params) do
     params

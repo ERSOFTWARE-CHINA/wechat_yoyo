@@ -17,18 +17,19 @@
 <ion-content padding>
   <ion-item>
       <ion-label>预约日期:</ion-label>
-      <ion-datetime [(ngModel)]="selectedDate" displayFormat="YYYY MM DD" [cancelText]="'取消'" [doneText]="'确定'" [min]="minDate" [max]="maxDate"></ion-datetime>
+      <ion-datetime [(ngModel)]="selectedDate" displayFormat="YYYY MM DD" [cancelText]="'取消'" [doneText]="'确定'" [min]="minDate" [max]="maxDate" (ionChange)="dateChanged(v)"></ion-datetime>
   </ion-item>
 
   <ion-grid class="grid-basic-page">
       <ion-row>
         
-        <button ion-button round small  *ngFor="let i of times" [disabled]="!i.enabled">
-          <ion-badge>{{ i.value }}</ion-badge>
+        <button ion-button round small  *ngFor="let i of times" [disabled]="!i.enabled" [color]="i.color" (click)="clickOne(i)">
+          {{ i.value }}
         </button>
         
       </ion-row>
   </ion-grid>
+  <button ion-button block  (click)="submit()">下一步</button>
 
   
 </ion-content>

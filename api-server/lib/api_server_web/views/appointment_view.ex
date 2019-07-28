@@ -4,7 +4,7 @@ defmodule ApiServerWeb.AppointmentView do
 
   def render("index.json", %{page: page}) do
     %{
-      data: render_many(page.entries, CommodityView, "commodity.json"),
+      data: render_many(page.entries, AppointmentView, "appointment.json"),
       page_number: page.page_number,
       page_size: page.page_size,
       total_entries: page.total_entries,
@@ -17,7 +17,10 @@ defmodule ApiServerWeb.AppointmentView do
   end
 
   def render("appointment.json", %{appointment: appointment}) do
-    %{id: appointment.id,
-      date: appointment.date}
+    %{
+      id: appointment.id,
+      date: appointment.date,
+      time: appointment.time
+    }
   end
 end
