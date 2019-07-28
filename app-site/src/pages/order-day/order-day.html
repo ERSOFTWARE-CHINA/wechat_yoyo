@@ -1,77 +1,34 @@
-<!--
-  Generated template for the OrderDayPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
   <ion-navbar>
     <ion-title>orderDay</ion-title>
   </ion-navbar>
 
-<!--
-  <h2 class="text-success">
-    Convolution
-  </h2>
-  <h2 [class]="successClass">
-    Convolution
-  </h2>
-  <h2 [class.text-danger] = "hasError">
-    Convolution
-  </h2>
-
-  <h2 [ngClass]="messageClasses">
-    Convolution
-  </h2>
--->
-
-
   <ion-toolbar no-border-top>
-    <ion-segment >
-      <ion-segment-button value="puppies">
-       5月13日星期一
-      </ion-segment-button>
-      <ion-segment-button value="kittens">
-        5月14日星期二
-      </ion-segment-button>   
-      <ion-segment-button value="puppies">
-          5月13日星期三
-         </ion-segment-button>
-         <ion-segment-button value="kittens">
-           5月14日星期四
-         </ion-segment-button>    <ion-segment-button value="puppies">
-            5月13日星期五
-           </ion-segment-button>
-           <ion-segment-button value="kittens">
-             5月14日星期六
-           </ion-segment-button>    <ion-segment-button value="puppies">
-              5月13日星期七
-             </ion-segment-button>
-      
-    </ion-segment>
-    
-
-</ion-toolbar>
+    <ion-item>
+      <ion-avatar item-start>
+        <img [src]="technician.avatar">
+      </ion-avatar>
+      <h2>{{ technician.name }}</h2>
+      <p>{{ technician.occupation }}</p>
+    </ion-item>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-grid>
+  <ion-item>
+      <ion-label>预约日期:</ion-label>
+      <ion-datetime [(ngModel)]="selectedDate" displayFormat="YYYY MM DD" [cancelText]="'取消'" [doneText]="'确定'" [min]="minDate" [max]="maxDate"></ion-datetime>
+  </ion-item>
 
-    <ion-row >
-        <ion-col  *ngFor="let item of this.showtodaylist.am">
-        <div><button   [class.text-danger]="item.isorder" ion-button color="secondary" round>{{item.showtime| date:'yyyy-MM-dd   HH:mm'}}</button></div>
-      </ion-col>     
-    </ion-row>
+  <ion-grid class="grid-basic-page">
+      <ion-row>
+        
+        <button ion-button round small  *ngFor="let i of times" [disabled]="!i.enabled">
+          <ion-badge>{{ i.value }}</ion-badge>
+        </button>
+        
+      </ion-row>
+  </ion-grid>
 
-    <ion-row >
-      <ion-col>
-      <div>下午</div>
-    </ion-col>     
-  </ion-row>
-    <ion-row >
-      <ion-col  *ngFor="let item of this.showtodaylist.pm">
-      <div><button   [class.text-danger]="item.isorder" ion-button color="secondary" round>{{item.showtime| date:'yyyy-MM-dd   HH:mm'}}</button></div>
-    </ion-col>     
-  </ion-row>
-</ion-grid>
+  
 </ion-content>

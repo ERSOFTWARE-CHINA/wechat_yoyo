@@ -54,7 +54,7 @@ export class OrderPresonPage {
   }
 
   book(i) {
-    this.bus.serviceToBeBook = i
+    this.bus.technicianToBeBook = i
     this.navCtrl.push("OrderListPage")
   }
 
