@@ -11,6 +11,7 @@ defmodule ApiServer.Repo.Migrations.CreateOrders do
       add :address, :string
       add :status, :string
       add :pay_status, :boolean
+      add :delivery_info, :string
 
       add :user_id, references(:users)
       add :commodity_id, references(:commodities)

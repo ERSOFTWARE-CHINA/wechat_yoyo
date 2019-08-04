@@ -35,6 +35,7 @@ defmodule ApiServer.OrderContext do
 
   def page(params) do 
     Order
+    |> query_like(params, "ono")
     |> query_equal(params, "status")
     |> query_equal(params, "pay_status")
     |> query_order_desc_by(params, "date")

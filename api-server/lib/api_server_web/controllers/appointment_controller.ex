@@ -16,12 +16,13 @@ defmodule ApiServerWeb.AppointmentController do
   def create(conn, %{"appointment" => appointment_params}) do
     user_changeset = get_user_changeset(appointment_params)
     service_changeset = get_service_changeset(appointment_params)
-    technician_changeset = get_technician_changeset(appointment_params)
+    {t, technician_changeset} = get_technician_changeset(appointment_params)
     appointment_changeset = Appointment.changeset(%Appointment{}, appointment_params)
     |> Ecto.Changeset.put_assoc(:user, user_changeset)
     |> Ecto.Changeset.put_assoc(:service, service_changeset)
     |> Ecto.Changeset.put_assoc(:technician, technician_changeset)
-    with {:ok, %Appointment{} = appointment} <- save_create(appointment_changeset) do
+    with {:ok, %Appointment{} = appointment} <- save_create(appointment_changeset),
+    {:ok, %Technician{} = technician} <- save_update(Technician.changeset(t, %{ order_times: t.order_times + 1})) do
       render(conn, "show.json", appointment: appointment)
     end
   end
@@ -34,13 +35,13 @@ defmodule ApiServerWeb.AppointmentController do
 
   def update(conn, %{"id" => id, "appointment" => appointment_params}) do
     {:ok, appointment} = get_by_id(Appointment, id, [:service, :technician, :user])
-    user_changeset = get_user_changeset(appointment_params)
-    service_changeset = get_service_changeset(appointment_params)
-    technician_changeset = get_technician_changeset(appointment_params)
+    # user_changeset = get_user_changeset(appointment_params)
+    # service_changeset = get_service_changeset(appointment_params)
+    # {t, technician_changeset} = get_technician_changeset(appointment_params)
     appointment_changeset = Appointment.changeset(appointment, appointment_params)
-    |> Ecto.Changeset.put_assoc(:user, user_changeset)
-    |> Ecto.Changeset.put_assoc(:service, service_changeset)
-    |> Ecto.Changeset.put_assoc(:technician, technician_changeset)
+    # |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    # |> Ecto.Changeset.put_assoc(:service, service_changeset)
+    # |> Ecto.Changeset.put_assoc(:technician, technician_changeset)
     with {:ok, %Appointment{} = appointment} <- save_update(appointment_changeset) do
       render(conn, "show.json", appointment: appointment)
     end
@@ -80,7 +81,6 @@ defmodule ApiServerWeb.AppointmentController do
     end
   end
 
-
   defp get_technician_changeset(params) do
     params
     |> Map.get("technician", %{})
@@ -90,7 +90,7 @@ defmodule ApiServerWeb.AppointmentController do
       id ->
         case get_by_id(Technician, id) do
           {:error, _} -> nil
-          {:ok, technician} -> change(Technician, technician)
+          {:ok, technician} -> {technician, change(Technician, technician)}
         end
     end
   end

@@ -31,11 +31,11 @@ defmodule ApiServerWeb.OrderController do
 
   def update(conn, %{"id" => id, "order" => order_params}) do
     {:ok, order} = get_by_id(Order, id, [:commodity, :user])
-    user_changeset = get_user_changeset(order_params)
-    commodity_changeset = get_commodity_changeset(order_params)
+    # user_changeset = get_user_changeset(order_params)
+    # commodity_changeset = get_commodity_changeset(order_params)
     order_changeset = Order.changeset(order, order_params)
-    |> Ecto.Changeset.put_assoc(:user, user_changeset)
-    |> Ecto.Changeset.put_assoc(:commodity, commodity_changeset)
+    # |> Ecto.Changeset.put_assoc(:user, user_changeset)
+    # |> Ecto.Changeset.put_assoc(:commodity, commodity_changeset)
     with {:ok, %Order{} = order} <- save_update(order_changeset) do
       render(conn, "show.json", order: order)
     end

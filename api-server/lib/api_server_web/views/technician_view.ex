@@ -25,12 +25,21 @@ defmodule ApiServerWeb.TechnicianView do
       order_times: technician.order_times,
       works: technician.works,
       good_times: technician.good_times,
-      rank: div(technician.good_times || 0, technician.order_times || 1),
+      # rank: technician |> resolve_rank,
       order_times: technician.order_times,
       avatar: getPicUrl(technician)
 
     }
   end
+
+  # 
+  # defp resolve_rank(technician) do
+  #   technician.order_times
+  #   |> case do
+  #     0 -> "100%"
+  #     n -> div(technician.good_times, n) |> Float.to_string
+  #   end
+  # end
 
   # 获avatar图片url
   defp getPicUrl(technician) do

@@ -15,6 +15,7 @@ defmodule ApiServer.OrderContext.Order do
     field :address, :string #收件人地址
     field :status, :string, default: "a" #订单状态 "a"-已预定，"p"-已支付, “c”-已取消， “d”-已发货
     field :pay_status, :boolean, default: false #f: 未支付；t: 已支付
+    field :delivery_info, :string #发货信息
     belongs_to :user, User, on_replace: :nilify 
     belongs_to :commodity, Commodity, on_replace: :nilify
 
@@ -24,7 +25,7 @@ defmodule ApiServer.OrderContext.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:ono, :amount, :date, :pickup_type, :name, :address, :status, :pay_status])
+    |> cast(attrs, [:ono, :amount, :date, :pickup_type, :name, :address, :status, :pay_status, :delivery_info])
     |> put_ono
     |> put_dt
     |> validate_required([:ono])

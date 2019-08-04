@@ -84,7 +84,16 @@
     <div *ngSwitchCase="'appointment'">
       <ion-list *ngFor="let i of appointments">
         <ion-item>
-          
+          <p>日期：{{i.date}}</p>
+          <p>时间：{{i.time}}</p>
+          <p>技师：{{i.technician}}</p>
+          <p>服务：{{i.service}}</p>
+          <p>状态：{{i.status}}</p>
+          <button ion-button color="primary" icon-start (click)="cancel_appointment(i)" *ngIf="i.status == '已预约'">
+            <ion-icon name='close'></ion-icon>
+            取消
+          </button>
+          <p>-------------------------------------------------------------</p>
         </ion-item>
       </ion-list>
     </div>

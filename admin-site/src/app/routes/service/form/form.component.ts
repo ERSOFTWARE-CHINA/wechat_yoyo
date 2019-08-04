@@ -10,6 +10,7 @@ import { ServiceService } from '../service/service.service';
 import { getFormData } from '../../../utils/formmat';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'service-form',
   templateUrl: './form.component.html',
   // styleUrls: ['./form.component.less'],

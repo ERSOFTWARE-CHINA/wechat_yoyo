@@ -25,17 +25,34 @@ defmodule ApiServer.AppointmentContext do
     |> query_equal(%{"user_id" => user.id}, "user_id")
     |> query_equal(params, "status")
     |> query_equal(params, "date")
+    |> query_order_desc_by(params, "date")
+    |> query_preload([:technician, :service, :user])
+    |> get_pagination(params)
+  end
+
+  # 预约提醒
+  def page(%{"show_appointments" => _} = params) do 
+    Appointment
+    |> query_equal(params, "status")
+    |> query_equal(params, "date")
+    |> query_greater_than("time", params |> Map.get("time"))
+    |> query_preload([:technician, :service, :user])
+    |> query_order_by(params, "time")
     |> get_pagination(params)
   end
 
   def page(params) do 
     Appointment
     |> query_equal(params, "status")
-    |> query_equal(params, "service_id")
     |> query_equal(params, "technician_id")
+    |> query_equal(params, "date")
+    |> query_equal(params, "time")
+    |> query_preload([:technician, :service, :user])
     |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
+
+  
 
 
 end

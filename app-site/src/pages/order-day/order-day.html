@@ -17,7 +17,7 @@
 <ion-content padding>
   <ion-item>
       <ion-label>预约日期:</ion-label>
-      <ion-datetime [(ngModel)]="selectedDate" displayFormat="YYYY MM DD" [cancelText]="'取消'" [doneText]="'确定'" [min]="minDate" [max]="maxDate" (ionChange)="dateChanged(v)"></ion-datetime>
+      <ion-datetime [(ngModel)]="selectedDate" displayFormat="YYYY MM DD" [cancelText]="'取消'" [doneText]="'确定'" [min]="minDate" [max]="maxDate" (ionChange)="dateChanged()"></ion-datetime>
   </ion-item>
 
   <ion-grid class="grid-basic-page">

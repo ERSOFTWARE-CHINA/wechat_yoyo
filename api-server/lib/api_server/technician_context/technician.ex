@@ -7,9 +7,9 @@ defmodule ApiServer.TechnicianContext.Technician do
     field :name, :string
     field :occupation, :string #职业
     field :characteristic, :string #性格，例：开朗、活泼
-    field :order_times, :integer #预约次数
-    field :works, :integer #作品数目
-    field :good_times, :float #好评次数
+    field :order_times, :integer, default: 0 #预约次数
+    field :works, :integer, default: 0 #作品数目
+    field :good_times, :integer #好评次数
     field :uuid, :string
     field :avatar, ApiServer.TechnicianAvatarImage.Type #头像
 

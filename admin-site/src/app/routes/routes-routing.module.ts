@@ -20,6 +20,7 @@ import { UserRegisterResultComponent } from './passport/register-result/register
 import { UserLockComponent } from './passport/lock/lock.component';
 
 import { UserComponent } from './user/user.component';
+import { ShowAppointmentComponent } from './showAppointment/showAppointment.component';
 
 const routes: Routes = [
   {
@@ -48,9 +49,13 @@ const routes: Routes = [
       { path: 'service', loadChildren: './service/service.module#ServiceModule' },
       { path: 'commodity', loadChildren: './commodity/commodity.module#CommodityModule' },
       { path: 'technician', loadChildren: './technician/technician.module#TechnicianModule' },
+      { path: 'appointment', loadChildren: './appointments/appointment.module#AppointmentModule' },
+      { path: 'orders', loadChildren: './commodityOrder/commodityOrder.module#CommodityOrderModule' },
+      { path: 'show-appointments', loadChildren: './showAppointment/showAppointment.module#ShowAppointmentModule' },
     ],
   },
   // 全屏布局
+
   // {
   //   path: 'data-v',
   //   component: LayoutFullScreenComponent,

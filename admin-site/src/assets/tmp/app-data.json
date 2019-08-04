@@ -38,6 +38,18 @@
           {
             "text": "服务产品管理",
             "link": "/service"
+          },
+          {
+            "text": "预约管理",
+            "link": "/appointment"
+          },
+          {
+            "text": "订单管理",
+            "link": "/orders"
+          },
+          {
+            "text": "预约提醒",
+            "link": "/show-appointments"
           }
         ]
       }

@@ -134,11 +134,11 @@ export class SettingsPage implements OnInit {
   }
 
   getOrderData(){
-    this.srv.getOrders().then(resp => this.orders = resp.data).then(_=>console.log(this.orders));
+    this.srv.getOrders().then(resp => this.orders = resp.data);
   }
 
   getServiceOrderData(){
-    this.srv.getServiceOrders().then(resp => this.service_orders = resp.data).then(_=>console.log(this.orders));
+    this.srv.getServiceOrders().then(resp => this.service_orders = resp.data);
   }
 
   getAppointmentData(){
@@ -146,7 +146,7 @@ export class SettingsPage implements OnInit {
   }
 
   getRecordData(){
-    this.srv.getRecords().then(resp => this.records = resp.data).then(_=>{console.log("消费记录"); console.log(this.records)});
+    this.srv.getRecords().then(resp => this.records = resp.data);
   }
 
   modifyInfo(){
@@ -241,6 +241,10 @@ export class SettingsPage implements OnInit {
     // let params = {id: i.id, order: i, pay_type: pay_type}
     // this.srv.pay(i)
     this.doPayServiceOrderPrompt(i)
+  }
+
+  cancel_appointment(i) {
+    this.srv.cancel_appointment(i).then(resp => this.getAppointmentData())
   }
 
 }

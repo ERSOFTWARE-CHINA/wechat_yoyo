@@ -52,6 +52,12 @@ export class SettingsService {
       return this.http.post(baseUrl+"/service_orders/pay/service_order", v, getTokenOptions(null)).toPromise().then(res => {return res.json()});
     }
 
+    cancel_appointment(i) {
+      let url = baseUrl + `appointments/${i.id}`;
+      let p = {appointment: {status:  "-1"}}
+      return this.http.put(url, p, getTokenOptions(null)).toPromise().then(res => {return res.json()});  
+    }
+
     
   
 }

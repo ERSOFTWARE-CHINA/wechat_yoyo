@@ -25,6 +25,10 @@ defmodule ApiServerWeb.OrderView do
       amount: order.amount,
       pay_status: order.pay_status |> parse_pay_status,
       status: order.status |> parse_status,
+      delivery_info: order.delivery_info,
+      name: order.user.name,
+      address: order.user.address,
+      mobile: order.user.mobile,
       date: order.date
     }
   end

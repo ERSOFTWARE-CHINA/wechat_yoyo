@@ -20,7 +20,20 @@ defmodule ApiServerWeb.AppointmentView do
     %{
       id: appointment.id,
       date: appointment.date,
-      time: appointment.time
+      time: appointment.time,
+      technician: appointment.technician.name,
+      user: appointment.user.full_name,
+      service: appointment.service.sname,
+      status: appointment.status |> parse_status
     }
+  end
+
+  defp parse_status(status) do
+    status
+    |> case do
+      "0" -> "已预约"
+      "1" -> "已完成"
+      "-1" -> "已取消"
+    end
   end
 end

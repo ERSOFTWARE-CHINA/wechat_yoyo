@@ -40,17 +40,17 @@ export class OrderListPage implements OnInit  {
     this.srv.list(this.q)
       .then(resp => {
         if (resp.error) {
-          console.log(resp.error)
+          // console.log(resp.error)
         } else {
           this.data = resp.data; 
-          console.log(this.data);
+          // console.log(this.data);
         }
       })
       .catch((error) => {error => console.log(error)})
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrderListPage');
+    // console.log('ionViewDidLoad OrderListPage');
   }
 
   goDay(){
@@ -62,7 +62,7 @@ export class OrderListPage implements OnInit  {
   }
 
   optionsFn() {
-    console.log(this.selected)
+    // console.log(this.selected)
   }
 
   doPrompt() {

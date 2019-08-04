@@ -1,0 +1,127 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">订单号</nz-form-label>
+              <nz-form-control>
+                <input nz-input [(ngModel)]="q.ono" name="ono" placeholder="请输入" id="ono" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="8" nzSm="24">
+            <nz-form-item>
+              <nz-form-label nzFor="no">支付状态</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="q.pay_status" name="pay_status" [nzPlaceHolder]="'请选择支付状态'"
+                  [nzShowSearch]="true">
+                  <nz-option *ngFor="let i of pay_status" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="8" nzSm="24" *ngIf="expandForm">
+            <nz-form-item>
+              <nz-form-label nzFor="no">订单状态</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="q.status" name="status" [nzPlaceHolder]="'请选择订单状态'" [nzShowSearch]="true">
+                  <nz-option *ngFor="let i of status" [nzLabel]="i.label" [nzValue]="i.value"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+            <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+            <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+            <a (click)="expandForm = !expandForm">
+              {{ expandForm ? '收起' : '展开' }}
+              <i nz-icon [nzType]="expandForm ? 'up' : 'down'"></i>
+            </a>
+          </div>
+        </div>
+      </form>
+      <!-- <div class="mb-md">
+        <button nz-button (click)="add()" [nzType]="'primary'">
+          <i nz-icon nzType="plus"></i>
+          <span>新建</span>
+        </button>
+      </div> -->
+
+      <nz-table #nzTable [nzData]="data" [nzTotal]="total" [nzPageSize]="q.ps" [nzLoading]="loading"
+        (nzPageIndexChange)="pageChange($event)" nzShowSizeChanger>
+        <thead nz-thead (nzSortChange)="sort($event)" nzSingleSort>
+          <tr>
+
+            <th nz-th nzShowSort nzSortKey="ono">
+              <span>订单号</span>
+            </th>
+            <th nz-th nzShowSort nzSortKey="date">
+              <span>订单时间</span>
+            </th>
+            <th nz-th>
+              <span>商品</span>
+            </th>
+            <th nz-th>
+              <span>数量</span>
+            </th>
+            <th nz-th>
+              <span>姓名</span>
+            </th>
+            <th nz-th>
+              <span>地址</span>
+            </th>
+            <th nz-th>
+              <span>电话</span>
+            </th>
+            <th nz-th>
+              <span>支付状态</span>
+            </th>
+            <th nz-th>
+              <span>订单状态</span>
+            </th>
+            <th nz-th>
+              <span>发货信息</span>
+            </th>
+            <th nz-th>
+              <span>操作</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <tr nz-tbody-tr *ngFor="let i of nzTable.data">
+            <td nz-td>{{i.ono}}</td>
+            <td nz-td>{{i.date}}</td>
+            <td nz-td>{{i.commodity}}</td>
+            <td nz-td>{{i.amount}}</td>
+            <td nz-td>{{i.name}}</td>
+            <td nz-td>{{i.address}}</td>
+            <td nz-td>{{i.mobile}}</td>
+            <td nz-td>{{i.pay_status}}</td>
+            <td nz-td>{{i.status}}</td>
+            <td nz-td>{{i.delivery_info}}</td>
+            <td nz-td>
+              <a (click)="delivery(modalContent, i)">发货</a>
+              <span nz-table-divider></span>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)="cancel(i)">取消</a>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-card>
+  </div>
+</div>
+
+<ng-template #modalContent>
+  <nz-form-item>
+    <nz-form-label nzFor="no">描述</nz-form-label>
+    <nz-form-control>
+      <input nz-input [(ngModel)]="delivery_info" name="delivery_info" placeholder="请输入" id="delivery_info" />
+    </nz-form-control>
+  </nz-form-item>
+</ng-template>

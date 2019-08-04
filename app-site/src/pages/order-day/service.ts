@@ -12,7 +12,6 @@ export class AppointmentService {
 
     // 获取所有当天有效的预约
     list(date,service_id, technician_id) {
-        console.log(service_id )
         let p = {status: "0", date: date, service_id: service_id, technician_id: technician_id}
         return this.http.get(this.url, getTokenOptions(p))
          .toPromise().then(res => {return res.json()})           
