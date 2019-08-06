@@ -51,11 +51,10 @@ const routes: Routes = [
       { path: 'technician', loadChildren: './technician/technician.module#TechnicianModule' },
       { path: 'appointment', loadChildren: './appointments/appointment.module#AppointmentModule' },
       { path: 'orders', loadChildren: './commodityOrder/commodityOrder.module#CommodityOrderModule' },
-      { path: 'show-appointments', loadChildren: './showAppointment/showAppointment.module#ShowAppointmentModule' },
     ],
   },
   // 全屏布局
-
+  { path: 'show-appointments', loadChildren: './showAppointment/showAppointment.module#ShowAppointmentModule' },
   // {
   //   path: 'data-v',
   //   component: LayoutFullScreenComponent,

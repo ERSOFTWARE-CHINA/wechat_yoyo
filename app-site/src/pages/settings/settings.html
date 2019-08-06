@@ -44,72 +44,113 @@
     </ion-item>
 
     <div *ngSwitchCase="'order'">
-      <ion-list  *ngFor="let i of orders" >
-        <ion-item>
-          <p>单号：{{i.ono}}</p>
-          <p>产品：{{i.commodity}}</p>
-          <p>数量：{{i.amount}}</p>
-          <p>日期：{{i.date}}</p>
-          <p>支付：{{i.pay_status}}</p>
-          <p>状态：{{i.status}}</p>
-          <button ion-button color="primary" icon-start (click)="pay(i)" *ngIf="i.pay_status == '未支付'">
-            <ion-icon name='logo-yen'></ion-icon>
-            支付
-          </button>
-          <p>-------------------------------------------------------------</p>
-        </ion-item>
+      <div *ngFor="let i of orders" >
+        <p class="orderdate" > {{i.date}} </p>
+        <ion-card>
+          <ion-card-title>
+            <ion-icon class="home" name="cart"></ion-icon><span class="cardtitle">{{i.commodity}}</span>
+          </ion-card-title>
+          <div class="cardcontent">
+            <ion-row no-padding>
+              <ion-col text-left >
+                <p>{{i.amount}}件</p>
+                <p>{{i.pay_status}}</p>
+                <p>No.{{i.ono}}</p>
+              </ion-col>
+              <ion-col text-right >
+                <p>{{i.status}}</p>
+              </ion-col>
+              </ion-row>
+              <ion-item>
+                <button ion-button icon-start  item-right 
+                  (click)="pay(i)" [disabled]="!(i.pay_status=='未支付')" outline >
+                  支付
+                </button>
+              </ion-item>
+          </div>
+        </ion-card>
+      </div>
       
-      </ion-list>
     </div>
 
     <div *ngSwitchCase="'service_order'">
-      <ion-list  *ngFor="let i of service_orders" >
-        <ion-item>
-          <p>单号：{{i.sno}}</p>
-          <p>服务：{{i.service}}</p>
-          <p>数量：{{i.amount}}</p>
-          <p>日期：{{i.date}}</p>
-          <p>支付：{{i.pay_status}}</p>
-          <p>状态：{{i.status}}</p>
-          <button ion-button color="primary" icon-start (click)="pay_service_order(i)" *ngIf="i.pay_status == '未支付'">
-            <ion-icon name='logo-yen'></ion-icon>
-            支付
-          </button>
-          <p>-------------------------------------------------------------</p>
-        </ion-item>
-      
-      </ion-list>
+      <div *ngFor="let i of service_orders" >
+        <p class="orderdate" > {{i.date}} </p>
+        <ion-card>
+          <ion-card-title>
+            <ion-icon class="home" name="cart"></ion-icon><span class="cardtitle">{{i.service}}</span>
+          </ion-card-title>
+          <div class="cardcontent">
+            <ion-row no-padding>
+              <ion-col text-left >
+                <p>{{i.amount}}件</p>
+                <p>{{i.pay_status}}</p>
+                <p>No.{{i.sno}}</p>
+              </ion-col>
+              <!-- <ion-col text-right >
+                <p>{{i.status}}</p>
+              </ion-col> -->
+              </ion-row>
+              <ion-item>
+                <button ion-button icon-start  item-right 
+                  (click)="pay_service_order(i)" [disabled]="!(i.pay_status=='未支付')" outline >
+                  支付
+                </button>
+              </ion-item>
+          </div>
+        </ion-card>
+      </div>
     </div>
 
     <div *ngSwitchCase="'appointment'">
-      <ion-list *ngFor="let i of appointments">
-        <ion-item>
-          <p>日期：{{i.date}}</p>
-          <p>时间：{{i.time}}</p>
-          <p>技师：{{i.technician}}</p>
-          <p>服务：{{i.service}}</p>
-          <p>状态：{{i.status}}</p>
-          <button ion-button color="primary" icon-start (click)="cancel_appointment(i)" *ngIf="i.status == '已预约'">
-            <ion-icon name='close'></ion-icon>
-            取消
-          </button>
-          <p>-------------------------------------------------------------</p>
-        </ion-item>
-      </ion-list>
+        <div *ngFor="let i of appointments" >
+            <p class="orderdate" > {{i.date + " " + i.time}} </p>
+            <ion-card>
+              <ion-card-title>
+                <ion-icon class="home" name="cart"></ion-icon><span class="cardtitle">{{i.service}}</span>
+              </ion-card-title>
+              <div class="cardcontent">
+                <ion-row no-padding>
+                  <ion-col text-left >
+                    <p>{{i.technician}}</p>
+                  </ion-col>
+                  <ion-col text-right >
+                    <p>{{i.status}}</p>
+                  </ion-col>
+                  </ion-row>
+                  <ion-item>
+                    <button ion-button icon-start  item-right 
+                      (click)="cancel_appointment(i)" [disabled]="!(i.status=='已预约')" outline >
+                      <ion-icon name='close'></ion-icon>
+                      取消
+                    </button>
+                  </ion-item>
+              </div>
+            </ion-card>
+          </div>
     </div>
     
 
     <div *ngSwitchCase="'record'">
-      <ion-list *ngFor="let i of records">
-        <ion-item>
-            <p>产品：{{i.name}}</p>
-            <p>消费类型：{{i.type}}</p>
-            <p>支付方式：{{i.pay_type}}</p>
-            <p>金额：{{i.amount}}</p>
-            <p>时间：{{i.datetime}}</p>
-            <p>-------------------------------------------------------------</p>
-        </ion-item>
-      </ion-list>
+        <div *ngFor="let i of records" >
+            <p class="orderdate" > {{i.datetime}} </p>
+            <ion-card>
+              <ion-card-title>
+                <ion-icon class="home" name="cart"></ion-icon><span class="cardtitle">{{i.name}}</span>
+              </ion-card-title>
+              <div class="cardcontent">
+                <ion-row no-padding>
+                  <ion-col text-left >
+                    <p>金额：{{i.amount}}</p>
+                    <p>类型：{{i.type}}</p>
+                    <p>支付方式：{{i.pay_type}}</p>
+                  </ion-col>
+  
+                </ion-row>
+                  
+              </div>
+            </ion-card>
+          </div>
     </div>
   </div>
 </ion-content>

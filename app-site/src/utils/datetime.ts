@@ -33,6 +33,14 @@ export function getDate() {
   return year+"-"+ month + "-" + date
 }
 
+export function getTime() {
+  let now = new Date()
+  let hour = getStr(now.getHours())
+  let minute = getStr(now.getMinutes())
+  console.log(hour+":"+ minute)
+  return hour+":"+ minute
+}
+
 export function getDateAfterThreeMonth() {
   let now = new Date()
   now.setDate(now.getDate() + 180);

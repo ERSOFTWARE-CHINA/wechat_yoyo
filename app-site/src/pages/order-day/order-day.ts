@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { stringify } from '@angular/core/src/render3/util';
 import { BusService } from '../../share/bus.service';
 
-import { getDate, getDateAfterDays } from '../../utils/datetime';
+import { getDate, getDateAfterDays, getTime } from '../../utils/datetime';
 import { AppointmentService } from './service';
 
 @IonicPage()
@@ -54,10 +54,12 @@ export class OrderDayPage implements OnInit {
   setEnabled(data) {
     for (let i in this.times) {
       this.times[i]["enabled"] = true
+      if (this.times[i]["value"] <= getTime()) this.times[i]["enabled"] = false
       for (let j in data) {
         if (this.times[i]["value"] == data[j]["time"]) {
           this.times[i]["enabled"] = false
         }
+        
       }
     }
   }

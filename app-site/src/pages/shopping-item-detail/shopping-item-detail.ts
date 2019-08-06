@@ -140,4 +140,8 @@ export class ShoppingItemDetailPage implements OnInit {
     alert.present();
     this.navCtrl.push('ShoppingItemPage');
   }
+
+  check() {
+    this.navCtrl.push('SettingsPage');
+  }
 }

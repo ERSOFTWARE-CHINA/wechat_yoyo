@@ -139,4 +139,8 @@ export class ShoppingServiceDetailPage implements OnInit {
     this.navCtrl.push('ShoppingServicePage');
   }
 
+  check() {
+    this.navCtrl.push('SettingsPage');
+  }
+
 }

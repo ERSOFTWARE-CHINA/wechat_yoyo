@@ -1,3 +1,38 @@
 page-settings {
-
+ 
+  .validorder{
+    font-size: 10px;
+}
+.orderdate{
+       border-radius:25px;
+       background-color: lightskyblue;
+       color: aliceblue;
+       width:45%;
+       margin-left:10px;
+       padding-left:10px;
+      }
+.home{ 
+   color: aliceblue;
+   background-color: lightskyblue;
+   border-radius:45%;
+   padding: 3px;
+   margin-left: 8px;
+   margin-right: 5px;
+   font-size:2px;
+}
+.car{ 
+   color: aliceblue;
+   background-color: orange;
+   border-radius:42%;
+   padding: 3px;
+   margin-left: 8px;
+   margin-right: 6px;
+   font-size:2px;
+}
+.cardtitle{//卡头
+  font-size: 18px;
+}
+.cardcontent{//卡片内部格式
+  margin-left: 23px;
+}
 }

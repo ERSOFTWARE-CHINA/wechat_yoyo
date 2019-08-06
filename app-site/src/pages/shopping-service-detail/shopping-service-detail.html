@@ -1,5 +1,8 @@
 <ion-header>
     <ion-navbar>
+        <ion-title>
+            购买服务
+          </ion-title>
     </ion-navbar>
 </ion-header>
   
@@ -25,7 +28,7 @@
   <ion-toolbar>
     <ion-row *ngIf="beforeBuy">
       <ion-col>
-        <button ion-button color="danger"  small full icon-start>
+        <button ion-button color="danger"  (click)="check()" small full icon-start>
           <ion-icon name='text'></ion-icon>
           我的订单
         </button>
