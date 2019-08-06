@@ -25,7 +25,11 @@ import { WechatService } from '../pages/login/auth.service';
 //自定义组件的引入
 //import { ComponentsModule } from '../components/components.module';
 
-//测试组件模式
+
+
+//ionic3图片预览插件
+import * as ionicGalleryModal from 'ionic-gallery-modal';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -50,12 +54,14 @@ export function provideSettings(storage: Storage) {
 
 @NgModule({
   declarations: [
-    MyApp 
+    MyApp,    
+
   ],
   imports: [
     BrowserModule,
     HttpModule,
     HttpClientModule, 
+    ionicGalleryModal.GalleryModalModule,//ionic3图片预览插件
     //ComponentsModule,   
     TranslateModule.forRoot({
       loader: {
@@ -71,7 +77,7 @@ export function provideSettings(storage: Storage) {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,  
+    MyApp, 
   ],
   providers: [
     Api,
@@ -90,7 +96,12 @@ export function provideSettings(storage: Storage) {
     Logger,
     Products,
     BusService,
-    WechatService
+    WechatService,
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: ionicGalleryModal.GalleryModalHammerConfig,
+    },
+
   ]
 })
 export class AppModule { }
