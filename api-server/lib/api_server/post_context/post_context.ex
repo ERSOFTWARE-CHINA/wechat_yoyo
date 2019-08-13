@@ -22,6 +22,8 @@ defmodule ApiServer.PostContext do
     Post
     |> query_like(params, "title")
     |> query_order_desc_by(params, "date")
+    |> query_preload([:post_images, :technician, :post_comments])
+    |> query_order_desc_by(params, "date")
     |> get_pagination(params)
   end
 end

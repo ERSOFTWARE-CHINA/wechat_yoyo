@@ -6,7 +6,7 @@ defmodule ApiServer.Repo.Migrations.CreatePosts do
       add :title, :string
       add :date, :string
       add :good, :integer 
-      add :user_id, references(:users)
+      add :technician_id, references(:technicians)
       timestamps()
     end
 
