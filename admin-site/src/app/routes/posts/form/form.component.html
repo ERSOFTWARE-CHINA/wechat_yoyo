@@ -1,0 +1,72 @@
+<div nz-row [nzGutter]="24" class="pt-lg">
+  <div nz-col nzXs="24" nzSm="12" nzMd="24" class="mb-md">
+    <nz-card [nzBordered]="false" [nzTitle]="title">
+      <form nz-form [formGroup]="form" (ngSubmit)="submit()" se-container="1" labelWidth="200">
+        <se label="标题" error="请输入标题，大于两个字符" required>
+          <input nz-input formControlName="title" placeholder="给作品起个名字" />
+        </se>
+        <se label="日期" error="请输入日期">
+          <input nz-input formControlName="date" placeholder="输入商品原价" />
+        </se>
+        <se label="作者" error="请选择作者">
+          <input nz-input formControlName="technician" placeholder="选择作者" />
+        </se>
+
+
+        <se label="预览图1">
+          <div *ngIf="avatarURL01">
+            <img [src]="avatarURL01" alt="Smiley face" height="200" width="200">
+          </div>
+          <nz-upload [nzBeforeUpload]="beforeUpload01" [(nzFileList)]="fileList01">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
+          </nz-upload>
+        </se>
+
+        <se label="预览图2">
+          <div *ngIf="avatarURL02">
+            <img [src]="avatarURL02" alt="Smiley face" height="200" width="200">
+          </div>
+          <nz-upload [nzBeforeUpload]="beforeUpload02" [(nzFileList)]="fileList02">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
+          </nz-upload>
+        </se>
+
+        <se label="预览图3">
+          <div *ngIf="avatarURL03">
+            <img [src]="avatarURL03" alt="Smiley face" height="200" width="200">
+          </div>
+          <nz-upload [nzBeforeUpload]="beforeUpload03" [(nzFileList)]="fileList03">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
+          </nz-upload>
+        </se>
+
+        <se label="细节图">
+          <div *ngIf="avatarURLDetail">
+            <img [src]="avatarURLDetail" alt="Smiley face" height="200" width="200">
+          </div>
+          <nz-upload [nzBeforeUpload]="beforeUploadDetail" [(nzFileList)]="fileListDetail">
+            <button nz-button type="button">
+              <i nz-icon nzType="upload"></i>
+              <span>选择图片</span>
+            </button>
+          </nz-upload>
+        </se>
+
+        <se>
+          <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"
+            [nzLoading]="submitting">提交</button>
+          <button nz-button class="ml-sm" type="reset">重置</button>
+        </se>
+      </form>
+    </nz-card>
+  </div>
+</div>

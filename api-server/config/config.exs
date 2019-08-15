@@ -43,6 +43,11 @@ config :cors_plug,
   max_age: 86400,
   methods: ["GET", "POST", "DELETE", "PUT"]
 
+# Configures Guardian
+config :api_server, ApiServerWeb.Guardian,
+  issuer: "api_server",
+  secret_key: "syQnVJjVnGwRpKBNUQtDDdOa0VXBFNWlZLXMznCQVKN+DMgmb8/VYwK2/EVfOyj6"
+
 # 微信配置
 config :api_server, ApiServerWeb.WechatController,
   app_id: "appidis123456"

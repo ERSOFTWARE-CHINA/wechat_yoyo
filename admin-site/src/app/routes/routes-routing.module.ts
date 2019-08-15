@@ -51,6 +51,7 @@ const routes: Routes = [
       { path: 'technician', loadChildren: './technician/technician.module#TechnicianModule' },
       { path: 'appointment', loadChildren: './appointments/appointment.module#AppointmentModule' },
       { path: 'orders', loadChildren: './commodityOrder/commodityOrder.module#CommodityOrderModule' },
+      { path: 'posts', loadChildren: './posts/post.module#PostModule' },
     ],
   },
   // 全屏布局
@@ -103,4 +104,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class RouteRoutingModule {}
+export class RouteRoutingModule { }

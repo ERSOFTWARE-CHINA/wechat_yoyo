@@ -28,6 +28,28 @@ defmodule ApiServer.UserContext do
     |> get_pagination(params)
   end
 
+  # 根据open_id判断用户是否存在
+  def get_by_open_id(open_id) do
+    case get_by_name(User, wechat_openid: open_id) do
+      {:ok, user} ->
+        user
+      {_, _} ->
+        nil
+    end
+  end
+
+  # 根据open_id创建新用户
+  def insert_by_open_id(open_id) do
+    case get_by_open_id(open_id) do
+      nil ->
+        %User{}
+        |> User.changeset(%{wechat_openid: open_id})
+        |> Repo.insert()
+      _ ->
+        {:error, "already exist"}
+    end
+  end
+
   # 验证通过返回true，否则返回false
   def validate_username(params) do
     params
