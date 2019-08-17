@@ -9,7 +9,18 @@ import { PostService } from '../service/post.service';
 @Component({
   selector: 'post-form',
   templateUrl: './form.component.html',
-  // styleUrls: ['./form.component.less'],
+  styles: [
+    `
+      i[nz-icon] {
+        font-size: 32px;
+        color: #999;
+      }
+      .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+      }
+    `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostFormComponent implements OnInit {
@@ -21,6 +32,31 @@ export class PostFormComponent implements OnInit {
   avatarURL02: any = '';
   avatarURL03: any = '';
   avatarURLDetail: any = '';
+
+  // 照片墙=======================start
+  showUploadList = {
+    showPreviewIcon: true,
+    showRemoveIcon: true,
+    hidePreviewIconInNonImage: true
+  }
+
+  fileList = [
+    {
+      uid: -1,
+      name: 'xxx.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    }
+  ];
+  previewImage: string | undefined = '';
+  previewVisible = false;
+
+  handlePreview = (file: UploadFile) => {
+    this.previewImage = file.url || file.thumbUrl;
+    this.previewVisible = true;
+  };
+
+  // 照片墙=======================end
 
   constructor(
     private fb: FormBuilder,
@@ -34,14 +70,13 @@ export class PostFormComponent implements OnInit {
     if (this.srv.isUpdate) this.initUpdate();
     this.setTitle();
     this.form = this.fb.group({
-      cname: [
-        this.post.cname ? this.post.cname : null,
-        Validators.compose([Validators.required, Validators.minLength(2)]),
+      title: [
+        this.post.title ? this.post.title : null,
+        Validators.compose([Validators.required, Validators.minLength(1)]),
       ],
-      original_price: [this.post.original_price ? this.post.original_price : null, []],
-      current_price: [this.post.current_price ? this.post.current_price : null, []],
-      stock: [this.post.stock ? this.post.stock : null, []],
-      desc: [this.post.desc ? this.post.desc : null, []],
+      date: [this.post.date ? this.post.date : null, []],
+      technician: [this.post.current_price ? this.post.current_price : null, []],
+
     });
   }
 

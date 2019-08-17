@@ -9,11 +9,30 @@
           <input nz-input formControlName="date" placeholder="输入商品原价" />
         </se>
         <se label="作者" error="请选择作者">
-          <input nz-input formControlName="technician" placeholder="选择作者" />
+          <nz-select formControlName="technician" [nzPlaceHolder]="'请选择作者'" [nzShowSearch]="true">
+            <nz-option *ngFor="let i of technicians" [nzLabel]="i.name" [nzValue]="i.id"></nz-option>
+          </nz-select>
+        </se>
+
+        <se label="照片">
+          <div class="clearfix">
+            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzListType="picture-card"
+              [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 5" [nzShowUploadList]="showUploadList"
+              [nzPreview]="handlePreview">
+              <i nz-icon nzType="plus"></i>
+              <div class="ant-upload-text">Upload</div>
+            </nz-upload>
+            <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
+              (nzOnCancel)="previewVisible = false">
+              <ng-template #modalContent>
+                <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+              </ng-template>
+            </nz-modal>
+          </div>
         </se>
 
 
-        <se label="预览图1">
+        <!-- <se label="预览图1">
           <div *ngIf="avatarURL01">
             <img [src]="avatarURL01" alt="Smiley face" height="200" width="200">
           </div>
@@ -59,7 +78,7 @@
               <span>选择图片</span>
             </button>
           </nz-upload>
-        </se>
+        </se> -->
 
         <se>
           <button nz-button nzType="primary" [disabled]="form.invalid" type="submit"

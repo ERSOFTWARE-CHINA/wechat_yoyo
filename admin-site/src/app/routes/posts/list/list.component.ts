@@ -19,7 +19,7 @@ export class PostListComponent implements OnInit {
     ps: 10,
     sort_field: 'date',
     sort_direction: 'desc',
-    cname: null,
+    title: null,
   };
   data: any[] = [];
   loading = false;
@@ -59,14 +59,13 @@ export class PostListComponent implements OnInit {
 
   add(tpl: TemplateRef<{}>) {
     this.srv.isUpdate = false;
-    this.router.navigateByUrl('/post/form');
+    this.router.navigateByUrl('/posts/form');
   }
 
   modify(id) {
     // this.srv.formOperation = 'create';
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
-      console.log(resp);
       this.srv.post = resp['data'];
       this.router.navigateByUrl('/post/form');
     });
