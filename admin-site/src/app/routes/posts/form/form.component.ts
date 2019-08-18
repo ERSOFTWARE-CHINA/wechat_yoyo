@@ -83,10 +83,11 @@ export class PostFormComponent implements OnInit {
   submit() {
     if (!this.srv.isUpdate) {
       this.submitting = true;
-      console.log(this.form.value);
-      console.log(this.fileList);
-      
-      const obj = this.form.value;
+      // console.log(this.form.value);
+      // console.log(this.fileList);
+
+      // const obj = this.form.value;
+      const obj = this.format();
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -121,14 +122,20 @@ export class PostFormComponent implements OnInit {
       this.technicians = resp['data'];
     });
   }
-,
+
   format() {
-    return {
-      tilte: this.form.controls["title"].value,
-      date: this.form.controls["date"].value,
-      technician: {id: this.form.controls["technician"].value},
-      post_images: this.fileList
+    const obj = {
+      title: this.form.controls['title'].value,
+      date: this.form.controls['date'].value,
+      technician: this.form.controls['technician'].value,
+    };
+
+    for (const i in this.fileList) {
+      Object.assign(obj, { i: this.fileList[i]['originFileObj'] });
     }
+
+    // const params = Object.assign(obj, { 0: this.fileList[0]['originFileObj'] });
+    console.log(obj);
+    return obj;
   }
-  
 }

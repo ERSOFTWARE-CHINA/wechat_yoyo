@@ -6,7 +6,7 @@ defmodule ApiServer.PostImageContext.PostImage do
 
   schema "post_images" do
     field :image, ApiServer.PostImageImage.Type
-    belongs_to :posts, Post, on_replace: :delete
+    belongs_to :post, Post, on_replace: :delete
     timestamps()
   end
 

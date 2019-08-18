@@ -3,6 +3,8 @@ defmodule ApiServerWeb.PostController do
 
   use ApiServer.PostContext
 
+  alias ApiServer.TechnicianContext.Technician
+
   action_fallback ApiServerWeb.FallbackController
 
   def index(conn, params) do
@@ -11,11 +13,13 @@ defmodule ApiServerWeb.PostController do
   end
 
   def create(conn, post_params) do
+    IO.inspect post_params
     technician_changeset = get_technician_changeset(post_params)
     post_changeset = Post.changeset(%Post{}, post_params)
     |> Ecto.Changeset.put_assoc(:technician, technician_changeset)
+    IO.inspect post_changeset
     with {:ok, %Post{} = post} <- save_create(post_changeset) do
-      render(conn, "show.json", post_layout: post)
+      render(conn, "show.json", post: post)
     end
   end
 
@@ -44,8 +48,7 @@ defmodule ApiServerWeb.PostController do
 
   defp get_technician_changeset(params) do
     params
-    |> Map.get("technician", %{})
-    |> Map.get("id")
+    |> Map.get("technician")
     |> case do
       nil -> nil
       id ->
