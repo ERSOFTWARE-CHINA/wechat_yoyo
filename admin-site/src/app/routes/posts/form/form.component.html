@@ -6,7 +6,7 @@
           <input nz-input formControlName="title" placeholder="给作品起个名字" />
         </se>
         <se label="日期" error="请输入日期">
-          <input nz-input formControlName="date" placeholder="输入商品原价" />
+          <nz-date-picker formControlName="date"></nz-date-picker>
         </se>
         <se label="作者" error="请选择作者">
           <nz-select formControlName="technician" [nzPlaceHolder]="'请选择作者'" [nzShowSearch]="true">

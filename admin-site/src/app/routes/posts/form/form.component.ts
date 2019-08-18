@@ -7,6 +7,7 @@ import { UploadFile } from 'ng-zorro-antd';
 import { PostService } from '../service/post.service';
 
 @Component({
+  // tslint:disable-next-line: component-selector
   selector: 'post-form',
   templateUrl: './form.component.html',
   styles: [
@@ -19,7 +20,7 @@ import { PostService } from '../service/post.service';
         margin-top: 8px;
         color: #666;
       }
-    `
+    `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -37,26 +38,25 @@ export class PostFormComponent implements OnInit {
   showUploadList = {
     showPreviewIcon: true,
     showRemoveIcon: true,
-    hidePreviewIconInNonImage: true
-  }
-
+    hidePreviewIconInNonImage: true,
+  };
   fileList = [
-    {
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-    }
+    // {
+    //   uid: -1,
+    //   name: 'xxx.png',
+    //   status: 'done',
+    //   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    // },
   ];
   previewImage: string | undefined = '';
   previewVisible = false;
-
   handlePreview = (file: UploadFile) => {
     this.previewImage = file.url || file.thumbUrl;
     this.previewVisible = true;
   };
-
   // 照片墙=======================end
+
+  technicians = [];
 
   constructor(
     private fb: FormBuilder,
@@ -64,10 +64,11 @@ export class PostFormComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private srv: PostService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
+    this.getTechnicians();
     this.setTitle();
     this.form = this.fb.group({
       title: [
@@ -75,19 +76,17 @@ export class PostFormComponent implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(1)]),
       ],
       date: [this.post.date ? this.post.date : null, []],
-      technician: [this.post.current_price ? this.post.current_price : null, []],
-
+      technician: [this.post.technician ? this.post.technician.idxs : null, [Validators.required]],
     });
   }
 
   submit() {
     if (!this.srv.isUpdate) {
       this.submitting = true;
-      let obj = this.form.value;
-      if (this.file01) obj.image_01 = this.fileList01[0];
-      if (this.file02) obj.image_02 = this.fileList02[0];
-      if (this.file03) obj.image_03 = this.fileList03[0];
-      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
+      console.log(this.form.value);
+      console.log(this.fileList);
+      
+      const obj = this.form.value;
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -96,11 +95,7 @@ export class PostFormComponent implements OnInit {
       });
     } else {
       this.submitting = true;
-      let obj = this.form.value;
-      if (this.file01) obj.image_01 = this.fileList01[0];
-      if (this.file02) obj.image_02 = this.fileList02[0];
-      if (this.file03) obj.image_03 = this.fileList03[0];
-      if (this.fileDetail) obj.image_detail = this.fileListDetail[0];
+      const obj = this.form.value;
       this.srv.update(this.post.id, obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -119,41 +114,21 @@ export class PostFormComponent implements OnInit {
   initUpdate() {
     this.setTitle();
     this.post = this.srv.post;
-    this.avatarURL01 = this.post.image_01;
-    this.avatarURL02 = this.post.image_02;
-    this.avatarURL03 = this.post.image_03;
-    this.avatarURLDetail = this.post.image_detail;
   }
 
-  fileList01: UploadFile[] = [];
-  file01: any = null;
-  beforeUpload01 = (file: UploadFile): boolean => {
-    this.fileList01 = [file];
-    this.file01 = file;
-    return false;
-  };
-
-  fileList02: UploadFile[] = [];
-  file02: any = null;
-  beforeUpload02 = (file: UploadFile): boolean => {
-    this.fileList02 = [file];
-    this.file02 = file;
-    return false;
-  };
-
-  fileList03: UploadFile[] = [];
-  file03: any = null;
-  beforeUpload03 = (file: UploadFile): boolean => {
-    this.fileList03 = [file];
-    this.file03 = file;
-    return false;
-  };
-
-  fileListDetail: UploadFile[] = [];
-  fileDetail: any = null;
-  beforeUploadDetail = (file: UploadFile): boolean => {
-    this.fileListDetail = [file];
-    this.fileDetail = file;
-    return false;
-  };
+  getTechnicians() {
+    this.srv.getTechnicians().subscribe(resp => {
+      this.technicians = resp['data'];
+    });
+  }
+,
+  format() {
+    return {
+      tilte: this.form.controls["title"].value,
+      date: this.form.controls["date"].value,
+      technician: {id: this.form.controls["technician"].value},
+      post_images: this.fileList
+    }
+  }
+  
 }

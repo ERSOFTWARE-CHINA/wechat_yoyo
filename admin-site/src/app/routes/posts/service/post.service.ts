@@ -6,7 +6,7 @@ import { getOptionWithParams, getFormData } from '../../../utils/formmat';
 
 @Injectable()
 export class PostService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   url = baseUrl + '/api/v1/posts';
 
   post: any = null;
@@ -30,5 +30,10 @@ export class PostService {
 
   delete(id) {
     return this.http.delete(this.url + `/${id}`);
+  }
+
+  getTechnicians() {
+    const url = baseUrl + '/api/v1/technicians';
+    return this.http.get(url, getOptionWithParams(null));
   }
 }
