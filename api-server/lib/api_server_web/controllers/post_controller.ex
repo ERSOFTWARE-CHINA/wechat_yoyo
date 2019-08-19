@@ -4,6 +4,7 @@ defmodule ApiServerWeb.PostController do
   use ApiServer.PostContext
 
   alias ApiServer.TechnicianContext.Technician
+  alias ApiServer.PostImageContext.PostImage
 
   action_fallback ApiServerWeb.FallbackController
 
@@ -13,12 +14,14 @@ defmodule ApiServerWeb.PostController do
   end
 
   def create(conn, post_params) do
-    IO.inspect post_params
+    post_images_changesets = post_params |> get_images
+    IO.inspect post_images_changesets
     technician_changeset = get_technician_changeset(post_params)
     post_changeset = Post.changeset(%Post{}, post_params)
     |> Ecto.Changeset.put_assoc(:technician, technician_changeset)
+    |> Ecto.Changeset.put_assoc(:post_images, post_images_changesets)
     IO.inspect post_changeset
-    with {:ok, %Post{} = post} <- save_create(post_changeset) do
+    with %Post{} = post <- save_create_with_preload(post_changeset, [:post_images]) do
       render(conn, "show.json", post: post)
     end
   end
@@ -57,5 +60,17 @@ defmodule ApiServerWeb.PostController do
           {:ok, user} -> change(Technician, user)
         end
     end
+  end
+
+  defp get_images(params) do
+    images = []
+    params
+    |> Enum.reduce([], fn({k, v}, acc) -> 
+      v
+      |> case do
+        %Plug.Upload{} -> [PostImage.changeset(%PostImage{}, %{image: v}) | acc]
+        _ -> acc
+      end
+    end)
   end
 end

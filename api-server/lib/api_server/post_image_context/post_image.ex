@@ -6,6 +6,7 @@ defmodule ApiServer.PostImageContext.PostImage do
 
   schema "post_images" do
     field :image, ApiServer.PostImageImage.Type
+    field :uuid, :string
     belongs_to :post, Post, on_replace: :delete
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule ApiServer.PostImageContext.PostImage do
   @doc false
   def changeset(post_comment, attrs) do
     post_comment
-    |> cast(attrs, [:content])
+    |> cast(attrs, [])
     |> check_uuid
     |> cast_attachments(attrs, [:image])
   end

@@ -23,17 +23,20 @@ defmodule ApiServerWeb.PostView do
       date: post.date,
       good: post.good,
       author: render_one(post.technician, ApiServerWeb.TechnicianView, "technician.json"),
-      post_images: render_many(post.post_images, PostView, "post_image.json")
-      # post_comments:
+      post_images: post.post_images
+      |> Enum.reduce([], fn(pi, acc) -> 
+        [pi |> get_post_image | acc]
+      end)
+      # render_many(post.post_images, PostView, "post_image.json")
 
     }
   end
 
-  def render("post_image.json", %{post_image: post_image}) do
-    %{
-      url: get_post_image(post_image)
-    }
-  end
+  # def render("post_image.json", %{post_image: post_image}) do
+  #   %{
+  #     url: get_post_image(post_image)
+  #   }
+  # end
 
 
   defp getPicUrl(technician) do

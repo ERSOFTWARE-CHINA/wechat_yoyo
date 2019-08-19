@@ -11,6 +11,7 @@ defmodule ApiServerWeb.CommodityController do
   end
 
   def create(conn, commodity_params) do
+    IO.inspect commodity_params
     commodity_changeset = Commodity.changeset(%Commodity{}, commodity_params)
     with {:ok, %Commodity{} = commodity} <- save_create(commodity_changeset) do
       conn

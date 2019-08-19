@@ -43,8 +43,15 @@ defmodule ApiServer.BaseContext do
       end
     end
   
-    def save_create(changeset) do
-      Repo.insert(changeset)
+    def save_create(changeset, preload_list \\ []) do
+      changeset
+      |> Repo.insert
+    end
+
+    def save_create_with_preload(changeset, preload_list \\ []) do
+      changeset
+      |> Repo.insert!
+      |> Repo.preload(preload_list) 
     end
   
     def save_update(changeset) do
