@@ -64,7 +64,7 @@ export class PostFormComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private srv: PostService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
@@ -83,15 +83,11 @@ export class PostFormComponent implements OnInit {
   submit() {
     if (!this.srv.isUpdate) {
       this.submitting = true;
-      // console.log(this.form.value);
-      // console.log(this.fileList);
-
-      // const obj = this.form.value;
       const obj = this.format();
       this.srv.add(obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/post/page');
+        this.router.navigateByUrl('/posts/page');
         this.cdr.detectChanges();
       });
     } else {
@@ -100,7 +96,7 @@ export class PostFormComponent implements OnInit {
       this.srv.update(this.post.id, obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
-        this.router.navigateByUrl('/post/page');
+        this.router.navigateByUrl('/posts/page');
         this.cdr.detectChanges();
       });
     }
@@ -129,11 +125,12 @@ export class PostFormComponent implements OnInit {
       date: this.form.controls['date'].value,
       technician: this.form.controls['technician'].value,
     };
-
-    for (const i in this.fileList) {
-      Object.assign(obj, { i: this.fileList[i]['originFileObj'] });
+    let fl = this.fileList;
+    for (const i in fl) {
+      fl[i] = fl[i]['originFileObj']
+      // Object.assign(obj, { i: this.fileList[i]['originFileObj'] });
     }
-
+    Object.assign(obj, fl)
     // const params = Object.assign(obj, { 0: this.fileList[0]['originFileObj'] });
     console.log(obj);
     return obj;
