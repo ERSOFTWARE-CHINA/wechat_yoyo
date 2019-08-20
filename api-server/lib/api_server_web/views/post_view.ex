@@ -25,7 +25,7 @@ defmodule ApiServerWeb.PostView do
       author: render_one(post.technician, ApiServerWeb.TechnicianView, "technician.json"),
       post_images: post.post_images
       |> Enum.reduce([], fn(pi, acc) -> 
-        [pi |> get_post_image | acc]
+        [%{url: pi |> get_post_image} | acc]
       end)
       # render_many(post.post_images, PostView, "post_image.json")
 

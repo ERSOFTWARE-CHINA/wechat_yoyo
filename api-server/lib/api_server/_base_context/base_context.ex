@@ -57,6 +57,12 @@ defmodule ApiServer.BaseContext do
     def save_update(changeset) do
       Repo.update(changeset)
     end
+
+    def save_update_with_preload(changeset, preload_list \\ []) do
+      changeset
+      |> Repo.update!
+      |> Repo.preload(preload_list) 
+    end
   
     def delete_by_id(struct, id, preload_list \\ []) do
       struct

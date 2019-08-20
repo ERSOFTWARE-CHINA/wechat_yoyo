@@ -34,6 +34,8 @@ export class PostFormComponent implements OnInit {
   avatarURL03: any = '';
   avatarURLDetail: any = '';
 
+  dateFormat = 'yyyy-MM-dd'
+
   // 照片墙=======================start
   showUploadList = {
     showPreviewIcon: true,
@@ -68,16 +70,21 @@ export class PostFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
+
     this.getTechnicians();
     this.setTitle();
+    // this.srv.getTechnicians().subscribe(resp => {
+    //   this.technicians = resp['data'];
     this.form = this.fb.group({
       title: [
         this.post.title ? this.post.title : null,
         Validators.compose([Validators.required, Validators.minLength(1)]),
       ],
       date: [this.post.date ? this.post.date : null, []],
-      technician: [this.post.technician ? this.post.technician.idxs : null, [Validators.required]],
+      technician: [this.post.author ? this.post.author.id : null, [Validators.required]],
     });
+    console.log(this.form.controls["technician"].value)
+    // })
   }
 
   submit() {
@@ -92,7 +99,7 @@ export class PostFormComponent implements OnInit {
       });
     } else {
       this.submitting = true;
-      const obj = this.form.value;
+      const obj = this.format();
       this.srv.update(this.post.id, obj).subscribe(resp => {
         this.submitting = false;
         if (resp['data']) this.msg.success(`保存成功！`);
@@ -104,18 +111,21 @@ export class PostFormComponent implements OnInit {
 
   setTitle() {
     if (this.srv.isUpdate) {
-      this.title = '修改商品';
-    } else this.title = '创建商品';
+      this.title = '修改作品';
+    } else this.title = '发布作品';
   }
 
   initUpdate() {
     this.setTitle();
     this.post = this.srv.post;
+    // this.fileList = this.srv.post.post_images;
+    // console.log(this.fileList);
   }
 
   getTechnicians() {
     this.srv.getTechnicians().subscribe(resp => {
       this.technicians = resp['data'];
+      // this.form.controls["technician"].setValue() 
     });
   }
 

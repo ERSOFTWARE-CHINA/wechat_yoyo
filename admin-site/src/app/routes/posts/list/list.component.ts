@@ -67,7 +67,7 @@ export class PostListComponent implements OnInit {
     this.srv.isUpdate = true;
     this.srv.getById(id).subscribe(resp => {
       this.srv.post = resp['data'];
-      this.router.navigateByUrl('/post/form');
+      this.router.navigateByUrl('/posts/form');
     });
   }
 
