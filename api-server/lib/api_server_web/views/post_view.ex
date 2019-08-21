@@ -22,6 +22,7 @@ defmodule ApiServerWeb.PostView do
       title: post.title,
       date: post.date,
       good: post.good,
+      content: post.content,
       author: render_one(post.technician, ApiServerWeb.TechnicianView, "technician.json"),
       post_images: post.post_images
       |> Enum.reduce([], fn(pi, acc) -> 

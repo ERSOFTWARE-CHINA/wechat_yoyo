@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController,  IonicPage,NavController  } from 'ionic-angular';
 import{ PersonShowDetailPage } from '../person-show-detail/person-show-detail';
+import { PersonShowService } from './service';
 /**
  * Generated class for the PersonShowPage page.
  *
@@ -13,7 +14,7 @@ import{ PersonShowDetailPage } from '../person-show-detail/person-show-detail';
   selector: 'page-person-show',
   templateUrl: 'person-show.html',
 })
-export class PersonShowPage {
+export class PersonShowPage  implements OnInit  {
 
 
   characters = [
@@ -31,9 +32,19 @@ export class PersonShowPage {
 
 
 
-  constructor(public modalCtrl: ModalController,public navCtrl: NavController) { }
+  constructor(public modalCtrl: ModalController,
+    public navCtrl: NavController,
+    private srv: PersonShowService) { }
 
 
+  ngOnInit() {
+    
+    this.getData();
+  }
+
+  getData() {
+    this.srv.list().then(resp => console.log(resp))
+  }
 
  
   /**

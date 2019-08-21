@@ -82,6 +82,7 @@ export class PostFormComponent implements OnInit {
       ],
       date: [this.post.date ? this.post.date : null, []],
       technician: [this.post.author ? this.post.author.id : null, [Validators.required]],
+      content: [this.post.content ? this.post.content : null, []],
     });
     console.log(this.form.controls["technician"].value)
     // })
@@ -134,15 +135,13 @@ export class PostFormComponent implements OnInit {
       title: this.form.controls['title'].value,
       date: this.form.controls['date'].value,
       technician: this.form.controls['technician'].value,
+      content: this.form.controls['content'].value,
     };
     let fl = this.fileList;
     for (const i in fl) {
       fl[i] = fl[i]['originFileObj']
-      // Object.assign(obj, { i: this.fileList[i]['originFileObj'] });
     }
     Object.assign(obj, fl)
-    // const params = Object.assign(obj, { 0: this.fileList[0]['originFileObj'] });
-    console.log(obj);
     return obj;
   }
 }

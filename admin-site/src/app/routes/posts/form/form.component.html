@@ -14,6 +14,10 @@
           </nz-select>
         </se>
 
+        <se label="描述" error="请输入描述">
+          <textarea rows="4" nz-input formControlName="content" placeholder="请输入描述"></textarea>
+        </se>
+
         <se label="照片">
           <div class="clearfix">
             <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzListType="picture-card"
