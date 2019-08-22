@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController,  IonicPage,NavController  } from 'ionic-angular';
-import{ PersonShowDetailPage } from '../person-show-detail/person-show-detail';
 import { PersonShowService } from './service';
+import { GalleryModal } from 'ionic-gallery-modal';
 /**
  * Generated class for the PersonShowPage page.
  *
@@ -16,21 +16,8 @@ import { PersonShowService } from './service';
 })
 export class PersonShowPage  implements OnInit  {
 
-
-  characters = [
-    {
-      name: 'Gollum',
-      quote: 'Sneaky little hobbitses!',
-      image: 'assets/img/speakers/bear.jpg',
-      items: [
-        { type: 'bear', url: 'assets/img/speakers/bear.jpg' },
-        { type: 'cheetah', url: 'assets/img/speakers/cheetah.jpg' },
-        { type: 'duck', url: 'assets/img/speakers/duck.jpg' }
-      ]
-    }
-  ]
-
-
+  posts: any[] = []
+  pics: any[] = []
 
   constructor(public modalCtrl: ModalController,
     public navCtrl: NavController,
@@ -38,24 +25,28 @@ export class PersonShowPage  implements OnInit  {
 
 
   ngOnInit() {
-    
     this.getData();
   }
 
   getData() {
-    this.srv.list().then(resp => console.log(resp))
+    this.srv.list().then(resp => {
+      this.posts = resp["data"];
+    })
   }
 
- 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(items: any) {
-    this.navCtrl.push('PersonShowDetailPage', {
-      items: items
+  // 预览图片，打开modal
+  openItem(item: any) {
+    this.pics = item.post_images;
+    this.openModal();
+  }
+
+  openModal() {
+    let modal = this.modalCtrl.create(GalleryModal, {
+      photos: this.pics,
+      initialSlide: 0, // The second image
     });
+    modal.present();
   }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PersonShowPage');

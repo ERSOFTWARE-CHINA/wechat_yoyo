@@ -16,11 +16,13 @@ import { GalleryModal } from 'ionic-gallery-modal';
   templateUrl: 'person-show-detail.html',
 })
 export class PersonShowDetailPage {
-  items: any;
+  items: any[];
+  content: string;
   character;
 
   constructor(public navCtrl: NavController, navParams: NavParams,private  modalCtrl:ModalController) {
     this.items = navParams.get('items') ;
+    this.content = navParams.get('content');
     console.log("显示this.items的内容");
     console.log(this.items);
   }

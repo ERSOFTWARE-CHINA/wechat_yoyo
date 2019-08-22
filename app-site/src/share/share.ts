@@ -1,8 +1,8 @@
 import { Http, Headers, Response, RequestOptions, ResponseContentType } from '@angular/http';
 
 //本地调试url
-// export const baseUrl = "http://localhost:4000/api/v1/"
-export const baseUrl = "http://112.132.249.108:17001/api/v1/"
+export const baseUrl = "http://localhost:4000/api/v1/"
+// export const baseUrl = "http://112.132.249.108:17001/api/v1/"
 
 
 export const userId = "weixin000001";
