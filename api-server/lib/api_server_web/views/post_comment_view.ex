@@ -17,7 +17,12 @@ defmodule ApiServerWeb.PostCommentView do
   end
 
   def render("post_comment.json", %{post_comment: post_comment}) do
-    %{id: post_comment.id,
-      content: post_comment.content}
+    %{
+      id: post_comment.id,
+      content: post_comment.content,
+      date: post_comment.date,
+      user: post_comment.user.wechat_nickname,
+      avatar: post_comment.user.wechat_avatar_url
+    }
   end
 end

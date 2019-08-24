@@ -30,6 +30,16 @@ defmodule ApiServerWeb.PostController do
     end
   end
 
+  # 移动端调用
+  def update(conn, %{"id" => id, "add_good" => true} = post_params) do
+    with {:ok, post} <- get_by_id(Post, id, [:technician, :post_comments, :post_images]) do
+      post_changeset = Post.changeset(post, post_params)
+      with %Post{} = post <- save_update_with_preload(post_changeset, [:post_images]) do
+        render(conn, "show.json", post: post)
+      end
+    end
+  end
+
   def update(conn, %{"id" => id} = post_params) do
     with {:ok, post} <- get_by_id(Post, id, [:technician, :post_comments, :post_images]) do
       post_images_changesets = post_params |> get_images
@@ -42,6 +52,8 @@ defmodule ApiServerWeb.PostController do
       end
     end
   end
+
+  
 
   def delete(conn, %{"id" => id}) do
     with {:ok, %Post{} = post} <- delete_by_id(Post, id, [:technician, :post_images, :post_comments]) do

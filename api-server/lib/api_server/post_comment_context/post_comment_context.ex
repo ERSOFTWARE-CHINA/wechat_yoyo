@@ -21,6 +21,8 @@ defmodule ApiServer.PostCommentContext do
     Post
     |> query_like(params, "content")
     |> query_order_desc_by(params, "date")
+    |> query_equal(params, "post_id")
+    |> query_preload([:user])
     |> get_pagination(params)
   end
 end

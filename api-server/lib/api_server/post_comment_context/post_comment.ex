@@ -18,5 +18,14 @@ defmodule ApiServer.PostCommentContext.PostComment do
     post_comment
     |> cast(attrs, [:content, :date])
     |> validate_required([:content])
+    |> set_date
+  end
+
+  defp set_date(changeset) do
+    if get_field(changeset, :date) == nil do
+      force_change(changeset, :date, ApiServer.Utils.DatetimeHandler.get_date_str)
+    else
+      changeset
+    end
   end
 end

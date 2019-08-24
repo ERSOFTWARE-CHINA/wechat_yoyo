@@ -5,7 +5,7 @@ import { PersonShowService } from './service';
 
 @NgModule({
   declarations: [
-    PersonShowPage,
+    PersonShowPage
   ],
   imports: [
     IonicPageModule.forChild(PersonShowPage),

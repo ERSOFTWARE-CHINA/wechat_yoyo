@@ -24,8 +24,6 @@ defmodule ApiServerWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Logger
 
-  plug CORSPlug
-
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
@@ -42,5 +40,6 @@ defmodule ApiServerWeb.Endpoint do
     key: "_api_server_key",
     signing_salt: "cAVkhDfh"
 
+  plug CORSPlug
   plug ApiServerWeb.Router
 end
