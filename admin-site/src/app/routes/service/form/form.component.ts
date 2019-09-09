@@ -30,7 +30,7 @@ export class ServiceFormComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private srv: ServiceService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.srv.isUpdate) this.initUpdate();
